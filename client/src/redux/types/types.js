@@ -6,3 +6,8 @@ export const SET_EMPTY_USER = 'SET_EMPTY_USER';
 
 // ERROR
 export const SET_ERROR = 'SET_USER';
+
+// ROOM SOCKET IO
+export const SET_ROOM = 'SET_ROOM';
+export const SET_USERSIO = 'SET_USERSIO';
+export const SET_MESSAGE = 'SET_MESSAGE';
