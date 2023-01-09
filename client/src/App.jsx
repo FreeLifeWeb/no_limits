@@ -19,6 +19,7 @@ import Employer from './components/LK_Employer/Employer';
 import RedactOrCreateVacancy from './components/RedactOrCreateVacancy/RedactOrCreateVacancy';
 import UserResponses from './components/UserResponses/UserResponses';
 import VacancyResponses from './components/VacancyResponses/VacancyResponses';
+import Test from './components/Test';
 
 function App() {
   const user = useSelector((store) => store.user);
@@ -40,7 +41,7 @@ function App() {
               <Route path="/" element={<MainPage />} />
               <Route path="/vacancies" element={<Vacancies />} />
               <Route path="/vacancy/:id" element={<DetailVacancy />} />
-              <Route path="/resume/:id" element={<DetailUserResume />} />
+              <Route path="candidate/resume/:id" element={<DetailUserResume />} />
               <Route path="/favoriteRespons" element={<FavoriteResponses />} />
               <Route path="/lkCandidate" element={<LkCandidate />} />
               <Route path="/lkEmployer" element={<Employer />} />
@@ -51,6 +52,7 @@ function App() {
               <Route path="/chat" element={<Chat />} />
               <Route path="/reg" element={<Registration />} />
               <Route path="/log" element={<Login />} />
+              <Route path="/test" element={<Test />} />
             </Routes>
           </>
         )

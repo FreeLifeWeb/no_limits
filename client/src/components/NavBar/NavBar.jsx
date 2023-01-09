@@ -53,14 +53,18 @@ export default function ButtonAppBar() {
                     </Typography>
                   </Button>
                 </NavLink>
-                <Typography>
-                  {user?.email ? (
-                    `Hello  ${user?.email}`
-                  )
-                    : (
-                      'Hello user!'
-                    )}
-                </Typography>
+                <NavLink to="/lkCandidate">
+                  <Button variant="text" sx={{ color: 'white' }}>
+                    <Typography>
+                      {user?.email ? (
+                        `Hello  ${user?.email}`
+                      )
+                        : (
+                          'Hello user!'
+                        )}
+                    </Typography>
+                  </Button>
+                </NavLink>
               </>
             )
             : (
