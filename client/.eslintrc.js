@@ -32,6 +32,7 @@ module.exports = {
     'no-useless-escape': 0,
     'no-plusplus': 0,
     'no-unused-vars': 0,
+    'no-nested-ternary': 0,
     // 'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     // 'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
   },

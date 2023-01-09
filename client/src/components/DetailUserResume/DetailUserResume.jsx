@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import {
-  Button, FormGroup, TextField, Typography,
+  Button, FormControl, FormControlLabel, FormGroup, MenuItem, Radio, RadioGroup, Select, TextField, Typography,
 } from '@mui/material';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,14 +32,26 @@ export default function Test() {
 
   const toSpeak = {
     name: 'Пожалуйста, назовите Ваше полное имя',
-    age: 'Пожалуйста, назовите Ваш возраст',
-    email: 'Пожалуйста, продиктуйте адрес Вашей электронной почты',
-    phoneNumber: 'Пожалуйста, продиктуйте Ваш телефонный номер',
-    location: 'Пожалуйста, назовите город, в котором Вы находитесь',
-    sphere: 'Пожалуйста, назовите свою специальность',
-    about: 'Пожалуйста, расскажите вкратце о себе, своем образовании и опыте работы',
-    salary: 'Пожалуйста, укажите ожидаемый уровень заработной платы',
+    age: 'Назовите Ваш возраст',
+    email: 'Продиктуйте адрес Вашей электронной почты',
+    phoneNumber: 'Продиктуйте Ваш телефонный номер',
+    location: 'Назовите город, в котором Вы находитесь',
+    // sphere: 'Выберите свою специальность. Используйте кнопки "вверх", "вниз", "вперед", "назад" для навигации и "пробел" для выбора',
+    about: 'Расскажите вкратце о себе, своем образовании и опыте работы',
+    salary: 'Укажите ожидаемый уровень заработной платы',
     submit: 'Нажмите enter, чтобы сохранить резюме',
+    'Информационные технологии': 'Выберите свою специальность. Используйте кнопки "вверх", "вниз", "вперед", "назад" для навигации и "пробел" для выбора. Информационные технологии',
+    'Общественное питание': 'Общественное питание',
+    Строительство: 'Строительство',
+    'Медицинские и оздоровительные услуги': 'Медицинские и оздоровительные услуги',
+    'Консалтинговые услуги: экономика, маркетинг': 'Консалтинговые услуги: экономика, маркетинг',
+    'Инжиниринг и научный консалтинг': 'Инжиниринг и научный консалтинг',
+    'Сфера развлечений': 'Сфера развлечений',
+    'Аграрный бизнес': 'Аграрный бизнес',
+    'Индустрия красоты': 'Индустрия красоты',
+    'Бытовые услуги': 'Бытовые услуги',
+    Логистика: 'Логистика',
+    Прочее: 'Прочее',
   };
 
   /// //////////////////////////////////////////////////
@@ -75,33 +87,77 @@ export default function Test() {
     resetTranscript();
   };
   //-------------------------------------
-  const [resume, setResume] = useState({});
-  //   const [currId, setCurrId] = useState('name');
+  const [resume, setResume] = useState({
+    name: '',
+    age: '',
+    email: '',
+    phoneNumber: '',
+    location: '',
+    sphere: '',
+    about: '',
+    salary: '',
+  });
+  const [focus, setFocus] = useState({
+    name: false,
+    age: false,
+    email: false,
+    phoneNumber: false,
+    location: false,
+    sphere: false,
+    about: false,
+    salary: false,
+  });
+  const [sphereList, setSphereList] = useState([]);
+  const [currSphere, setCurrSphere] = useState('');
+
+  // sphereList.reduce(
+  //   (target, key) =>
+  //   console.log(sphereList);
+  //     (target[key.title] = key.title, target),
+  //   // console.log(target, 'yyyyyyyyyyyyyyyyyyyyyyy');
+  //   // return target;
+  //   {},
+  // );
+  //   const allSpheres = {};
+  // sphereList.map((el)=>{...allSpheres, [el]: String(el)})
+  const readSpheres = {
+    'Информационные технологии': 'Информационные технологии',
+    'Общественное питание': 'Общественное питание',
+    Строительство: 'Строительство',
+    'Медицинские и оздоровительные услуги': 'Строительство',
+    'Консалтинговые услуги: экономика, маркетинг': 'Консалтинговые услуги: экономика, маркетинг',
+    'Инжиниринг и научный консалтинг': 'Инжиниринг и научный консалтинг',
+    'Сфера развлечений': 'Сфера развлечений',
+    'Аграрный бизнес': 'Аграрный бизнес',
+    'Индустрия красоты': 'Индустрия красоты',
+    'Бытовые услуги': 'Бытовые услуги',
+  };
+  // console.log(readSpheres);
 
   const focusHandler = (id) => {
-    console.log('focus');
+    setFocus((prev) => ({ ...prev, [id]: true }));
+    console.log(focus);
     resetHandler();
     const field = toSpeak[id];
     startSpeach(field);
     startHandler();
-    //     // console.log(id);
-    // const example = document.getElementById('email');
-    // example.focus();
-    // console.log(example);
-    // this.blur();
   };
 
-  const enterHandler = (e, id) => {
-    // dispatch(setResume({ ...resume, [e.target.name]: e.target.value }));
-    console.log('enter');
-    e.preventDefault();
-    stopHandler();
-    console.log(e.target, 'kkkkkkkkkkkkkkkkkkkkkkkk');
+  const enterHandler = (e, nextId, currId) => {
+    if (e.key === 'Enter') {
+      // dispatch(setResume({ ...resume, [e.target.name]: e.target.value }));
+      console.log('enter');
+      e.preventDefault();
+      setFocus((prev) => ({ ...prev, [currId]: false }));
 
-    setResume({ ...resume, [e.target.name]: e.target.value });
-    console.log(resume, 'enter resume');
-    const example = document.getElementById(id);
-    example.focus();
+      console.log(e.target, 'kkkkkkkkkkkkkkkkkkkkkkkk');
+
+      setResume({ ...resume, [e.target.name]: transcript });
+      console.log(resume, 'enter resume');
+
+      const example = document.getElementById(nextId);
+      example.focus();
+    }
   };
 
   //------------------------
@@ -141,9 +197,13 @@ export default function Test() {
   //   }, []);
 
   useEffect(() => {
-    // console.log(currId, 'uuuseeeeffectttt');
     const example = document.getElementById('name');
     example.focus();
+    // const sphereList = () => {
+    axios('candidate/resume/spheres')
+      .then((res) => setSphereList(res.data));
+    // };
+    // console.log(sphereList, 'jjjjjjjjjjjjjjjjj');
   }, []);
 
   const submitHandler = (e) => {
@@ -154,6 +214,47 @@ export default function Test() {
         window.location.href = '/lkCandidate';
         console.log('done');
       });
+  };
+
+  // const sphereFocusHandler = (id) => {
+  //   setFocus((prev) => ({ ...prev, [id]: true }));
+  //   console.log(focus);
+  //   const field = toSpeak[id];
+  //   startSpeach(field);
+  // };
+
+  const optionFocusHandler = (id) => {
+    console.log('jhgjhgjhgjhgjhgjhgjhg');
+    const field = toSpeak[id];
+    startSpeach(field);
+  };
+
+  const radioHandler = (e, prevRadio, nextRadio) => {
+    // console.log(prevRadio, 'blyat');
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      const example = document.getElementById(nextRadio);
+      example.focus();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      const example = document.getElementById(prevRadio);
+      example.focus();
+    }
+  };
+
+  const sphereHandler = (e) => {
+    console.log('tititititootootoyoyoyoy');
+    e.preventDefault();
+    setCurrSphere(e.target.value);
+    console.log(e.target.value);
+    setResume({ ...resume, sphere: e.target.value });
+    console.log(resume, 'resume');
+    // console.dir(e);
+    // const current = document.getElementById('sphere');
+    // current.blur();
+    const example = document.getElementById('about');
+    // example.tabIndex = 1;
+    example.focus();
+    // console.dir(current.tabIndex, 'kkkkkkkkkkkkkkkkkkkk');
+    // console.dir(example.tabIndex);
   };
 
   //   //   const { transcript } = useSpeechRecognition({ commands });
@@ -177,9 +278,9 @@ export default function Test() {
             id="name"
             label="Ф.И.О"
             name="name"
-            value={resume.name || transcript}
+            value={(focus.name ? transcript : resume.name)}
             onFocus={() => focusHandler('name')}
-            onKeyDown={(event) => enterHandler(event, 'age')}
+            onKeyDown={(event) => enterHandler(event, 'age', 'name')}
           />
           {' '}
           <br />
@@ -188,9 +289,9 @@ export default function Test() {
             name="age"
             label="Возраст"
             type="text"// не записываются данные иначе
-            value={resume.age || transcript}
+            value={(focus.age ? transcript : resume.age)}
             onFocus={() => focusHandler('age')}
-            onKeyDown={(event) => enterHandler(event, 'email')}
+            onKeyDown={(event) => enterHandler(event, 'email', 'age')}
           />
           <br />
           <TextField
@@ -198,9 +299,9 @@ export default function Test() {
             name="email"
             label="Email"
             type="text"// не записываются данные иначе
-            value={resume.email || transcript}
+            value={(focus.email ? transcript : resume.email)}
             onFocus={() => focusHandler('email')}
-            onKeyDown={(event) => enterHandler(event, 'phoneNumber')}
+            onKeyDown={(event) => enterHandler(event, 'phoneNumber', 'email')}
           />
           <br />
 
@@ -209,9 +310,9 @@ export default function Test() {
             name="phoneNumber"
             label="Номер телефона"
             type="text"
-            value={resume.phoneNumber || transcript}
+            value={(focus.phoneNumber ? transcript : resume.phoneNumber)}
             onFocus={() => focusHandler('phoneNumber')}
-            onKeyDown={(event) => enterHandler(event, 'location')}
+            onKeyDown={(event) => enterHandler(event, 'location', 'phoneNumber')}
           />
           <br />
 
@@ -220,21 +321,74 @@ export default function Test() {
             label="Город"
             type="text"
             id="location"
-            value={resume.location || transcript}
+            value={(focus.location ? transcript : resume.location)}
             onFocus={() => focusHandler('location')}
-            onKeyDown={(event) => enterHandler(event, 'sphere')}
+            onKeyDown={(event) => enterHandler(event, 'radio1', 'location')}
           />
           <br />
-
-          <TextField
+          <FormControl>
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="sphere"
+              label="Специальность"
+              id="sphere"
+              value={currSphere}
+              onChange={sphereHandler}
+              // onFocus={() => focusHandler('sphere')}
+            >
+              {sphereList.map((el, i, arr) => (
+                <FormControlLabel
+                  value={el.title}
+                  id={`radio${el.id}`}
+                  name={el.title}
+                  control={<Radio />}
+                  label={el.title}
+                  onFocus={() => optionFocusHandler(el.title)}
+                // onFocus={}
+                  onKeyDown={(e) => radioHandler(e, `radio${arr[i - 1]?.id}`, `radio${arr[i + 1]?.id}`)}
+                />
+              ))}
+            </RadioGroup>
+          </FormControl>
+          {/* <select
+            // labelId="demo-controlled-open-select-label"
             name="sphere"
             label="Специальность"
             type="text"
             id="sphere"
-            value={resume.sphere || transcript}
+            // open={open}
+            // onClose={handleClose}
+            // onOpen={handleOpen}
+            value={currSphere}
+            onChange={sphereHandler}
             onFocus={() => focusHandler('sphere')}
-            onKeyDown={(event) => enterHandler(event, 'about')}
-          />
+            // onFocus={() => focusHandler('sphere')}
+            // onKeyDown={(event) => enterHandler(event, 'about', 'sphere')}
+
+          >
+            {sphereList.map((el) => (
+              <option
+                id={el.title}
+                name={el.title}
+                value={el.title}
+                onFocus={() => optionFocusHandler(el.title)}
+              >
+                {el.title}
+              </option>
+            ))}
+            {/* тут можно сразу в вэлью айди
+          </select> */}
+
+          {/* <TextField
+            name="sphere"
+            label="Специальность"
+            type="text"
+            id="sphere"
+            value={(focus.sphere ? transcript : resume.sphere)}
+            onFocus={() => focusHandler('sphere')}
+            onKeyDown={(event) => enterHandler(event, 'about', 'sphere')}
+          /> */}
           <br />
 
           <TextField
@@ -242,9 +396,9 @@ export default function Test() {
             label="Образование и опыт"
             type="text"
             id="about"
-            value={resume.about || transcript}
+            value={(focus.about ? transcript : resume.about)}
             onFocus={() => focusHandler('about')}
-            onKeyDown={(event) => enterHandler(event, 'salary')}
+            onKeyDown={(event) => enterHandler(event, 'salary', 'about')}
           />
           <br />
 
@@ -253,9 +407,9 @@ export default function Test() {
             label="Заработная плата"
             type="text"
             id="salary"
-            value={resume.salary || transcript}
+            value={(focus.salary ? transcript : resume.salary)}
             onFocus={() => focusHandler('salary')}
-            onKeyDown={(event) => enterHandler(event, 'submit')}
+            onKeyDown={(event) => enterHandler(event, 'submit', 'salary')}
           />
           <br />
           <Button
@@ -274,61 +428,3 @@ export default function Test() {
     </div>
   );
 }
-
-// { /* <Typography variant="h6" component="h2" sx={{ flexGrow: 1 }}>
-//             Пожалуйста, назовите Ваш возраст.
-//           </Typography>
-//           <TextField
-//             name="age"
-//             label="Age"
-//             type="number"
-//           />
-//           <Typography variant="h6" component="h2" sx={{ flexGrow: 1 }}>
-//             Пожалуйста, продиктуйте адрес Вашей электронной почты.
-//           </Typography>
-//           <TextField
-//             name="email"
-//             label="Email"
-//             type="email"
-//           />
-//           <Typography variant="h6" component="h2" sx={{ flexGrow: 1 }}>
-//             Пожалуйста, продиктуйте Ваш телефонный номер.
-//           </Typography>
-//           <TextField
-//             name="number"
-//             label="Phone Number"
-//             type="number"
-//           />
-//           <Typography variant="h6" component="h2" sx={{ flexGrow: 1 }}>
-//             Пожалуйста, назовите город, в котором Вы находитесь.
-//           </Typography>
-//           <TextField
-//             name="city"
-//             label="City"
-//             type="text"
-//           />
-//           <Typography variant="h6" component="h2" sx={{ flexGrow: 1 }}>
-//             Пожалуйста, назовите свою специальность.
-//           </Typography>
-//           <TextField
-//             name="occupation"
-//             label="Occupation"
-//             type="text"
-//           />
-//           <Typography variant="h6" component="h2" sx={{ flexGrow: 1 }}>
-//             Пожалуйста, расскажите вкратце о себе, своем образовании и опыте работы.
-//           </Typography>
-//           <TextField
-//             name="about"
-//             label="About"
-//             type="text"
-//           />
-//           <Typography variant="h6" component="h2" sx={{ flexGrow: 1 }}>
-//             Пожалуйста, укажите ожидаемый уровень заработной платы.
-//           </Typography>
-//           <TextField
-//             name="salary"
-//             label="Salary"
-//             type="number"
-//           />
-//           <Button type="submit" variant="contained">Сохранить</Button> */ }

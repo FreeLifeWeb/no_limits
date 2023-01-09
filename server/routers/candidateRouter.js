@@ -1,9 +1,20 @@
 /* eslint-disable max-len */
 const express = require('express');
-const { Resume } = require('../db/models/resume');
-const { Sphere } = require('../db/models/sphere');
+const { Resume, Sphere } = require('../db/models');
 
 const candRouter = express.Router();
+
+const rightCase = (word) => word[0].toUpperCase() + word.slice(1, word.length);
+
+candRouter.get('/resume/spheres', async (req, res) => {
+  try {
+    const sphereList = await Sphere.findAll();
+    console.log(sphereList);
+    res.json(sphereList);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
 
 candRouter.post('/resume/:id', async (req, res) => {
   try {
@@ -12,7 +23,9 @@ candRouter.post('/resume/:id', async (req, res) => {
       name, age, email, phoneNumber, location, sphere, about, salary,
     } = req.body;
     const { id } = req.params;
-    const sphereId = (await Sphere.findOne({ where: { title: sphere } })).id;
+    console.log(rightCase(sphere));
+    const sphereId = (await Sphere.findOne({ where: { title: rightCase(sphere) } }));// id
+    console.log(sphereId);
     await Resume.create({
       name,
       age: Number(age),
