@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { getResume } from '../../redux/slices/resumeSlice';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { getResume } from '../../redux/slices/resumeSlice';
 
 export default function ListAllResume() {
   // const resume = useSelector((store) => store.resume);
@@ -11,7 +11,8 @@ export default function ListAllResume() {
   // }, []);
   return (
     <Box>
-      {/* {resume?.map((el) => <Box key={el.id}>{el.name}</Box>)} */}ghfjgf
+      {/* {resume?.map((el) => <Box key={el.id}>{el.name}</Box>)} */}
+      ghfjgf
     </Box>
   );
 }
