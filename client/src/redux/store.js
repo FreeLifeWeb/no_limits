@@ -16,6 +16,5 @@ export const store = configureStore({
     sphereList: sphereListSlice,
     categoryList: categoryListSlice,
     state: stateReducer,
-
   },
 });
