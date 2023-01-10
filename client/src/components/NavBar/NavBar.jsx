@@ -8,7 +8,6 @@ import { logoutUser } from '../../redux/actions/userAction';
 
 export default function ButtonAppBar() {
   const user = useSelector((store) => store.user);
-  console.log(user);
   const dispatch = useDispatch();
 
   return (
