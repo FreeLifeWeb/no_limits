@@ -1,10 +1,11 @@
 /* eslint-disable max-len */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import { useSelector } from 'react-redux';
 import {
   Paper, Typography, Box, Link, Divider,
 } from '@mui/material';
+import axios from 'axios';
 
 const synth = window.speechSynthesis;
 let voices = [synth];
@@ -40,6 +41,7 @@ const setAge = (age) => {
 
 export default function LkCandidate() {
   const user = useSelector((store) => store.user);
+  const [resume, setResume] = useState({});
 
   const startSpeach = (sentence) => {
     voices = synth.getVoices();
@@ -57,9 +59,15 @@ export default function LkCandidate() {
   };
 
   useEffect(() => {
+    console.log(user.id, 'lllllllllllll');
+    axios(`candidate/resume/get/${user.id}`)
+      .then((res) => setResume(res.data, ';;;;;;;;;;'));
     startSpeach('Нажмите enter, чтобы составить резюме');
-    const example = document.getElementById('createResume');
-    example.focus();
+    const withResume = document.getElementById('editResume');
+    const withoutResume = document.getElementById('createResume');
+    // if (resume) { withResume.focus(); } else { withoutResume.focus(); }
+    // (resume) ? withResume.focus() : withoutResume.focus();
+    withoutResume.focus();
   }, []);
 
   return (
@@ -68,39 +76,58 @@ export default function LkCandidate() {
   // можно сделать отдельный запрос на бек, который проверит, есть ли резюме у юзера с таким айдишником, если да
   // то вот так вот
     <div className="container">
-      <Box>
-        <Paper elevation={3}>
-          <Divider>РЕЗЮМЕ КАНДИДАТА</Divider>
-          <Typography>
-            {resumeExample.name.toUpperCase()}
-          </Typography>
-          <Typography>
-            {`${setAge(resumeExample.age)}, ${resumeExample.location}`}
-          </Typography>
-          <Divider variant="inset" />
-          <Typography>
-            {resumeExample.sphere}
-          </Typography>
-          <Typography>
-            О кандидате:
-          </Typography>
-          <Paper variant="outlined">
-            {resumeExample.about}
-          </Paper>
-          <Divider textAlign="left">КОНТАКТЫ</Divider>
-          <Typography>
-            {resumeExample.email}
-          </Typography>
-          <Typography>
-            {resumeExample.phoneNumber}
-          </Typography>
-        </Paper>
-      </Box>
-      <Link href={`candidate/resume/${user.id}`}>
-        <Button id="createResume" variant="outlined">
-          СОЗДАТЬ РЕЗЮМЕ
-        </Button>
-      </Link>
+      {resume ? (
+        <>
+          <Box marginTop={5}>
+            <Paper elevation={3}>
+              <Divider>РЕЗЮМЕ КАНДИДАТА</Divider>
+              <Typography fontSize={25}>
+                {resume.name?.toUpperCase()}
+              </Typography>
+              <Typography>
+                {`${setAge(resume.age)}, ${resume.location}`}
+              </Typography>
+              <Divider variant="inset" />
+              <Typography>
+                {resume.sphere}
+              </Typography>
+              <br />
+              <Typography>
+                О кандидате:
+              </Typography>
+              <Paper variant="outlined">
+                {resume.about}
+              </Paper>
+              <br />
+              <Divider textAlign="left">КОНТАКТЫ</Divider>
+              <Typography>
+                {resume.email}
+              </Typography>
+              <Typography>
+                {resume.phoneNumber}
+              </Typography>
+              <Typography>
+                {resume.salary}
+              </Typography>
+            </Paper>
+          </Box>
+          <Link href={`candidate/resume/${user.id}`}>
+            <Button id="createResume" variant="outlined">
+              СОЗДАТЬ РЕЗЮМЕ
+            </Button>
+            {/* <Button id="editResume" variant="outlined">
+              РЕДАКТИРОВАТЬ РЕЗЮМЕ
+            </Button> */}
+          </Link>
+        </>
+      ) : (
+        <Link href={`candidate/resume/${user.id}`}>
+          <Button id="createResume" variant="outlined">
+            СОЗДАТЬ РЕЗЮМЕ
+          </Button>
+        </Link>
+      )}
+
     </div>
   );
 }

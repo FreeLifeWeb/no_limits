@@ -1,13 +1,11 @@
 /* eslint-disable max-len */
-// import { Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import {
-  Button, FormControl, FormControlLabel, FormGroup, MenuItem, Radio, RadioGroup, Select, TextField, Typography,
+  Button, FormControl, FormControlLabel, FormGroup, Radio, RadioGroup, Select, TextField, Typography,
 } from '@mui/material';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-// import { getResume, setResume } from '../../redux/slices/resumeSlice';
 
 const synth = window.speechSynthesis;
 let voices = [synth];
@@ -18,12 +16,30 @@ export default function Test() {
   const user = useSelector((store) => store.user);
   // const resume = useSelector((store) => store.resume);
 
+  const commands = [
+    {
+      command: 'Начать',
+      callback: () => {
+        const example = document.getElementById('name');
+        example.focus();
+      },
+      matchInterim: true,
+    },
+    {
+      command: 'Назад',
+      callback: () => {
+        window.location.href = '/lkCandidate';
+      },
+      matchInterim: true,
+    },
+  ];
+
   const {
     transcript,
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition,
-  } = useSpeechRecognition();
+  } = useSpeechRecognition({ commands });
 
   if (!browserSupportsSpeechRecognition) {
     // eslint-disable-next-line react/no-unescaped-entities
@@ -54,13 +70,9 @@ export default function Test() {
     Прочее: 'Прочее',
   };
 
-  /// //////////////////////////////////////////////////
-
   const startSpeach = (sentence) => {
     voices = synth.getVoices();
-
     const utterThis = new SpeechSynthesisUtterance(sentence);
-
     const milena = voices.find((voice) => voice.name === 'Milena');
     utterThis.voice = milena;
     utterThis.pitch = 1;
@@ -71,26 +83,11 @@ export default function Test() {
     synth.speak(utterThis);
   };
 
-  /// ///////////////////////////////////////
-  // -----------------handlers-----------
-  const startHandler = () => {
-    // (id === 'email')
-    //   ? SpeechRecognition.startListening({ continuous: true, language: 'en-US' })
-    SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
-  };
-
-  const stopHandler = () => {
-    SpeechRecognition.stopListening();
-  };
-
-  const resetHandler = () => {
-    resetTranscript();
-  };
-  //-------------------------------------
+  // ------------------states---------------
   const [resume, setResume] = useState({
     name: '',
     age: '',
-    email: '',
+    // email: '',
     phoneNumber: '',
     location: '',
     sphere: '',
@@ -110,29 +107,30 @@ export default function Test() {
   const [sphereList, setSphereList] = useState([]);
   const [currSphere, setCurrSphere] = useState('');
 
-  // sphereList.reduce(
-  //   (target, key) =>
-  //   console.log(sphereList);
-  //     (target[key.title] = key.title, target),
-  //   // console.log(target, 'yyyyyyyyyyyyyyyyyyyyyyy');
-  //   // return target;
-  //   {},
-  // );
-  //   const allSpheres = {};
-  // sphereList.map((el)=>{...allSpheres, [el]: String(el)})
-  const readSpheres = {
-    'Информационные технологии': 'Информационные технологии',
-    'Общественное питание': 'Общественное питание',
-    Строительство: 'Строительство',
-    'Медицинские и оздоровительные услуги': 'Строительство',
-    'Консалтинговые услуги: экономика, маркетинг': 'Консалтинговые услуги: экономика, маркетинг',
-    'Инжиниринг и научный консалтинг': 'Инжиниринг и научный консалтинг',
-    'Сфера развлечений': 'Сфера развлечений',
-    'Аграрный бизнес': 'Аграрный бизнес',
-    'Индустрия красоты': 'Индустрия красоты',
-    'Бытовые услуги': 'Бытовые услуги',
+  // -----------------handlers-----------
+  const startHandler = () => {
+    SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
   };
-  // console.log(readSpheres);
+
+  const stopHandler = () => {
+    SpeechRecognition.stopListening();
+  };
+
+  const resetHandler = () => {
+    resetTranscript();
+  };
+
+  const greeting = 'Для заполнения полей используйте клавишу enter, cкажите "начать", чтобы приступить к созданию резюме скажите "назад" если хотите вернуться в личный кабинет';
+
+  useEffect(() => {
+    startSpeach(greeting);
+    setTimeout(() => {
+      startHandler();
+    }, 11000);
+
+    axios('candidate/resume/spheres')
+      .then((res) => setSphereList(res.data));
+  }, []);
 
   const focusHandler = (id) => {
     setFocus((prev) => ({ ...prev, [id]: true }));
@@ -149,88 +147,25 @@ export default function Test() {
       console.log('enter');
       e.preventDefault();
       setFocus((prev) => ({ ...prev, [currId]: false }));
-
-      console.log(e.target, 'kkkkkkkkkkkkkkkkkkkkkkkk');
-
       setResume({ ...resume, [e.target.name]: transcript });
       console.log(resume, 'enter resume');
-
       const example = document.getElementById(nextId);
       example.focus();
     }
   };
 
-  //------------------------
-
-  //   const commands = [
-  //     {
-  //       command: 'Начать',
-  //       callback: () => {
-  //         // console.log('start');
-  //         resetHandler();
-  //         // const trying = element.id;
-  //         // console.log(trying);
-  //         const example = document.getElementById('name');
-  //         example.focus();
-  //         // onEnter();
-  //       },
-  //       matchInterim: true,
-  //     },
-  //     {
-  //       command: 'Назад',
-  //       callback: () => {
-  //         console.log('back');
-  //       },
-  //       matchInterim: true,
-  //     },
-  //   ];
-
-  //   useSpeechRecognition({ commands });
-  const greeting = 'Скажите "начать", чтобы приступить к созданию резюме, скажите "назад" если хотите вернуться в личный кабинет';
-  // после заполненпия поля нажимайте энтер
-  //   useEffect(() => {
-  //     startSpeach('начать');
-  //     SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
-
-  //     // const example = document.getElementById('fullname');
-  //     // example.focus();
-  //   }, []);
-
-  useEffect(() => {
-    const example = document.getElementById('name');
-    example.focus();
-    // const sphereList = () => {
-    axios('candidate/resume/spheres')
-      .then((res) => setSphereList(res.data));
-    // };
-    // console.log(sphereList, 'jjjjjjjjjjjjjjjjj');
-  }, []);
-
   const submitHandler = (e) => {
     e.preventDefault();
-    // dispatch(getResume(userId));
-    axios.post(`candidate/resume/${user.id}`, resume)
-      .then(() => {
-        window.location.href = '/lkCandidate';
-        console.log('done');
-      });
+    axios.post(`candidate/resume/${user.id}`, resume);
+    window.location.href = '/lkCandidate';
   };
 
-  // const sphereFocusHandler = (id) => {
-  //   setFocus((prev) => ({ ...prev, [id]: true }));
-  //   console.log(focus);
-  //   const field = toSpeak[id];
-  //   startSpeach(field);
-  // };
-
   const optionFocusHandler = (id) => {
-    console.log('jhgjhgjhgjhgjhgjhgjhg');
     const field = toSpeak[id];
     startSpeach(field);
   };
 
   const radioHandler = (e, prevRadio, nextRadio) => {
-    // console.log(prevRadio, 'blyat');
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
       const example = document.getElementById(nextRadio);
       example.focus();
@@ -241,28 +176,12 @@ export default function Test() {
   };
 
   const sphereHandler = (e) => {
-    console.log('tititititootootoyoyoyoy');
     e.preventDefault();
     setCurrSphere(e.target.value);
-    console.log(e.target.value);
     setResume({ ...resume, sphere: e.target.value });
-    console.log(resume, 'resume');
-    // console.dir(e);
-    // const current = document.getElementById('sphere');
-    // current.blur();
     const example = document.getElementById('about');
-    // example.tabIndex = 1;
     example.focus();
-    // console.dir(current.tabIndex, 'kkkkkkkkkkkkkkkkkkkk');
-    // console.dir(example.tabIndex);
   };
-
-  //   //   const { transcript } = useSpeechRecognition({ commands });
-  //   const { transcript } = useSpeechRecognition();
-
-  //   useEffect(() => {
-  //     SpeechRecognition.startListening();
-  //   }, []);
 
   return (
     <div className="container">
@@ -291,10 +210,10 @@ export default function Test() {
             type="text"// не записываются данные иначе
             value={(focus.age ? transcript : resume.age)}
             onFocus={() => focusHandler('age')}
-            onKeyDown={(event) => enterHandler(event, 'email', 'age')}
+            onKeyDown={(event) => enterHandler(event, 'phoneNumber', 'age')}
           />
           <br />
-          <TextField
+          {/* <TextField
             id="email"
             name="email"
             label="Email"
@@ -303,7 +222,7 @@ export default function Test() {
             onFocus={() => focusHandler('email')}
             onKeyDown={(event) => enterHandler(event, 'phoneNumber', 'email')}
           />
-          <br />
+          <br /> */}
 
           <TextField
             id="phoneNumber"
@@ -335,7 +254,6 @@ export default function Test() {
               id="sphere"
               value={currSphere}
               onChange={sphereHandler}
-              // onFocus={() => focusHandler('sphere')}
             >
               {sphereList.map((el, i, arr) => (
                 <FormControlLabel
@@ -345,50 +263,11 @@ export default function Test() {
                   control={<Radio />}
                   label={el.title}
                   onFocus={() => optionFocusHandler(el.title)}
-                // onFocus={}
                   onKeyDown={(e) => radioHandler(e, `radio${arr[i - 1]?.id}`, `radio${arr[i + 1]?.id}`)}
                 />
               ))}
             </RadioGroup>
           </FormControl>
-          {/* <select
-            // labelId="demo-controlled-open-select-label"
-            name="sphere"
-            label="Специальность"
-            type="text"
-            id="sphere"
-            // open={open}
-            // onClose={handleClose}
-            // onOpen={handleOpen}
-            value={currSphere}
-            onChange={sphereHandler}
-            onFocus={() => focusHandler('sphere')}
-            // onFocus={() => focusHandler('sphere')}
-            // onKeyDown={(event) => enterHandler(event, 'about', 'sphere')}
-
-          >
-            {sphereList.map((el) => (
-              <option
-                id={el.title}
-                name={el.title}
-                value={el.title}
-                onFocus={() => optionFocusHandler(el.title)}
-              >
-                {el.title}
-              </option>
-            ))}
-            {/* тут можно сразу в вэлью айди
-          </select> */}
-
-          {/* <TextField
-            name="sphere"
-            label="Специальность"
-            type="text"
-            id="sphere"
-            value={(focus.sphere ? transcript : resume.sphere)}
-            onFocus={() => focusHandler('sphere')}
-            onKeyDown={(event) => enterHandler(event, 'about', 'sphere')}
-          /> */}
           <br />
 
           <TextField
