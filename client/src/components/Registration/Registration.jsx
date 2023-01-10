@@ -1,82 +1,22 @@
-// import React from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import {
-//   Button, Form, FormGroup, Input, Label,
-// } from 'reactstrap';
-// import { regUser } from '../../redux/actions/userAction';
-
-// export default function Registration() {
-//   const dispatch = useDispatch();
-//   const err = useSelector((store) => store.err);
-//   return (
-//     <>
-//       <Form onSubmit={(e) => dispatch(regUser(e))}>
-//         <FormGroup>
-//           <Label
-//             for="exampleName"
-//             hidden
-//           >
-//             Name:
-//           </Label>
-//           <Input
-//             id="exampleName"
-//             name="name"
-//             placeholder="Enter your name..."
-//             type="text"
-//           />
-//         </FormGroup>
-//         {' '}
-//         <FormGroup>
-//           <Label
-//             for="exampleEmail"
-//             hidden
-//           >
-//             Email:
-//           </Label>
-//           <Input
-//             id="exampleEmail"
-//             name="email"
-//             placeholder="Enter your email..."
-//             type="email"
-//           />
-//         </FormGroup>
-//         {' '}
-//         <FormGroup>
-//           <Label
-//             for="examplePassword"
-//             hidden
-//           >
-//             Password:
-//           </Label>
-//           <Input
-//             id="examplePassword"
-//             name="password"
-//             placeholder="Enter your password..."
-//             type="password"
-//           />
-//         </FormGroup>
-//         {' '}
-//         <Button type="submit">
-//           Submit
-//         </Button>
-//       </Form>
-//       <div>
-//         {err && (<span>{err.message}</span>)}
-//       </div>
-//     </>
-//   );
-// }
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box, Button, FormGroup, TextField, Typography,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { regUser } from '../../redux/actions/userAction';
 
 export default function Registration() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
   const err = useSelector((store) => store.err);
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  });
 
   return (
     <Box
@@ -90,7 +30,10 @@ export default function Registration() {
       justifyContent="center"
       minHeight="80vh"
     >
-      <form onSubmit={(e) => dispatch(regUser(e))}>
+      <form onSubmit={(e) => {
+        dispatch(regUser(e));
+      }}
+      >
         <FormGroup>
           <Typography variant="h6" component="h2" sx={{ flexGrow: 1 }}>
             Registration

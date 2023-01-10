@@ -15,6 +15,7 @@ export const regUser = (e) => (dispatch) => {
 
 export const loginUser = (e) => (dispatch) => {
   e.preventDefault();
+  // console.log('FFFFFF', Object.fromEntries(new FormData(e.target)));
   axios.post('/user/login', Object.fromEntries(new FormData(e.target)))
     .then((res) => dispatch(setUser(res.data)))
     .catch((err) => dispatch(
