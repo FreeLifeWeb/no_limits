@@ -18,7 +18,10 @@ export const loginUser = (e) => (dispatch) => {
   // console.log('FFFFFF', Object.fromEntries(new FormData(e.target)));
   axios.post('/user/login', Object.fromEntries(new FormData(e.target)))
     .then((res) => dispatch(setUser(res.data)))
-    .catch((err) => dispatch(setErr(err.response.data)));
+    .catch((err) => dispatch(
+      setErr(err.response.data),
+      setUser(null),
+    ));
 };
 
 export const logoutUser = () => (dispatch) => {

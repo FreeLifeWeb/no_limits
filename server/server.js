@@ -9,6 +9,8 @@ const app = express();
 const server = require('http').createServer(app);
 const { Server } = require('socket.io');
 const userRouter = require('./routers/userRouter');
+const resumeRouter = require('./routers/resumeRouter');
+const apiRouter = require('./routers/apiRouter');
 
 const io = new Server(server, {
   cors: {
@@ -101,5 +103,7 @@ io.on('connection', (socket) => {
 console.log(rooms);
 
 app.use('/user', userRouter);
+app.use('/resume', resumeRouter);
+app.use('/api', apiRouter);
 
 server.listen(PORT, () => console.log(`Server has started on PORT ${PORT}`));
