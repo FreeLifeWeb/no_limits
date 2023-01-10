@@ -14,6 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Response, { foreignKey: 'vacancyId' });
       this.hasMany(models.Favorite, { foreignKey: 'vacancyId' });
       this.belongsTo(models.User, { foreignKey: 'userId' });
+      this.belongsTo(models.Sphere, { foreignKey: 'sphereId' });
+      this.belongsTo(models.Category, { foreignKey: 'categoryId' });
     }
   }
   Vacancy.init({

@@ -1,6 +1,8 @@
 const { hash, compare } = require('bcrypt');
 const express = require('express');
-const { User } = require('../db/models');
+const {
+  User, Vacancy, Sphere, Category,
+} = require('../db/models');
 
 const regRouter = express.Router();
 
@@ -71,6 +73,20 @@ regRouter.get('/logout', (req, res) => {
   } catch {
     res.sendStatus(500);
   }
+});
+
+regRouter.post('/vacansy/:id', async (req, res) => {
+  const { id } = req.params;
+  console.log(id, '<----');
+  // try {
+  const userVac = await Vacancy.findAll({
+    where: { userId: id },
+    include: [{ all: true }],
+  });
+  res.json(userVac);
+  // } catch {
+  //   console.log('error');
+  // }
 });
 
 module.exports = regRouter;

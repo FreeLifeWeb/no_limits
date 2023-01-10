@@ -19,6 +19,7 @@ import Employer from './components/LK_Employer/Employer';
 import RedactOrCreateVacancy from './components/RedactOrCreateVacancy/RedactOrCreateVacancy';
 import UserResponses from './components/UserResponses/UserResponses';
 import VacancyResponses from './components/VacancyResponses/VacancyResponses';
+import AddVac from './components/LK_Employer/AddVac';
 
 function App() {
   const user = useSelector((store) => store.user);
@@ -51,6 +52,7 @@ function App() {
               <Route path="/chat" element={<Chat />} />
               <Route path="/reg" element={<Registration />} />
               <Route path="/log" element={<Login />} />
+              <Route path="/addVac" element={<AddVac />} />
             </Routes>
           </>
         )

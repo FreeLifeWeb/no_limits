@@ -24,5 +24,6 @@ module.exports = {
     'react/jsx-filename-extension': 0,
     'default-param-last': 0,
     'import/prefer-default-export': 0,
+    'react/destructuring-assignment': 0,
   },
 };

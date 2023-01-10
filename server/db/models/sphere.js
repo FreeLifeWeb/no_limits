@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.hasMany(models.Resume, { foreignKey: 'sphereId' });
+      this.hasMany(models.Vacancy, { foreignKey: 'sphereId' });
     }
   }
   Sphere.init({
