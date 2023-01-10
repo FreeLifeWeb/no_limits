@@ -61,7 +61,7 @@ app.post('/room', (req, res) => {
       ['messages', []],
     ]));
   }
-  res.status();
+  res.sendStatus(200);
 });
 
 io.on('connection', (socket) => {
@@ -69,9 +69,9 @@ io.on('connection', (socket) => {
     // console.log('SOCKET BACK', roomId, userName);
     socket.join(roomId);// подключаемся к сокету именно в определенную комнату
     rooms.get(roomId).get('users').set(socket.id, userName);// сохраняем данные в нашей временной БД(MAP)
-    console.log('ROOM', rooms);
     const users = [...rooms.get(roomId).get('users').values()];// вытаскиваем именна всех пользователей конкретной комнаты
-    socket.to(roomId).emit('ROOM:JOINED', users);// оповещаем пользователей конкретной комнаты,
+    // console.log('ROOM', rooms, users);
+    socket.to(roomId).emit('ROOM:JOINED', { users });// оповещаем пользователей конкретной комнаты,
     // что кто-то присоединился к беседе, всех кроме себя,!!(почему broadcast не работает???????)!!
   });
   socket.on('ROOM:NEW_MESSAGES', ({

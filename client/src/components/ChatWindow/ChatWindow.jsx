@@ -1,15 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import socket from '../../socket/socketIo';
 
 export default function ChatWindow({
   roomId, userName, users, messages, onAddMessage,
 }) {
-  useEffect(() => {
-    const focusInput = document.getElementById('textArea');
-    focusInput.focus();
-  }, []);
-  // console.log('MESSAGES:', messages);
+  // useEffect(() => {
+  //   const focusInput = document.getElementById('textArea');
+  //   focusInput.focus();
+  // }, []);
+  console.log('users:', users);
   const messageScroll = useRef(null);
   const formMessages = (e) => {
     e.preventDefault();
@@ -71,7 +71,7 @@ export default function ChatWindow({
         <ul>
           {users.map((name, index) => (
             <li key={index}>
-              <img src="" alt="avatar..." />
+              {/* <img src="" alt="avatar..." /> */}
               <div>
                 <h2>{name}</h2>
                 <h3>
