@@ -23,11 +23,10 @@ regRouter.post('/reg', async (req, res) => {
 
     if (!isCreated) return res.status(400).json({ message: 'Вы уже зарегистрированны, пройдите в авторизацию' });
 
-    req.session.user = { id: user.id, name: user.name, email: user.email };
-    const { id, status, categoryId } = user;
-    res.json({
-      id, name, email, status, categoryId,
-    });
+    req.session.user = {
+      id: user.id, name: user.name, email: user.email,
+    };
+    res.json(req.session.user);
   } catch {
     res.sendStatus(500);
   }
@@ -46,13 +45,13 @@ regRouter.post('/login', async (req, res) => {
     // если не сходится сообщаем что введенные им данные неверны
     if (!isPassValid) return res.status(400).json({ message: 'Неверно введён логин или пароль пользователя' });
 
-    req.session.user = { id: user.id, name: user.name, email: user.email };
     const {
       id, email, status, categoryId,
     } = user;
-    res.json({
-      id, name, email, status, categoryId,
-    });
+    req.session.user = {
+      id: user.id, name: user.name, status, categoryId, email: user.email,
+    };
+    res.json(req.session.user);
   } catch (e) {
     res.status(500);
   }
