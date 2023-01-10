@@ -8,6 +8,7 @@ import { logoutUser } from '../../redux/actions/userAction';
 
 export default function ButtonAppBar() {
   const user = useSelector((store) => store.user);
+  console.log(user);
   const dispatch = useDispatch();
 
   return (
@@ -79,7 +80,7 @@ export default function ButtonAppBar() {
 
             {user?.email
               ? (
-                <NavLink to="/lkCandidate" style={{ textDecoration: 'none' }}>
+                <NavLink to={user.status === 'employer' ? '/lkEmployer' : '/lkCandidate'} style={{ textDecoration: 'none' }}>
                   <Button variant="text" sx={{ color: 'white' }}>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '1rem' }}>
                       Личный кабинет
