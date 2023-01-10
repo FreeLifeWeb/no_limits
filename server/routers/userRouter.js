@@ -24,7 +24,7 @@ regRouter.post('/reg', async (req, res) => {
     if (!isCreated) return res.status(400).json({ message: 'Вы уже зарегистрированны, пройдите в авторизацию' });
 
     req.session.user = {
-      id: user.id, name: user.name, email: user.email,
+      id, name, status, categoryId, email,
     };
     res.json(req.session.user);
   } catch {
@@ -49,7 +49,7 @@ regRouter.post('/login', async (req, res) => {
       id, email, status, categoryId,
     } = user;
     req.session.user = {
-      id: user.id, name: user.name, status, categoryId, email: user.email,
+      id, name, status, categoryId, email,
     };
     res.json(req.session.user);
   } catch (e) {

@@ -15,6 +15,7 @@ module.exports = {
   },
   plugins: [
     'react',
+    'react-hooks',
   ],
   rules: {
     'react-hooks/exhaustive-deps': 0,
@@ -28,5 +29,6 @@ module.exports = {
     'no-return-assign': 0,
     'react/jsx-props-no-spreading': 0,
     'react/jsx-no-useless-fragment': 0,
+    'no-nested-ternary': 0,
   },
 };

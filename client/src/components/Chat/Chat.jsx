@@ -11,7 +11,8 @@ import { getUsersioRoom } from '../../redux/actions/usersioAction';
 import { getMessage } from '../../redux/actions/messageAction';
 
 export default function MainPage() {
-  const synth = window.speechSynthesis;
+  const user = useSelector((store) => store.user);
+  console.log('gggggggg', user);
   useEffect(() => {
     const focusInput = document.getElementById('room');// автофокус на первом импуте при монтировании компонента
     focusInput.focus();// автофокус на первом импуте при монтировании компонента
@@ -21,7 +22,24 @@ export default function MainPage() {
       alert('К сожалению Ваш браузер не поддерживает этот функционал голосового управления!');
     }
   }, []);
+  const dispatch = useDispatch();
+  const addMessage = (message) => { // почему без этого не получал сообщение другой пользователь?
+    dispatch(getMessage(message));
+  };
 
+  useEffect(() => {
+    socket.on('ROOM:JOINED', ({ users }) => {
+      // console.log(')))))))))))', users, socket);
+      dispatch(getUsersioRoom(users));
+    });
+    socket.on('ROOM:USER_LEAVE', (users) => {
+      // console.log('AfterDisconect', users);
+      dispatch(getUsersioRoom(users));
+    });
+    socket.on('ROOM:ADD_MESSAGES', (message) => {
+      addMessage(message);
+    });
+  }, []);
   const [room, setRoom] = useState({
     roomId: '',
     userName: '',
@@ -32,24 +50,18 @@ export default function MainPage() {
     nameChat: false,
   });
   // console.log('FOCUS', focus);
-
-  const {
-    resetTranscript,
-  } = useSpeechRecognition();
+  console.log(focus);
 
   const isFrase = { // фразы для озвучивания и подсказок
     chatRoom: 'Скажите номер комнаты чата',
     nameNick: 'Скажите Ваше имя',
     submit: 'Нажмите enter, чтобы войти в чат',
   };
-  let voices = [synth];
+  const synth = window.speechSynthesis;
+  // let voices = [synth];
 
   const startSpeach = (sentence) => {
-    voices = synth.getVoices();
     const utterThis = new SpeechSynthesisUtterance(sentence);
-
-    const milena = voices.find((voice) => voice.name === 'Milena');
-    utterThis.voice = milena;
     utterThis.pitch = 1;
     utterThis.rate = 1;
     utterThis.onerror = (event) => {
@@ -66,23 +78,18 @@ export default function MainPage() {
     },
   ];
 
-  const { transcript } = useSpeechRecognition({ commands });
-
+  const { transcript, resetTranscript } = useSpeechRecognition({ commands });
   const startListen = () => { // функ-я начало прослушивания
     SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
   };
   const stopListen = () => { // функ-я завершения прослушивания
     SpeechRecognition.stopListening();
   };
-  const resetValue = () => { // функ-я завершения прослушивания
-    resetTranscript();
-  };
 
   const focusHandler = (id, elem) => {
-    resetValue();
-    resetTranscript();
-    // console.log('focusHandler', transcript);
+    resetTranscript(); // console.log('focusHandler', transcript);
     setFocus((prev) => ({ ...prev, [elem]: true }));
+
     const field = isFrase[id];
     startSpeach(field);
     setTimeout(() => {
@@ -103,7 +110,6 @@ export default function MainPage() {
 
   const [showChat, setShowChat] = useState(false);
 
-  const dispatch = useDispatch();
   const state = useSelector((store) => store.state);
   // console.log('STATE:', state);
 
@@ -113,23 +119,15 @@ export default function MainPage() {
     setShowChat((prev) => !prev);
   }
 
-  const addMessage = (message) => { // почему без этого не получал сообщение другой пользователь?
-    dispatch(getMessage(message));
+  const ChangeHandler = (e) => {
+    setRoom({ ...room, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    socket.on('ROOM:JOINED', ({ users }) => {
-      // console.log(')))))))))))', users, socket);
-      dispatch(getUsersioRoom(users));
-    });
-    socket.on('ROOM:USER_LEAVE', (users) => {
-      // console.log('AfterDisconect', users);
-      dispatch(getUsersioRoom(users));
-    });
-    socket.on('ROOM:ADD_MESSAGES', (message) => {
-      addMessage(message);
-    });
-  }, []);
+  function formAction2(e) {
+    dispatch(getRoom(e, room, () => socket.emit('ROOM:JOIN', { ...room })));
+    // console.log(socket);
+    setShowChat((prev) => !prev);
+  }
 
   return (
     <Box
@@ -146,34 +144,65 @@ export default function MainPage() {
     >
       {!showChat
         ? (
-          <form onSubmit={(e) => formAction(e)}>
-            <FormGroup>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Chat room:
-              </Typography>
-              <TextField
-                id="room"
-                name="roomId"
-                value={(focus.roomName ? transcript : room.roomId)}
-                type="text"
-                placeholder="Room number..."
-                onFocus={() => focusHandler('chatRoom', 'roomName')}
-                onKeyDown={(e) => enterHandler(e, 'name', 'roomName')}
-                label="Room"
-              />
-              <TextField
-                id="name"
-                name="userName"
-                onFocus={() => focusHandler('nameNick', 'nameChat')}
-                onKeyDown={(e) => enterHandler(e, 'submit', 'nameChat')}
-                value={(focus.nameChat ? transcript : room.userName)}
-                type="text"
-                placeholder="Name..."
-                label="Name"
-              />
-              <Button id="submit" onFocus={() => startSpeach('Нажмите enter, чтобы войти в чат')} type="submit" variant="contained">Submit</Button>
-            </FormGroup>
-          </form>
+          (user.status === null)
+            ? (
+              <form onSubmit={(e) => formAction2(e)}>
+                <FormGroup>
+                  <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    Chat room:
+                  </Typography>
+                  <TextField
+                    id="room"
+                    name="roomId"
+                    onChange={ChangeHandler}
+                    type="text"
+                    placeholder="Room number..."
+                    label="Room"
+                  />
+                  <TextField
+                    id="name"
+                    name="userName"
+                    onChange={ChangeHandler}
+                    type="text"
+                    placeholder="Name..."
+                    label="Name"
+                  />
+                  <Button id="submit" type="submit" variant="contained">Submit</Button>
+                </FormGroup>
+              </form>
+            )
+            : (
+              <form onSubmit={(e) => formAction(e)}>
+                <FormGroup>
+                  <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    Chat room:
+                  </Typography>
+                  <TextField
+                    id="room"
+                    name="roomId"
+                    value={(focus.roomName ? transcript : room.roomId)}
+                    type="text"
+                    placeholder="Room number..."
+                    onFocus={() => focusHandler('chatRoom', 'roomName')}
+                    onKeyDown={(e) => enterHandler(e, 'name', 'roomName')}
+                    label="Room"
+                  />
+                  <TextField
+                    id="name"
+                    name="userName"
+                    onFocus={() => focusHandler('nameNick', 'nameChat')}
+                    onKeyDown={(e) => enterHandler(e, 'submit', 'nameChat')}
+                    value={(focus.nameChat ? transcript : room.userName)}
+                    type="text"
+                    placeholder="Name..."
+                    label="Name"
+                  />
+                  <Button id="submit" onFocus={() => startSpeach('Нажмите enter, чтобы войти в чат')} type="submit" variant="contained">Submit</Button>
+                </FormGroup>
+              </form>
+
+            )
+
         )
         : (
           <ChatWindow {...state} onAddMessage={addMessage} />
