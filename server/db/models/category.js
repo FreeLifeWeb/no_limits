@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.hasMany(models.User, { foreignKey: 'categoryId' });
       this.hasMany(models.Resume, { foreignKey: 'categoryId' });
+      this.hasMany(models.Vacancy, { foreignKey: 'categoryId' });
     }
   }
   Category.init({

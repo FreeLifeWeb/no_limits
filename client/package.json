@@ -23,6 +23,7 @@
     "react-speech-recognition": "^3.10.0",
     "reactstrap": "^9.1.5",
     "redux-saga": "^1.2.2",
+    "socket.io-client": "^4.5.4",
     "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4"
   },

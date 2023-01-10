@@ -25,15 +25,10 @@ module.exports = {
     'react/jsx-filename-extension': 0,
     'default-param-last': 0,
     'import/prefer-default-export': 0,
-    'no-console': 0,
-    'no-undef': 0,
-    camelcase: 0,
-    'no-param-reassign': 0,
-    'no-useless-escape': 0,
-    'no-plusplus': 0,
-    'no-unused-vars': 0,
+    'react/destructuring-assignment': 0,
+    'no-return-assign': 0,
+    'react/jsx-props-no-spreading': 0,
+    'react/jsx-no-useless-fragment': 0,
     'no-nested-ternary': 0,
-    // 'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
-    // 'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
   },
 };

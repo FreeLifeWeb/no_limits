@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box, Button, FormGroup, TextField, Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../../redux/actions/userAction';
+import { useNavigate } from 'react-router-dom';
+import { loginUser, setErr } from '../../redux/actions/userAction';
 
 export default function Login() {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   const err = useSelector((store) => store.err);
+  const navigate = useNavigate();
+
+  useEffect(() => () => {
+    dispatch(setErr(null));
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user]);
 
   return (
     <Box
@@ -22,7 +35,10 @@ export default function Login() {
       justifyContent="center"
       minHeight="80vh"
     >
-      <form onSubmit={(e) => dispatch(loginUser(e))}>
+      <form onSubmit={(e) => {
+        dispatch(loginUser(e));
+      }}
+      >
         <FormGroup>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Login
