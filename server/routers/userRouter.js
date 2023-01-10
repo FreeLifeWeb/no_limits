@@ -21,7 +21,7 @@ regRouter.post('/reg', async (req, res) => {
 
     if (!isCreated) return res.status(400).json({ message: 'Вы уже зарегистрированны, пройдите в авторизацию' });
 
-    req.session.user = { id: user.id, email: user.email };
+    req.session.user = { id: user.id, name: user.name, email: user.email };
 
     res.json(req.session.user);
   } catch {
@@ -36,20 +36,21 @@ regRouter.post('/login', async (req, res) => {
     if (!name || !password) return res.status(400).json({ message: 'Все поля обязательны для заполнения!' });
     // ищем user в БД по email
     const user = await User.findOne({ where: { name } });
+    console.log(user);
     // если не находим сообщаем что введенные им данные неверны
     if (!user) return res.status(400).json({ message: 'Неверно введена почта или пароль пользователя' });
-
-    // сравниваем введеный пароль и захэшированый пароль из БД;
+    // сравниваем введеный пароль и хэшированый пароль из БД;
     const isPassValid = await compare(password, user.password);
     // если не сходится сообщаем что введенные им данные неверны
     if (!isPassValid) return res.status(400).json({ message: 'Неверно введён логин или пароль пользователя' });
 
-    req.session.user = { id: user.id, email: user.email };
-    //   console.log(req.session.user);
+    req.session.user = { id: user.id, name: user.name, email: user.email };
+    console.log('SESS', req.session.user);
 
     return res.json(req.session.user);
-  } catch {
-    res.sendStatus(500);
+  } catch (e) {
+    console.log(e);
+    res.status(500);
   }
 });
 
