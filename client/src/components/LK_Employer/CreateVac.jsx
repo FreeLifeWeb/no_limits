@@ -2,37 +2,41 @@ import React, { useEffect, useState } from 'react';
 import {
   Button, FormGroup, MenuItem, Select, TextField, OutlinedInput, InputLabel, FormControl,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import { getSphereList } from '../../redux/slices/sphereListSlice';
 import { getCategoryList } from '../../redux/slices/categoryListSlice';
-import { addVac } from '../../redux/slices/userVacSlice';
+import { createVac } from '../../redux/slices/userVacSlice';
 
-export default function AddVac() {
-  const navigate = useNavigate();
+export default function CreateVac({ vacansy, setIsEdit }) {
+//   const navigate = useNavigate();
   const sphereList = useSelector((store) => store.sphereList);
   const categoryList = useSelector((store) => store.categoryList);
+  const [input, setInput] = useState(vacansy);
 
-  const [currSphere, setSphere] = useState('');
-
-  const sphereHandler = (e) => {
-    setSphere(e.target.value);
+  const changeHandler = (e) => {
+    setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const [currCategory, setCategory] = useState('');
+  const [currSphere, setSphere] = useState(input.Sphere);
+
+  const sphereHandler = (e) => {
+    setSphere((prev) => ({ ...prev, title: e.target.value }));
+  };
+
+  const [currCategory, setCategory] = useState(input.Category);
 
   const categoryHandler = (e) => {
-    setCategory(e.target.value);
+    setCategory((prev) => ({ ...prev, title: e.target.value }));
   };
 
   const dispatch = useDispatch();
 
-  const submitHandler = (e) => {
+  const submitHandler = (e, id) => {
     e.preventDefault();
-    axios.post('/api/vacansy', Object.fromEntries(new FormData(e.target)))
-      .then((res) => dispatch(addVac(res.data)));
-    navigate('/LKemployer');
+    axios.put(`/api/vacansy/${id}`, Object.fromEntries(new FormData(e.target)))
+      .then((res) => dispatch(createVac(res.data)));
+    setIsEdit(false);
   };
 
   useEffect(() => {
@@ -42,11 +46,13 @@ export default function AddVac() {
   return (
     <div className="container">
       <br />
-      <form onSubmit={(e) => submitHandler(e)}>
+      <form onSubmit={(e) => submitHandler(e, input.id)}>
         <FormGroup>
           <TextField
             id="name"
             label="Должность"
+            value={input.title}
+            onChange={(e) => changeHandler(e)}
             name="title"
           />
           {' '}
@@ -54,6 +60,8 @@ export default function AddVac() {
           <TextField
             id="name"
             label="Компания"
+            value={input.company}
+            onChange={(e) => changeHandler(e)}
             name="company"
           />
           {' '}
@@ -61,6 +69,8 @@ export default function AddVac() {
           <TextField
             id="name"
             label="Город"
+            value={input.city}
+            onChange={(e) => changeHandler(e)}
             name="city"
           />
           {' '}
@@ -68,6 +78,8 @@ export default function AddVac() {
           <TextField
             id="name"
             label="Заработная плата"
+            value={input.salary}
+            onChange={(e) => changeHandler(e)}
             name="salary"
           />
           {' '}
@@ -75,6 +87,8 @@ export default function AddVac() {
           <TextField
             id="name"
             label="Режим работы"
+            value={input.time}
+            onChange={(e) => changeHandler(e)}
             name="time"
           />
           {' '}
@@ -82,6 +96,8 @@ export default function AddVac() {
           <TextField
             id="name"
             label="Формат"
+            value={input.format}
+            onChange={(e) => changeHandler(e)}
             name="format"
           />
           {' '}
@@ -93,8 +109,8 @@ export default function AddVac() {
               labelId="sphere"
               id="sphe"
               input={<OutlinedInput id="sphe" label="Сфера деятельности" />}
-              value={currSphere}
-              onChange={sphereHandler}
+              value={currSphere.title}
+              onChange={(e) => sphereHandler(e)}
             >
               {sphereList.map((el) => (
                 <MenuItem
@@ -113,8 +129,8 @@ export default function AddVac() {
               name="category"
               id="cat"
               input={<OutlinedInput id="cat" label="Категория недееспособности" />}
-              value={currCategory}
-              onChange={categoryHandler}
+              value={currCategory.title}
+              onChange={(e) => categoryHandler(e)}
             >
               {categoryList.map((el) => (
                 <MenuItem
