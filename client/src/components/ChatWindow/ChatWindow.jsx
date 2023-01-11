@@ -9,8 +9,7 @@ export default function ChatWindow({
   //   const focusInput = document.getElementById('textArea');
   //   focusInput.focus();
   // }, []);
-  console.log('users:', users, messages);
-
+  // console.log('users:', users, messages);
   useEffect(() => {
     setTimeout(() => {
       startSpeach(`сообщение от:${messages[messages.length - 1].userName} время получения:${messages[messages.length - 1].time} содержание:${messages[messages.length - 1].text}`);

@@ -1,25 +1,31 @@
-/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import {
-  Button, FormControl, FormControlLabel, FormGroup, Radio, RadioGroup, Select, TextField, Typography,
+  Button, FormControl, FormControlLabel, FormGroup, Radio, RadioGroup, TextField,
 } from '@mui/material';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const synth = window.speechSynthesis;
 let voices = [synth];
 
 export default function Test() {
-  // const dispatch = useDispatch();
-
   const user = useSelector((store) => store.user);
-  // const resume = useSelector((store) => store.resume);
+
+  // -----------------handlers-----------
+  const startHandler = () => {
+    SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
+  };
+
+  const stopHandler = () => {
+    SpeechRecognition.abortListening();
+  };
 
   const commands = [
     {
       command: 'Начать',
       callback: () => {
+        stopHandler();
         const example = document.getElementById('name');
         example.focus();
       },
@@ -41,6 +47,34 @@ export default function Test() {
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition({ commands });
 
+  const DICTIONARY = {
+    точка: '.',
+    запятая: ',',
+    вопрос: '?',
+    восклицание: '!',
+    двоеточие: ':',
+    тире: '-',
+    абзац: '\n',
+    абзацы: '\n',
+    отступ: '\t',
+    кавычка: '"',
+    кавычки: '"',
+  };
+
+  function editInterim(s) {
+    return s
+      .split(' ')
+      .map((word) => {
+        word = word.trim();
+        return DICTIONARY[word.toLowerCase()] ? DICTIONARY[word.toLowerCase()] : word;
+      })
+      .join(' ');
+  }
+
+  const resetHandler = () => {
+    resetTranscript();
+  };
+
   if (!browserSupportsSpeechRecognition) {
     // eslint-disable-next-line react/no-unescaped-entities
     return <span>Browser doesn't support speech recognition.</span>;
@@ -52,7 +86,6 @@ export default function Test() {
     email: 'Продиктуйте адрес Вашей электронной почты',
     phoneNumber: 'Продиктуйте Ваш телефонный номер',
     location: 'Назовите город, в котором Вы находитесь',
-    // sphere: 'Выберите свою специальность. Используйте кнопки "вверх", "вниз", "вперед", "назад" для навигации и "пробел" для выбора',
     about: 'Расскажите вкратце о себе, своем образовании и опыте работы',
     salary: 'Укажите ожидаемый уровень заработной платы',
     submit: 'Нажмите enter, чтобы сохранить резюме',
@@ -87,7 +120,6 @@ export default function Test() {
   const [resume, setResume] = useState({
     name: '',
     age: '',
-    // email: '',
     phoneNumber: '',
     location: '',
     sphere: '',
@@ -107,48 +139,34 @@ export default function Test() {
   const [sphereList, setSphereList] = useState([]);
   const [currSphere, setCurrSphere] = useState('');
 
-  // -----------------handlers-----------
-  const startHandler = () => {
-    SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
-  };
-
-  const stopHandler = () => {
-    SpeechRecognition.stopListening();
-  };
-
-  const resetHandler = () => {
-    resetTranscript();
-  };
-
   const greeting = 'Для заполнения полей используйте клавишу enter, cкажите "начать", чтобы приступить к созданию резюме скажите "назад" если хотите вернуться в личный кабинет';
 
   useEffect(() => {
     startSpeach(greeting);
     setTimeout(() => {
       startHandler();
-    }, 11000);
+    }, 10500);
 
     axios('candidate/resume/spheres')
       .then((res) => setSphereList(res.data));
   }, []);
 
-  const focusHandler = (id) => {
-    setFocus((prev) => ({ ...prev, [id]: true }));
-    console.log(focus);
+  const focusHandler = (id, time) => {
     resetHandler();
     const field = toSpeak[id];
     startSpeach(field);
-    startHandler();
+    setTimeout(() => {
+      setFocus((prev) => ({ ...prev, [id]: true }));
+      startHandler();
+    }, time);
   };
 
   const enterHandler = (e, nextId, currId) => {
     if (e.key === 'Enter') {
-      // dispatch(setResume({ ...resume, [e.target.name]: e.target.value }));
-      console.log('enter');
+      stopHandler();
       e.preventDefault();
       setFocus((prev) => ({ ...prev, [currId]: false }));
-      setResume({ ...resume, [e.target.name]: transcript });
-      console.log(resume, 'enter resume');
+      setResume({ ...resume, [e.target.name]: editInterim(transcript) });
       const example = document.getElementById(nextId);
       example.focus();
     }
@@ -157,7 +175,7 @@ export default function Test() {
   const submitHandler = (e) => {
     e.preventDefault();
     axios.post(`candidate/resume/${user.id}`, resume);
-    window.location.href = '/lkCandidate';
+    window.location.href = ` /lkCandidate/${user.id}`;
   };
 
   const optionFocusHandler = (id) => {
@@ -186,19 +204,18 @@ export default function Test() {
   return (
     <div className="container">
       <form onSubmit={submitHandler}>
-        <FormGroup>
+        <FormGroup sx={{ flexGrow: 1, borderRadius: '11px', marginTop: '10px' }}>
           <p>
             Microphone:
             {' '}
             {listening ? 'on' : 'off'}
           </p>
-
           <TextField
             id="name"
             label="Ф.И.О"
             name="name"
             value={(focus.name ? transcript : resume.name)}
-            onFocus={() => focusHandler('name')}
+            onFocus={() => focusHandler('name', 2500)}
             onKeyDown={(event) => enterHandler(event, 'age', 'name')}
           />
           {' '}
@@ -207,30 +224,19 @@ export default function Test() {
             id="age"
             name="age"
             label="Возраст"
-            type="text"// не записываются данные иначе
+            type="text"
             value={(focus.age ? transcript : resume.age)}
-            onFocus={() => focusHandler('age')}
+            onFocus={() => focusHandler('age', 2500)}
             onKeyDown={(event) => enterHandler(event, 'phoneNumber', 'age')}
           />
           <br />
-          {/* <TextField
-            id="email"
-            name="email"
-            label="Email"
-            type="text"// не записываются данные иначе
-            value={(focus.email ? transcript : resume.email)}
-            onFocus={() => focusHandler('email')}
-            onKeyDown={(event) => enterHandler(event, 'phoneNumber', 'email')}
-          />
-          <br /> */}
-
           <TextField
             id="phoneNumber"
             name="phoneNumber"
             label="Номер телефона"
             type="text"
             value={(focus.phoneNumber ? transcript : resume.phoneNumber)}
-            onFocus={() => focusHandler('phoneNumber')}
+            onFocus={() => focusHandler('phoneNumber', 2700)}
             onKeyDown={(event) => enterHandler(event, 'location', 'phoneNumber')}
           />
           <br />
@@ -241,7 +247,7 @@ export default function Test() {
             type="text"
             id="location"
             value={(focus.location ? transcript : resume.location)}
-            onFocus={() => focusHandler('location')}
+            onFocus={() => focusHandler('location', 3000)}
             onKeyDown={(event) => enterHandler(event, 'radio1', 'location')}
           />
           <br />
@@ -271,12 +277,14 @@ export default function Test() {
           <br />
 
           <TextField
+            multiline
+            maxRows={8}
             name="about"
             label="Образование и опыт"
             type="text"
             id="about"
-            value={(focus.about ? transcript : resume.about)}
-            onFocus={() => focusHandler('about')}
+            value={(focus.about ? editInterim(transcript) : resume.about)}
+            onFocus={() => focusHandler('about', 4500)}
             onKeyDown={(event) => enterHandler(event, 'salary', 'about')}
           />
           <br />
@@ -287,7 +295,7 @@ export default function Test() {
             type="text"
             id="salary"
             value={(focus.salary ? transcript : resume.salary)}
-            onFocus={() => focusHandler('salary')}
+            onFocus={() => focusHandler('salary', 3000)}
             onKeyDown={(event) => enterHandler(event, 'submit', 'salary')}
           />
           <br />
