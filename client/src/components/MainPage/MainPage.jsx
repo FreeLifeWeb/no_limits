@@ -12,7 +12,8 @@ export default function MainPage() {
 
   const comands = { // фразы для озвучивания и подсказок
     greeting: 'Добро пожаловать на сайт Без ограничений, Вам доступно голосовое управление. Чтобы включить микрофон нажмите пробел',
-    allComands: 'Вам доступны следующие команды: Открыть Вакансии и Зарегистрироваться',
+    allComandsForAll: 'Вам доступны следующие команды: Открыть Вакансии и Зарегистрироваться',
+    allComands: 'Вам доступны следующие команды: Открыть Вакансии',
   };
 
   const startSpeach = (sentence) => {
@@ -31,7 +32,11 @@ export default function MainPage() {
 
   const pressListener = (event) => {
     if (event.code === 'Space') {
-      startSpeach(comands.allComands);
+      if (user) {
+        startSpeach(comands.allComands);
+      } else {
+        startSpeach(comands.allComandsForAll);
+      }
       setTimeout(() => {
         SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
       }, 3000);
@@ -49,6 +54,7 @@ export default function MainPage() {
 
     return () => {
       SpeechRecognition.stopListening();
+      document.removeEventListener('keypress', pressListener);
     };
   }, []);
 
