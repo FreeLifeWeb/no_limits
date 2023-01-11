@@ -57,7 +57,7 @@ apiRouter.put('/vacansy/:id', async (req, res) => {
   vac.salary = salary;
   vac.time = time;
   vac.format = format;
-  vac.save();
+  await vac.save();
   const result = await Vacancy.findOne({ where: { id }, include: [{ all: true }] });
   res.json(result);
 });
