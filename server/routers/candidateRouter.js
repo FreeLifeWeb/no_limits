@@ -50,7 +50,7 @@ candRouter.post('/resume/:id', async (req, res) => {
       // age: Number(age)||0,
       age: toCutNum(age),
       email: 'someemail@mail.ru',
-      phoneNumber: toCutNum(phoneNumber),
+      phoneNumber,
       location,
       about,
       photo: '',

@@ -10,18 +10,6 @@ import axios from 'axios';
 const synth = window.speechSynthesis;
 let voices = [synth];
 
-const resumeExample = {
-  name: 'Surname Name FatherName',
-  age: 23,
-  email: 'someemail@mail.ru',
-  phoneNumber: 89286326596,
-  location: 'Москва',
-  about: `
-  Создаю to do приложение на React, Необходимо создать карточку в списке. Не понимаю как добавить новую карточку, а не обновить текущу. 
-   Получается такая структура, но мне нужно чтобы в listItem создавались отдельные обьекты под каждый cardName`,
-  salary: 200000,
-  sphere: 'Нанотехнологии', // не отправляется в бд потому что не нашел сферу
-};
 
 const setAge = (age) => {
   if (age > 4 && age <= 20) return `${age} лет`;

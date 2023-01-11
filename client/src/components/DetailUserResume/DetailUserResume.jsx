@@ -61,6 +61,8 @@ export default function Test() {
     абзац: '\n',
     абзацы: '\n',
     отступ: '\t',
+    кавычка: '"',
+    кавычки: '"',
   };
 
   function editInterim(s) {

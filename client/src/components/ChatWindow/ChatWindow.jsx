@@ -1,15 +1,22 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import socket from '../../socket/socketIo';
 
 export default function ChatWindow({
-  roomId, userName, users, messages, onAddMessage,
+  roomId, userName, users, messages, onAddMessage, startSpeach,
 }) {
   // useEffect(() => {
   //   const focusInput = document.getElementById('textArea');
   //   focusInput.focus();
   // }, []);
-  console.log('users:', users);
+  console.log('users:', users, messages);
+
+  useEffect(() => {
+    setTimeout(() => {
+      startSpeach(`сообщение от:${messages[messages.length - 1].userName} время получения:${messages[messages.length - 1].time} содержание:${messages[messages.length - 1].text}`);
+    }, 2500);
+  }, [messages]);
+
   const messageScroll = useRef(null);
   const formMessages = (e) => {
     e.preventDefault();
