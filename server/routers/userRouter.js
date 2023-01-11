@@ -8,8 +8,9 @@ const regRouter = express.Router();
 
 regRouter.post('/reg', async (req, res) => {
   try {
-    const { name, email, password } = req.body;// забираем все нужные свойства;
-    // console.log(req.body);
+    const {
+      name, email, password, status, categoryId,
+    } = req.body;// забираем все нужные свойства;
     // если user ввел только пароль или только логин возвращаем сообщение которое покажем под формой
     if (!name || !email || !password) return res.status(400).json({ message: 'Все поля должны быть заполнены' });
     // пароль был введен? тогда хэшируем его
@@ -18,13 +19,15 @@ regRouter.post('/reg', async (req, res) => {
     const [user, isCreated] = await User.findOrCreate({ // метод ищет в базе и если не нахит зап-ет
     // возвращает при этом найденный обьект и false либо созданный объект и true
       where: { email },
-      defaults: { name, email, password: hashPassword },
+      defaults: {
+        name, email, password: hashPassword, status, categoryId: 1,
+      },
     });
 
     if (!isCreated) return res.status(400).json({ message: 'Вы уже зарегистрированны, пройдите в авторизацию' });
 
     req.session.user = {
-      id, name, status, categoryId, email,
+      id: user.id, name: user.name, email: user.email, status: user.status === true ? 'employer' : '', categoryId: user.categoryId,
     };
     res.json(req.session.user);
   } catch {
