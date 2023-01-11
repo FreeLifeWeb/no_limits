@@ -1,4 +1,6 @@
-import { SET_ROOM, SET_MESSAGE, SET_USERSIO } from '../types/types';
+import {
+  SET_ROOM, SET_MESSAGE, SET_USERSIO, SET_DATA,
+} from '../types/types';
 
 export default function stateReducer(state = {
   roomId: null,
@@ -19,6 +21,12 @@ export default function stateReducer(state = {
       return {
         ...state,
         users: payload,
+      };
+    case SET_DATA:
+      return {
+        ...state,
+        users: payload.users,
+        messages: payload.messages,
       };
     case SET_MESSAGE:
       return {

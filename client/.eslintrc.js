@@ -26,5 +26,6 @@ module.exports = {
     'import/prefer-default-export': 0,
     'no-return-assign': 0,
     'react/jsx-props-no-spreading': 0,
+    'no-nested-ternary': 0,
   },
 };
