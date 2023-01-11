@@ -12,7 +12,7 @@ export default function ButtonAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ flexGrow: 1 }}>
+      <AppBar position="static" sx={{ flexGrow: 1, borderRadius: '11px', marginTop: '10px' }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-around' }}>
           <div>
             <NavLink to="/" style={{ textDecoration: 'none' }}>
@@ -79,7 +79,7 @@ export default function ButtonAppBar() {
 
             {user?.email
               ? (
-                <NavLink to={user.status === 'employer' ? '/lkEmployer' : '/lkCandidate'} style={{ textDecoration: 'none' }}>
+                <NavLink to={user.status === 'employer' ? '/lkEmployer' : `/lkCandidate/${user.id}`} style={{ textDecoration: 'none' }}>
                   <Button variant="text" sx={{ color: 'white' }}>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '1rem' }}>
                       Личный кабинет

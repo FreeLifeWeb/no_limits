@@ -7,8 +7,10 @@ const candRouter = express.Router();
 // const rightCase = (word) => word[0].toUpperCase() + word.slice(1, word.length);
 // const toNumber = (str) => ((isNaN(Number(str)) || str === '') ? 0 : Number(str));
 
-const toCutNum = (str) => ((isNaN(Number(str.split(' ').join(''))) || str === '') ? 0 : Number(str.split('').map((x) => ((/\d/.test(x)) ? x : '')).join('').trim()));
-
+const toCutNum = (str) => {
+  const tested = Number(str.split('').map((x) => ((/\d/.test(x)) ? x : '')).join('').trim());
+  return (((isNaN(tested)) || str === '') ? 0 : tested);
+};
 candRouter.get('/resume/spheres', async (req, res) => {
   try {
     const sphereList = await Sphere.findAll();
@@ -24,7 +26,7 @@ candRouter.get('/resume/get/:id', async (req, res) => {
   console.log(id);
   try {
     const userResume = (await Resume.findAll({ where: { userId: id } }));
-    // console.log(userResume[userResume.length - 1], 'ioioioioioiooioi');
+    console.log(userResume[userResume.length - 1], 'ioioioioioiooioi');
     res.json(Array.isArray(userResume) ? userResume[userResume.length - 1] : userResume);
   } catch (error) {
     res.sendStatus(500);
@@ -54,7 +56,7 @@ candRouter.post('/resume/:id', async (req, res) => {
       photo: '',
       salary: toCutNum(salary),
       sphereId,
-      userId: toCutNum(id),
+      userId: Number(id),
       categoryId: 1,
     });
     console.log(3333, 'DONE');

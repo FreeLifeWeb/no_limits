@@ -60,8 +60,9 @@ export default function LkCandidate() {
 
   useEffect(() => {
     console.log(user.id, 'lllllllllllll');
+    console.log(resume);
     axios(`candidate/resume/get/${user.id}`)
-      .then((res) => setResume(res.data, ';;;;;;;;;;'));
+      .then((res) => setResume(res.data));
     startSpeach('Нажмите enter, чтобы составить резюме');
     const withResume = document.getElementById('editResume');
     const withoutResume = document.getElementById('createResume');
@@ -85,7 +86,7 @@ export default function LkCandidate() {
                 {resume.name?.toUpperCase()}
               </Typography>
               <Typography>
-                {`${setAge(resume.age)}, ${resume.location}`}
+                {resume.age !== 0 ? `${setAge(resume.age)}, ${resume.location}` : `Не указано, ${resume.location}`}
               </Typography>
               <Divider variant="inset" />
               <Typography>
@@ -99,15 +100,16 @@ export default function LkCandidate() {
                 {resume.about}
               </Paper>
               <br />
+              <Typography>
+                {`Ожидаемый уровень заработной платы: ${resume.salary} руб.`}
+              </Typography>
+              <br />
               <Divider textAlign="left">КОНТАКТЫ</Divider>
               <Typography>
-                {resume.email}
+                {resume.email ? resume.email : 'Не указан'}
               </Typography>
               <Typography>
-                {resume.phoneNumber}
-              </Typography>
-              <Typography>
-                {resume.salary}
+                {resume.phoneNumber !== 0 ? resume.phoneNumber : 'Не указан'}
               </Typography>
             </Paper>
           </Box>
