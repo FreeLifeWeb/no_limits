@@ -19,6 +19,8 @@ const userVacSlice = createSlice({
       vac.salary = action.payload.salary;
       vac.time = action.payload.time;
       vac.format = action.payload.format;
+      vac.Sphere = action.payload.Sphere;
+      vac.Category = action.payload.Category;
     },
   },
 });
@@ -30,6 +32,12 @@ export const {
 export const getUserVac = (id) => (dispatch) => {
   axios.post(`/user/vacansy/${id}`)
     .then((res) => dispatch(setUserVac(res.data)));
+};
+
+export const createUserVac = (id, data) => (dispatch) => {
+  axios.put(`/api/vacansy/${id}`, data)
+    // .then((res) => console.log(res.data));
+    .then((res) => dispatch(createVac(res.data)));
 };
 
 export default userVacSlice.reducer;
