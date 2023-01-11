@@ -57,6 +57,7 @@ export default function Login() {
                 type="password"
             />
             <Button type="submit" variant="contained">Sign in</Button>
+            <div className="g-signin2" data-onsuccess="onSignIn"></div>
           </FormGroup>
         </form>
         <div>

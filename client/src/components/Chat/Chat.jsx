@@ -33,10 +33,6 @@ export default function MainPage() {
   });
   // console.log('FOCUS', focus);
 
-  const {
-    resetTranscript,
-  } = useSpeechRecognition();
-
   const isFrase = { // фразы для озвучивания и подсказок
     chatRoom: 'Скажите номер комнаты чата',
     nameNick: 'Скажите Ваше имя',
@@ -66,7 +62,7 @@ export default function MainPage() {
     },
   ];
 
-  const { transcript } = useSpeechRecognition({ commands });
+  const { transcript, resetTranscript } = useSpeechRecognition({ commands });
 
   const startListen = () => { // функ-я начало прослушивания
     SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
