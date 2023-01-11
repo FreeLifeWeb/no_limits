@@ -3,13 +3,11 @@ import {
   Button, FormGroup, MenuItem, Select, TextField, OutlinedInput, InputLabel, FormControl,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
 import { getSphereList } from '../../redux/slices/sphereListSlice';
 import { getCategoryList } from '../../redux/slices/categoryListSlice';
-import { createVac } from '../../redux/slices/userVacSlice';
+import { createUserVac } from '../../redux/slices/userVacSlice';
 
 export default function CreateVac({ vacansy, setIsEdit }) {
-//   const navigate = useNavigate();
   const sphereList = useSelector((store) => store.sphereList);
   const categoryList = useSelector((store) => store.categoryList);
   const [input, setInput] = useState(vacansy);
@@ -34,8 +32,7 @@ export default function CreateVac({ vacansy, setIsEdit }) {
 
   const submitHandler = (e, id) => {
     e.preventDefault();
-    axios.put(`/api/vacansy/${id}`, Object.fromEntries(new FormData(e.target)))
-      .then((res) => dispatch(createVac(res.data)));
+    dispatch(createUserVac(id, Object.fromEntries(new FormData(e.target))));
     setIsEdit(false);
   };
 
@@ -103,10 +100,10 @@ export default function CreateVac({ vacansy, setIsEdit }) {
           {' '}
           <br />
           <FormControl>
-            <InputLabel id="sphere">Сфера деятельности</InputLabel>
+            <InputLabel id="sphereid">Сфера деятельности</InputLabel>
             <Select
               name="sphere"
-              labelId="sphere"
+              labelId="sphereid"
               id="sphe"
               input={<OutlinedInput id="sphe" label="Сфера деятельности" />}
               value={currSphere.title}

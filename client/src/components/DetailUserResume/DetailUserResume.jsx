@@ -1,20 +1,16 @@
-/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import {
-  Button, FormControl, FormControlLabel, FormGroup, Radio, RadioGroup, Select, TextField, Typography,
+  Button, FormControl, FormControlLabel, FormGroup, Radio, RadioGroup, TextField,
 } from '@mui/material';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const synth = window.speechSynthesis;
 let voices = [synth];
 
 export default function Test() {
-  // const dispatch = useDispatch();
-
   const user = useSelector((store) => store.user);
-  // const resume = useSelector((store) => store.resume);
 
   // -----------------handlers-----------
   const startHandler = () => {
@@ -75,10 +71,6 @@ export default function Test() {
       .join(' ');
   }
 
-  // function editFinal(s) {
-  //   return s.replace(/\s{1,}([\.+,?!:-])/g, '$1');
-  // }
-
   const resetHandler = () => {
     resetTranscript();
   };
@@ -94,7 +86,6 @@ export default function Test() {
     email: 'Продиктуйте адрес Вашей электронной почты',
     phoneNumber: 'Продиктуйте Ваш телефонный номер',
     location: 'Назовите город, в котором Вы находитесь',
-    // sphere: 'Выберите свою специальность. Используйте кнопки "вверх", "вниз", "вперед", "назад" для навигации и "пробел" для выбора',
     about: 'Расскажите вкратце о себе, своем образовании и опыте работы',
     salary: 'Укажите ожидаемый уровень заработной платы',
     submit: 'Нажмите enter, чтобы сохранить резюме',
@@ -129,7 +120,6 @@ export default function Test() {
   const [resume, setResume] = useState({
     name: '',
     age: '',
-    // email: '',
     phoneNumber: '',
     location: '',
     sphere: '',
@@ -162,7 +152,6 @@ export default function Test() {
   }, []);
 
   const focusHandler = (id, time) => {
-    console.log(focus);
     resetHandler();
     // stopHandler();
     const field = toSpeak[id];
@@ -176,12 +165,9 @@ export default function Test() {
   const enterHandler = (e, nextId, currId) => {
     if (e.key === 'Enter') {
       stopHandler();
-      // dispatch(setResume({ ...resume, [e.target.name]: e.target.value }));
-      console.log('enter');
       e.preventDefault();
       setFocus((prev) => ({ ...prev, [currId]: false }));
       setResume({ ...resume, [e.target.name]: editInterim(transcript) });
-      console.log(resume, 'enter resume');
       const example = document.getElementById(nextId);
       example.focus();
     }
@@ -225,7 +211,6 @@ export default function Test() {
             {' '}
             {listening ? 'on' : 'off'}
           </p>
-          {/* <button onClick={stopHandler} type="button">stop micro</button> */}
           <TextField
             id="name"
             label="Ф.И.О"
@@ -240,23 +225,12 @@ export default function Test() {
             id="age"
             name="age"
             label="Возраст"
-            type="text"// не записываются данные иначе
+            type="text"
             value={(focus.age ? transcript : resume.age)}
             onFocus={() => focusHandler('age', 2500)}
             onKeyDown={(event) => enterHandler(event, 'phoneNumber', 'age')}
           />
           <br />
-          {/* <TextField
-            id="email"
-            name="email"
-            label="Email"
-            type="text"// не записываются данные иначе
-            value={(focus.email ? transcript : resume.email)}
-            onFocus={() => focusHandler('email')}
-            onKeyDown={(event) => enterHandler(event, 'phoneNumber', 'email')}
-          />
-          <br /> */}
-
           <TextField
             id="phoneNumber"
             name="phoneNumber"

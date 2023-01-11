@@ -7,9 +7,9 @@
 } */
 #container{
 	width:750px;
-	height:800px;
+	height: 650px;;
 	background:#eff3f7;
-	margin:0 auto;
+	margin-top:25px;
 	font-size:0;
 	border-radius:5px;
 	overflow:hidden;
@@ -140,7 +140,7 @@ main header h3{
 	margin:0;
 	list-style-type:none;
 	overflow-y:scroll;
-	height:535px;
+	height:370px;
 	border-top:2px solid #fff;
 	border-bottom:2px solid #fff;
 }
@@ -183,12 +183,12 @@ main header h3{
 	border-width: 0 10px 10px 10px;
 }
 #chat .you .triangle{
-		border-color: transparent transparent #58b666 transparent;
-		margin-left:15px;
+	border-color: transparent transparent #58b666 transparent;
+	margin-left:15px;
 }
 #chat .me .triangle{
-		border-color: transparent transparent #6fbced transparent;
-		margin-left:375px;
+	border-color: transparent transparent #6fbced transparent;
+	margin-left:375px;
 }
 
 main footer{
@@ -223,3 +223,11 @@ main footer button{
 	margin-top:5px;
 	display:inline-block;
 }
+
+
+
+
+
+
+
+

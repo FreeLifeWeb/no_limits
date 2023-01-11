@@ -17,5 +17,7 @@ module.exports = {
     'react',
   ],
   rules: {
+    'max-len': 0,
+    'no-await-in-loop': 0,
   },
 };

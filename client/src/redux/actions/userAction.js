@@ -6,9 +6,8 @@ import {
 export const setUser = (payload) => ({ type: SET_USER, payload });
 export const setErr = (payload) => ({ type: SET_ERROR, payload });
 
-export const regUser = (e) => (dispatch) => {
-  e.preventDefault();
-  axios.post('/user/reg', Object.fromEntries(new FormData(e.target)))
+export const regUser = (data) => (dispatch) => {
+  axios.post('/user/reg', data)
     .then((res) => dispatch(setUser(res.data)))
     .catch((err) => dispatch(setErr(err.response.data)));
 };

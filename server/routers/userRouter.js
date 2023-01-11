@@ -8,23 +8,26 @@ const regRouter = express.Router();
 
 regRouter.post('/reg', async (req, res) => {
   try {
-    const { name, email, password } = req.body;// забираем все нужные свойства;
-    // console.log(req.body);
+    const {
+      name, email, password, status, categoryId,
+    } = req.body;// забираем все нужные свойства;
     // если user ввел только пароль или только логин возвращаем сообщение которое покажем под формой
     if (!name || !email || !password) return res.status(400).json({ message: 'Все поля должны быть заполнены' });
     // пароль был введен? тогда хэшируем его
     const hashPassword = await hash(password, 10);
-
+    console.log(categoryId || 0);
     const [user, isCreated] = await User.findOrCreate({ // метод ищет в базе и если не нахит зап-ет
     // возвращает при этом найденный обьект и false либо созданный объект и true
       where: { email },
-      defaults: { name, email, password: hashPassword },
+      defaults: {
+        name, email, password: hashPassword, status, categoryId: categoryId || null,
+      },
     });
 
     if (!isCreated) return res.status(400).json({ message: 'Вы уже зарегистрированны, пройдите в авторизацию' });
 
     req.session.user = {
-      id, name, status, categoryId, email,
+      id: user.id, name: user.name, email: user.email, status: user.status === 'true' ? 'employer' : '', categoryId: user.categoryId,
     };
     res.json(req.session.user);
   } catch {
@@ -49,7 +52,7 @@ regRouter.post('/login', async (req, res) => {
       id, email, status, categoryId,
     } = user;
     req.session.user = {
-      id, name, status, categoryId, email,
+      id, name, status: status === 'true' ? 'employer' : '', categoryId, email,
     };
     res.json(req.session.user);
   } catch (e) {
@@ -79,7 +82,7 @@ regRouter.get('/logout', (req, res) => {
 
 regRouter.post('/vacansy/:id', async (req, res) => {
   const { id } = req.params;
-  console.log(id, '<----');
+  // console.log(id, '<----');
   // try {
   const userVac = await Vacancy.findAll({
     where: { userId: id },

@@ -30,11 +30,12 @@ module.exports = {
     'react/jsx-props-no-spreading': 0,
     'react/jsx-no-useless-fragment': 0,
     'no-nested-ternary': 0,
+    'no-alert': 0,
+    'max-len': 0,
     'no-unused-vars': 0,
     'react/no-array-index-key': 0,
     'no-console': 0,
     'no-param-reassign': 0,
     'no-useless-escape': 0,
-    'no-alert': 0,
   },
 };
