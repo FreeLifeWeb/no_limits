@@ -9,9 +9,13 @@ import { getVacancies } from '../../redux/slices/vacanciesSlice';
 export default function Vacancies() {
   const synth = window.speechSynthesis;
   const startSpeach = (sentence) => {
+    const voices = synth.getVoices();
+
+    const milena = voices.find((voice) => voice.name === 'Milena');
     const utterThis = new SpeechSynthesisUtterance(sentence);
-    utterThis.pitch = 0;
-    utterThis.rate = 0;
+    utterThis.voice = milena;
+    utterThis.pitch = 1;
+    utterThis.rate = 1;
     // utterThis.onerror = (event) => {
     //   console.error('SpeechSynthesisUtterance.onerror', event);
     // };

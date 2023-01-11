@@ -5,6 +5,7 @@ import {
   Paper, Typography, Box, Link, Divider,
 } from '@mui/material';
 import axios from 'axios';
+import { NavLink } from 'react-router-dom';
 
 const synth = window.speechSynthesis;
 let voices = [synth];
@@ -91,18 +92,18 @@ export default function LkCandidate() {
               </Typography>
             </Paper>
           </Box>
-          <Link href={`candidate/resume/${user.id}`}>
-            <Button id="createResume" variant="outlined">
+          <NavLink to={`/candidate/resume/${user.id}`}>
+            <Button id="createResume" type="click" variant="outlined">
               СОЗДАТЬ РЕЗЮМЕ
             </Button>
-          </Link>
+          </NavLink>
         </>
       ) : (
-        <Link href={`candidate/resume/${user.id}`}>
-          <Button id="createResume" variant="outlined">
+        <NavLink to={`/candidate/resume/${user.id}`}>
+          <Button id="createResume" type="click" variant="outlined">
             СОЗДАТЬ РЕЗЮМЕ
           </Button>
-        </Link>
+        </NavLink>
       )}
 
     </div>

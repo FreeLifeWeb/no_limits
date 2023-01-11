@@ -12,7 +12,6 @@ import { getMessage } from '../../redux/actions/messageAction';
 
 export default function MainPage() {
   const user = useSelector((store) => store.user);
-  // console.log('gggggggg', user);
   useEffect(() => {
     const focusInput = document.getElementById('room');// автофокус на первом импуте при монтировании компонента
     focusInput.focus();// автофокус на первом импуте при монтировании компонента
@@ -29,11 +28,9 @@ export default function MainPage() {
 
   useEffect(() => {
     socket.on('ROOM:JOINED', ({ users }) => {
-      // console.log(')))))))))))', users, socket);
       dispatch(getUsersioRoom(users));
     });
     socket.on('ROOM:USER_LEAVE', (users) => {
-      // console.log('AfterDisconect', users);
       dispatch(getUsersioRoom(users));
     });
     socket.on('ROOM:ADD_MESSAGES', (message) => {
@@ -44,13 +41,11 @@ export default function MainPage() {
     roomId: '',
     userName: '',
   });
-  // console.log('RRRRR', room);
+  console.log('RRRRR', room);
   const [focus, setFocus] = useState({ // state  для заполнения только одного инпута
     roomName: false,
     nameChat: false,
   });
-  // console.log('FOCUS', focus);
-  // console.log(focus);
 
   const isFrase = { // фразы для озвучивания и подсказок
     chatRoom: 'Скажите номер комнаты чата',
@@ -62,7 +57,11 @@ export default function MainPage() {
   // let voices = [synth];
 
   const startSpeach = (sentence) => {
+    const voices = synth.getVoices();
+
+    const milena = voices.find((voice) => voice.name === 'Milena');
     const utterThis = new SpeechSynthesisUtterance(sentence);
+    utterThis.voice = milena;
     utterThis.pitch = 1;
     utterThis.rate = 1;
     utterThis.onerror = (event) => {
@@ -102,6 +101,7 @@ export default function MainPage() {
   ];
 
   const { transcript, resetTranscript } = useSpeechRecognition({ commands });
+
   const startListen = () => { // функ-я начало прослушивания
     SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
   };
@@ -136,11 +136,10 @@ export default function MainPage() {
     stopListen();
     setRoom({ ...room, [e.target.name]: editInterim(transcript) });
     // console.log('setRoom', transcript);
+
     setFocus((prev) => ({ ...prev, [elem]: false }));
-    // console.log('setFocus', transcript);
     const example = document.getElementById(id);
     example.focus();
-    // console.log('enterHandler', transcript);
   };
 
   const SubFocus = () => {
@@ -150,11 +149,9 @@ export default function MainPage() {
   const [showChat, setShowChat] = useState(false);
 
   const state = useSelector((store) => store.state);
-  // console.log('STATE:', state);
 
   function formAction(e) {
     dispatch(getRoom(e, room, () => socket.emit('ROOM:JOIN', { ...room })));
-    // console.log(socket);
     setShowChat((prev) => !prev);
   }
 
@@ -164,7 +161,6 @@ export default function MainPage() {
 
   function formAction2(e) {
     dispatch(getRoom(e, room, () => socket.emit('ROOM:JOIN', { ...room })));
-    // console.log(socket);
     setShowChat((prev) => !prev);
   }
 

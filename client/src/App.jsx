@@ -41,7 +41,7 @@ function App() {
               <Route path="/" element={<MainPage />} />
               <Route path="/vacancies" element={<Vacancies />} />
               <Route path="/vacancy/:id" element={<DetailVacancy />} />
-              <Route path="candidate/resume/:id" element={<DetailUserResume />} />
+              <Route path="/candidate/resume/:id" element={<DetailUserResume />} />
               <Route path="/favoriteRespons" element={<FavoriteResponses />} />
               <Route path="/lkCandidate" element={<LkCandidate />} />
               <Route path="/lkEmployer" element={<Employer />} />

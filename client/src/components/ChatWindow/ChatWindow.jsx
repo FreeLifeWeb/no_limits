@@ -10,7 +10,6 @@ export default function ChatWindow({
   //   focusInput.focus();
   // }, []);
   // console.log('users:', users, messages);
-
   useEffect(() => {
     setTimeout(() => {
       startSpeach(`сообщение от:${messages[messages.length - 1].userName} время получения:${messages[messages.length - 1].time} содержание:${messages[messages.length - 1].text}`);
@@ -27,7 +26,7 @@ export default function ChatWindow({
       userName,
       text: message,
       time:
-      ` ${new Date(Date.now()).getHours()}
+        ` ${new Date(Date.now()).getHours()}
         :
         ${new Date(Date.now()).getMinutes()}`,
     });
@@ -35,7 +34,7 @@ export default function ChatWindow({
       userName,
       text: message,
       time:
-      ` ${new Date(Date.now()).getHours()}
+        ` ${new Date(Date.now()).getHours()}
         :
         ${new Date(Date.now()).getMinutes()}`,
     });
