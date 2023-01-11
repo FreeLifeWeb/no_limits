@@ -18,5 +18,6 @@ module.exports = {
   ],
   rules: {
     'max-len': 0,
+    'no-await-in-loop': 0,
   },
 };

@@ -1,6 +1,8 @@
 const express = require('express');
-const { Sphere, Category } = require('../db/models');
-const { Vacancy } = require('../db/models');
+
+const {
+  Sphere, Category, Response, Vacancy, Resume,
+} = require('../db/models');
 
 const apiRouter = express.Router();
 
@@ -66,4 +68,28 @@ apiRouter.post('/vacancies', async (req, res) => {
   const vacancies = await Vacancy.findAll();
   res.json(vacancies);
 });
+
+apiRouter.post('/response/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.session.user.id;
+    await Response.create({ userId, vacancyId: id });
+    res.sendStatus(200);
+  } catch {
+    console.log('error');
+  }
+});
+
+apiRouter.post('/vacancy/responses/:id', async (req, res) => {
+  const { id } = req.params;
+  const responses = await Response.findAll({ where: { vacancyId: id } });
+  const result = [];
+  for (let i = 0; i < responses.length; i += 1) {
+    const newEl = await Resume.findOne({ where: { userId: responses[i].userId } });
+    result.push(newEl);
+  }
+  console.log(result);
+  res.json(result);
+});
+
 module.exports = apiRouter;
