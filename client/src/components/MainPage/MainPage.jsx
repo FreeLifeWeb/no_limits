@@ -2,15 +2,18 @@ import React, { useEffect } from 'react';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import { useSelector } from 'react-redux';
 
 export default function MainPage() {
   const synth = window.speechSynthesis;
+  const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   let voices = [];
 
   const comands = { // фразы для озвучивания и подсказок
     greeting: 'Добро пожаловать на сайт Без ограничений, Вам доступно голосовое управление. Чтобы включить микрофон нажмите пробел',
-    allComands: 'Вам доступны следующие команды: Открыть Вакансии и Зарегистрироваться',
+    allComandsForAll: 'Вам доступны следующие команды: Открыть Вакансии и Зарегистрироваться',
+    allComands: 'Вам доступны следующие команды: Открыть Вакансии',
   };
 
   const startSpeach = (sentence) => {
@@ -29,7 +32,11 @@ export default function MainPage() {
 
   const pressListener = (event) => {
     if (event.code === 'Space') {
-      startSpeach(comands.allComands);
+      if (user) {
+        startSpeach(comands.allComands);
+      } else {
+        startSpeach(comands.allComandsForAll);
+      }
       setTimeout(() => {
         SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
       }, 3000);
@@ -37,14 +44,17 @@ export default function MainPage() {
   };
 
   useEffect(() => { // сообщение при отсутствии поддержки WEB SPEECH API
-    startSpeach(comands.greeting);
-    document.addEventListener('keypress', pressListener);
+    if (user?.status !== 'employer') {
+      startSpeach(comands.greeting);
+      document.addEventListener('keypress', pressListener);
+    }
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
       alert('К сожалению Ваш браузер не поддерживает этот функционал голосового управления!');
     }
 
     return () => {
       SpeechRecognition.stopListening();
+      document.removeEventListener('keypress', pressListener);
     };
   }, []);
 
