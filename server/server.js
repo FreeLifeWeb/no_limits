@@ -42,6 +42,13 @@ app.use(session({
   },
 }));
 
+app.use((req, res, next) => {
+  res.setHeader(
+    'Permissions-Policy',
+    'microphone=(self "http://localhost:3001")',
+  );
+  next();
+});
 app.use('/user', userRouter);
 app.use('/candidate', candRouter);
 const rooms = new Map();

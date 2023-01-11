@@ -41,6 +41,7 @@ export default function MainPage() {
     roomId: '',
     userName: '',
   });
+  console.log('RRRRR', room);
   const [focus, setFocus] = useState({ // state  для заполнения только одного инпута
     roomName: false,
     nameChat: false,
@@ -51,11 +52,16 @@ export default function MainPage() {
     nameNick: 'Скажите Ваше имя',
     submit: 'Нажмите enter, чтобы войти в чат',
   };
+
   const synth = window.speechSynthesis;
   // let voices = [synth];
 
   const startSpeach = (sentence) => {
+    const voices = synth.getVoices();
+
+    const milena = voices.find((voice) => voice.name === 'Milena');
     const utterThis = new SpeechSynthesisUtterance(sentence);
+    utterThis.voice = milena;
     utterThis.pitch = 1;
     utterThis.rate = 1;
     utterThis.onerror = (event) => {
@@ -81,6 +87,18 @@ export default function MainPage() {
     SpeechRecognition.stopListening();
   };
 
+  const PlanB = () => {
+    stopListen();
+    resetTranscript();
+    const example = document.getElementById('room');
+    example.focus();
+  };
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Control') {
+      PlanB();
+    }
+  });
   const focusHandler = (id, elem) => {
     resetTranscript(); // console.log('focusHandler', transcript);
     setFocus((prev) => ({ ...prev, [elem]: true }));
@@ -89,7 +107,7 @@ export default function MainPage() {
     startSpeach(field);
     setTimeout(() => {
       startListen();
-    }, 2000);
+    }, 2500);
   };
 
   const enterHandler = (e, id, elem) => {
@@ -100,6 +118,10 @@ export default function MainPage() {
     example.focus();
   };
 
+  const SubFocus = () => {
+    stopListen();
+    startSpeach('Нажмите enter, чтобы войти в чат');
+  };
   const [showChat, setShowChat] = useState(false);
 
   const state = useSelector((store) => store.state);
@@ -186,15 +208,13 @@ export default function MainPage() {
                     placeholder="Name..."
                     label="Name"
                   />
-                  <Button id="submit" onFocus={() => startSpeach('Нажмите enter, чтобы войти в чат')} type="submit" variant="contained">Submit</Button>
+                  <Button id="submit" onFocus={() => SubFocus()} type="submit" variant="contained">Submit</Button>
                 </FormGroup>
               </form>
-
             )
-
         )
         : (
-          <ChatWindow {...state} onAddMessage={addMessage} />
+          <ChatWindow {...state} onAddMessage={addMessage} startSpeach={startSpeach} />
         )}
     </Box>
   );
