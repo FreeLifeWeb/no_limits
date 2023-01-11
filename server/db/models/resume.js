@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     salary: DataTypes.INTEGER,
     sphereId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
+    categoryId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Resume',

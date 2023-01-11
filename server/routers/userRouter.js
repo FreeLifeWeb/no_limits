@@ -11,8 +11,6 @@ regRouter.post('/reg', async (req, res) => {
     const {
       name, email, password, status, categoryId,
     } = req.body;// забираем все нужные свойства;
-    console.log(categoryId, 'categoryId');
-    console.log(status, typeof status, 'status');
     // если user ввел только пароль или только логин возвращаем сообщение которое покажем под формой
     if (!name || !email || !password) return res.status(400).json({ message: 'Все поля должны быть заполнены' });
     // пароль был введен? тогда хэшируем его

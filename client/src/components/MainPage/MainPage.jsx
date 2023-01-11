@@ -27,20 +27,11 @@ export default function MainPage() {
     synth.speak(utterThis);
   };
 
-  // function* greeting() {
-  //   yield startSpeach(comands.greeting);
-  //   yield SpeechRecognition.startListening();
-  //   yield console.log('after start listen');
-  //   return transcript;
-  // }
-
-  // const greet = greeting();
   const pressListener = (event) => {
     if (event.code === 'Space') {
       startSpeach(comands.allComands);
       setTimeout(() => {
         SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
-        console.log('start');
       }, 3000);
     }
   };
@@ -85,7 +76,6 @@ export default function MainPage() {
           Список специалистов
         </Container>
       </Container>
-
     </div>
   );
 }

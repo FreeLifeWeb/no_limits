@@ -3,11 +3,12 @@ const morgan = require('morgan');
 const cors = require('cors');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
+const { Server } = require('socket.io');
 require('dotenv').config();
 
 const app = express();
 const server = require('http').createServer(app);
-const { Server } = require('socket.io');
+const candRouter = require('./routers/candidateRouter');
 const userRouter = require('./routers/userRouter');
 const resumeRouter = require('./routers/resumeRouter');
 const apiRouter = require('./routers/apiRouter');
@@ -41,6 +42,8 @@ app.use(session({
   },
 }));
 
+app.use('/user', userRouter);
+app.use('/candidate', candRouter);
 const rooms = new Map();
 // временная БД в виде прокаченного
 // обьекта Map(избегаем не нужные действия с методами)
