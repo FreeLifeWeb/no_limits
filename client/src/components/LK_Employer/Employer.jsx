@@ -16,7 +16,7 @@ export default function Employer() {
     <Box>
       {user?.name}
       <NavLink to="/addVac">
-        <Button size="small">Создать</Button>
+        <Button size="small">Разместить вакансию</Button>
       </NavLink>
       {userVac.map((vac) => <OneVac key={vac.id} vacansy={vac} />)}
     </Box>
