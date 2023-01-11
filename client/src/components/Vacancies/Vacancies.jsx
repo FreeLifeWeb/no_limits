@@ -4,7 +4,9 @@ import {
 import React, { useEffect, useState } from 'react';
 import useKeypress from 'react-use-keypress';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import { getVacancies } from '../../redux/slices/vacanciesSlice';
+import { getResponses } from '../../redux/slices/responsesSlice';
 
 export default function Vacancies() {
   const synth = window.speechSynthesis;
@@ -81,6 +83,12 @@ export default function Vacancies() {
       setVacancy(vacancies[index]);
     }
   };
+  const responseHandler = (id) => {
+    axios.post(`/api/response/${id}`)
+      .then(dispatch(getResponses(id)))
+      .then(startSpeach('ваше резюме отправлено'));
+    // .catch(console.log('error'));
+  };
 
   useKeypress([' ', 'ArrowUp', 'ArrowDown'], (e) => {
     if (e.key === ' ') {
@@ -125,7 +133,12 @@ export default function Vacancies() {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">Откликнуться</Button>
+          <Button
+            size="small"
+            onClick={() => responseHandler(vacancy?.id)}
+          >
+            Откликнуться
+          </Button>
           {(index < vacancies.length - 1) ? (
             <Button
               type="button"

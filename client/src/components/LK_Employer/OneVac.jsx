@@ -4,6 +4,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import { deleteVac } from '../../redux/slices/userVacSlice';
 import CreateVac from './CreateVac';
 
@@ -68,12 +69,13 @@ export default function BasicCard({ vacansy }) {
               >
                 Удалить
               </Button>
-              <Button
-          // onClick={() => responseHandler()}
-                size="small"
-              >
-                Oтклики
-              </Button>
+              <NavLink to="/vacancy/responses">
+                <Button
+                  size="small"
+                >
+                  Oтклики
+                </Button>
+              </NavLink>
             </>
           )}
       </CardActions>

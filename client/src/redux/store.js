@@ -7,6 +7,7 @@ import sphereListSlice from './slices/sphereListSlice';
 import categoryListSlice from './slices/categoryListSlice';
 import stateReducer from './reducer/stateReducer';
 import vacanciesSlice from './slices/vacanciesSlice';
+import responsesSlice from './slices/responsesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -18,5 +19,6 @@ export const store = configureStore({
     categoryList: categoryListSlice,
     state: stateReducer,
     vacancies: vacanciesSlice,
+    responses: responsesSlice,
   },
 });
