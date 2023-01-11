@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Button, FormGroup, TextField, Typography,
+  Box,
+  Button,
+  FormControl,
+  FormGroup,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  TextField,
+  Typography,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,17 +23,19 @@ export default function Registration(props) {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const err = useSelector((store) => store.err);
+  const categoryList = useSelector((store) => store.categoryList);
   const {
     getInputProps, checked, disabled, focusVisible,
   } = useSwitch(props);
   const [name, setForm] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPass] = useState('');
-  const [categoryId, setCategory] = useState('');
+  const [currCategory, setCategory] = useState('');
 
   const changeNameHandler = (e) => setForm(e.target.value);
   const changeEmailHandler = (e) => setEmail(e.target.value);
   const changePasswordHandler = (e) => setPass(e.target.value);
+  const categoryHandler = (e) => setCategory(e.target.value);
 
   useEffect(() => {
     if (user) {
@@ -51,7 +62,7 @@ export default function Registration(props) {
       <form onSubmit={(e) => {
         e.preventDefault();
         dispatch(regUser({
-          name, email, password, status: checked, categoryId,
+          name, email, password, status: checked, categoryId: currCategory,
         }));
       }}
       >
@@ -89,6 +100,30 @@ export default function Registration(props) {
             />
             <div style={{ textAlign: 'center', paddingTop: '9px' }}>Я работодатель</div>
           </div>
+          {checked
+            ? (<></>)
+            : (
+              <FormControl sx={{ margin: ' 20px 0' }}>
+                <InputLabel id="category">Категория недееспособности</InputLabel>
+                <Select
+                  name="category"
+                  id="cat"
+                  input={<OutlinedInput id="cat" label="Категория недееспособности" />}
+                  value={currCategory}
+                  onChange={categoryHandler}
+                >
+                  {categoryList.map((el) => (
+                    <MenuItem
+                      key={el.id}
+                      value={el.id}
+                    >
+                      {el.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+            )}
           <Button type="submit" variant="contained">Sign up</Button>
         </FormGroup>
       </form>

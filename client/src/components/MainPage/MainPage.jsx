@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import { useSelector } from 'react-redux';
 
 export default function MainPage() {
   const synth = window.speechSynthesis;
+  const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   let voices = [];
 
@@ -37,8 +39,10 @@ export default function MainPage() {
   };
 
   useEffect(() => { // сообщение при отсутствии поддержки WEB SPEECH API
-    startSpeach(comands.greeting);
-    document.addEventListener('keypress', pressListener);
+    if (user?.status !== 'employer') {
+      startSpeach(comands.greeting);
+      document.addEventListener('keypress', pressListener);
+    }
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
       alert('К сожалению Ваш браузер не поддерживает этот функционал голосового управления!');
     }

@@ -179,63 +179,63 @@ export default function MainPage() {
     >
       {!showChat
         ? (
-      // (user.status === null)
-      //   ? (
-      //     <form onSubmit={(e) => formAction2(e)}>
-      //       <FormGroup>
-      //         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-      //           Chat room:
-      //         </Typography>
-      //         <TextField
-      //           id="room"
-      //           name="roomId"
-      //           onChange={ChangeHandler}
-      //           type="text"
-      //           placeholder="Room number..."
-      //           label="Room"
-      //         />
-      //         <TextField
-      //           id="name"
-      //           name="userName"
-      //           onChange={ChangeHandler}
-      //           type="text"
-      //           placeholder="Name..."
-      //           label="Name"
-      //         />
-      //         <Button id="submit" type="submit" variant="contained">Submit</Button>
-      //       </FormGroup>
-      //     </form>
-      //   )
-      //   : (
-          <form onSubmit={(e) => formAction(e)}>
-            <FormGroup>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Chat room:
-              </Typography>
-              <TextField
-                id="room"
-                name="roomId"
-                value={(focus.roomName ? editInterim(transcript) : room.roomId)}
-                type="text"
-                placeholder="Room number..."
-                onFocus={() => focusHandler('chatRoom', 'roomName')}
-                onKeyDown={(e) => enterHandler(e, 'name', 'roomName')}
-                label="Room"
-              />
-              <TextField
-                id="name"
-                name="userName"
-                onFocus={() => focusHandler('nameNick', 'nameChat')}
-                onKeyDown={(e) => enterHandler(e, 'submit', 'nameChat')}
-                value={(focus.nameChat ? editInterim(transcript) : room.userName)}
-                type="text"
-                placeholder="Name..."
-                label="Name"
-              />
-              <Button id="submit" onFocus={() => SubFocus()} type="submit" variant="contained">Submit</Button>
-            </FormGroup>
-          </form>
-      // )
+          (user.status === 'employer')
+            ? (
+              <form onSubmit={(e) => formAction2(e)}>
+                <FormGroup>
+                  <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    Chat room:
+                  </Typography>
+                  <TextField
+                    id="room"
+                    name="roomId"
+                    onChange={ChangeHandler}
+                    type="text"
+                    placeholder="Room number..."
+                    label="Room"
+                  />
+                  <TextField
+                    id="name"
+                    name="userName"
+                    onChange={ChangeHandler}
+                    type="text"
+                    placeholder="Name..."
+                    label="Name"
+                  />
+                  <Button id="submit" type="submit" variant="contained">Submit</Button>
+                </FormGroup>
+              </form>
+            )
+            : (
+              <form onSubmit={(e) => formAction(e)}>
+                <FormGroup>
+                  <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    Chat room:
+                  </Typography>
+                  <TextField
+                    id="room"
+                    name="roomId"
+                    value={(focus.roomName ? editInterim(transcript) : room.roomId)}
+                    type="text"
+                    placeholder="Room number..."
+                    onFocus={() => focusHandler('chatRoom', 'roomName')}
+                    onKeyDown={(e) => enterHandler(e, 'name', 'roomName')}
+                    label="Room"
+                  />
+                  <TextField
+                    id="name"
+                    name="userName"
+                    onFocus={() => focusHandler('nameNick', 'nameChat')}
+                    onKeyDown={(e) => enterHandler(e, 'submit', 'nameChat')}
+                    value={(focus.nameChat ? editInterim(transcript) : room.userName)}
+                    type="text"
+                    placeholder="Name..."
+                    label="Name"
+                  />
+                  <Button id="submit" onFocus={() => SubFocus()} type="submit" variant="contained">Submit</Button>
+                </FormGroup>
+              </form>
+            )
         )
         : (
           <ChatWindow {...state} onAddMessage={addMessage} startSpeach={startSpeach} />

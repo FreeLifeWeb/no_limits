@@ -8,6 +8,8 @@ import { getVacancies } from '../../redux/slices/vacanciesSlice';
 
 export default function Vacancies() {
   const synth = window.speechSynthesis;
+  const user = useSelector((state) => state.user);
+
   const startSpeach = (sentence) => {
     const voices = synth.getVoices();
 
@@ -50,22 +52,28 @@ export default function Vacancies() {
 
   useEffect(() => {
     if (index) {
-      speak();
+      if (user?.status !== 'employer') {
+        speak();
+      }
     }
   }, [vacancy?.title]);
 
   useEffect(() => {
     if (index === 0) {
-      startSpeach(
-        `Для прослушивания вакансии --- нажмите Пробел
+      if (user?.status !== 'employer') {
+        startSpeach(
+          `Для прослушивания вакансии --- нажмите Пробел
          ----
          Чтобы листать вакансии --- используйте клавиши вверх и вниз`,
-      );
+        );
+      }
     }
   }, [index]);
 
   const clickHandler = () => {
-    speak();
+    if (user?.status !== 'employer') {
+      speak();
+    }
   };
 
   const prevHandler = () => {
@@ -84,7 +92,9 @@ export default function Vacancies() {
 
   useKeypress([' ', 'ArrowUp', 'ArrowDown'], (e) => {
     if (e.key === ' ') {
-      speak();
+      if (user?.status !== 'employer') {
+        speak();
+      }
     }
     if (e.key === 'ArrowUp') {
       nextHandler();
