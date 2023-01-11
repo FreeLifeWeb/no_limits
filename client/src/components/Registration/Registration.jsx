@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSwitch } from '@mui/base/SwitchUnstyled';
 import { regUser } from '../../redux/actions/userAction';
 import Switcher from '../UI/switcher/Switcher';
+import { getCategoryList } from '../../redux/slices/categoryListSlice';
 
 export default function Registration(props) {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ export default function Registration(props) {
   const [name, setForm] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPass] = useState('');
+  const [categoryId, setCategory] = useState('');
 
   const changeNameHandler = (e) => setForm(e.target.value);
   const changeEmailHandler = (e) => setEmail(e.target.value);
@@ -29,6 +31,10 @@ export default function Registration(props) {
       navigate('/');
     }
   });
+
+  useEffect(() => {
+    dispatch(getCategoryList());
+  }, []);
 
   return (
     <Box
@@ -45,7 +51,7 @@ export default function Registration(props) {
       <form onSubmit={(e) => {
         e.preventDefault();
         dispatch(regUser({
-          name, email, password, status: checked,
+          name, email, password, status: checked, categoryId,
         }));
       }}
       >
