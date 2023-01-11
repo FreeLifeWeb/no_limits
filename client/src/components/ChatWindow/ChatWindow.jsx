@@ -9,7 +9,7 @@ export default function ChatWindow({
   //   const focusInput = document.getElementById('textArea');
   //   focusInput.focus();
   // }, []);
-  console.log('users:', users);
+  // console.log('users:', users);
   const messageScroll = useRef(null);
   const formMessages = (e) => {
     e.preventDefault();
@@ -52,7 +52,7 @@ export default function ChatWindow({
     },
   ];
 
-  const { transcript } = useSpeechRecognition({ commands });
+  // const { transcript } = useSpeechRecognition({ commands });
   return (
     <div id="container">
       <aside>

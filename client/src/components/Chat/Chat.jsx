@@ -12,7 +12,7 @@ import { getMessage } from '../../redux/actions/messageAction';
 
 export default function MainPage() {
   const user = useSelector((store) => store.user);
-  console.log('gggggggg', user);
+  // console.log('gggggggg', user);
   useEffect(() => {
     const focusInput = document.getElementById('room');// автофокус на первом импуте при монтировании компонента
     focusInput.focus();// автофокус на первом импуте при монтировании компонента
@@ -50,7 +50,7 @@ export default function MainPage() {
     nameChat: false,
   });
   // console.log('FOCUS', focus);
-  console.log(focus);
+  // console.log(focus);
 
   const isFrase = { // фразы для озвучивания и подсказок
     chatRoom: 'Скажите номер комнаты чата',

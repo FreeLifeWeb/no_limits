@@ -61,4 +61,9 @@ apiRouter.put('/vacansy/:id', async (req, res) => {
   const result = await Vacancy.findOne({ where: { id }, include: [{ all: true }] });
   res.json(result);
 });
+
+apiRouter.post('/vacancies', async (req, res) => {
+  const vacancies = await Vacancy.findAll();
+  res.json(vacancies);
+});
 module.exports = apiRouter;
