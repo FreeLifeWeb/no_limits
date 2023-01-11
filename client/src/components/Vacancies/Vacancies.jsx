@@ -11,7 +11,7 @@ export default function Vacancies() {
   const startSpeach = (sentence) => {
     const utterThis = new SpeechSynthesisUtterance(sentence);
     utterThis.pitch = 0;
-    utterThis.rate = 5;
+    utterThis.rate = 0;
     // utterThis.onerror = (event) => {
     //   console.error('SpeechSynthesisUtterance.onerror', event);
     // };

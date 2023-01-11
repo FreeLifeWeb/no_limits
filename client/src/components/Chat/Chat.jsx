@@ -57,6 +57,7 @@ export default function MainPage() {
     nameNick: 'Скажите Ваше имя',
     submit: 'Нажмите enter, чтобы войти в чат',
   };
+
   const synth = window.speechSynthesis;
   // let voices = [synth];
 
@@ -69,6 +70,28 @@ export default function MainPage() {
     };
     synth.speak(utterThis);
   };
+  const DICTIONARY = {
+    один: '1',
+    два: '2',
+    три: '3',
+    четыре: '4',
+    пять: '5',
+    шесть: '6',
+    семь: '7',
+    восемь: '8',
+    девять: '9',
+    десять: '10',
+  };
+
+  function editInterim(s) {
+    return s
+      .split(' ')
+      .map((word) => {
+        word = word.trim();
+        return DICTIONARY[word.toLowerCase()] ? DICTIONARY[word.toLowerCase()] : word;
+      })
+      .join(' ');
+  }
 
   const commands = [
     {
@@ -86,6 +109,18 @@ export default function MainPage() {
     SpeechRecognition.stopListening();
   };
 
+  const PlanB = () => {
+    stopListen();
+    resetTranscript();
+    const example = document.getElementById('room');
+    example.focus();
+  };
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Control') {
+      PlanB();
+    }
+  });
   const focusHandler = (id, elem) => {
     resetTranscript(); // console.log('focusHandler', transcript);
     setFocus((prev) => ({ ...prev, [elem]: true }));
@@ -94,12 +129,12 @@ export default function MainPage() {
     startSpeach(field);
     setTimeout(() => {
       startListen();
-    }, 2000);
+    }, 2500);
   };
 
   const enterHandler = (e, id, elem) => {
     stopListen();
-    setRoom({ ...room, [e.target.name]: transcript });
+    setRoom({ ...room, [e.target.name]: editInterim(transcript) });
     // console.log('setRoom', transcript);
     setFocus((prev) => ({ ...prev, [elem]: false }));
     // console.log('setFocus', transcript);
@@ -108,6 +143,10 @@ export default function MainPage() {
     // console.log('enterHandler', transcript);
   };
 
+  const SubFocus = () => {
+    stopListen();
+    startSpeach('Нажмите enter, чтобы войти в чат');
+  };
   const [showChat, setShowChat] = useState(false);
 
   const state = useSelector((store) => store.state);
@@ -144,68 +183,66 @@ export default function MainPage() {
     >
       {!showChat
         ? (
-          (user.status === null)
-            ? (
-              <form onSubmit={(e) => formAction2(e)}>
-                <FormGroup>
-                  <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    Chat room:
-                  </Typography>
-                  <TextField
-                    id="room"
-                    name="roomId"
-                    onChange={ChangeHandler}
-                    type="text"
-                    placeholder="Room number..."
-                    label="Room"
-                  />
-                  <TextField
-                    id="name"
-                    name="userName"
-                    onChange={ChangeHandler}
-                    type="text"
-                    placeholder="Name..."
-                    label="Name"
-                  />
-                  <Button id="submit" type="submit" variant="contained">Submit</Button>
-                </FormGroup>
-              </form>
-            )
-            : (
-              <form onSubmit={(e) => formAction(e)}>
-                <FormGroup>
-                  <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    Chat room:
-                  </Typography>
-                  <TextField
-                    id="room"
-                    name="roomId"
-                    value={(focus.roomName ? transcript : room.roomId)}
-                    type="text"
-                    placeholder="Room number..."
-                    onFocus={() => focusHandler('chatRoom', 'roomName')}
-                    onKeyDown={(e) => enterHandler(e, 'name', 'roomName')}
-                    label="Room"
-                  />
-                  <TextField
-                    id="name"
-                    name="userName"
-                    onFocus={() => focusHandler('nameNick', 'nameChat')}
-                    onKeyDown={(e) => enterHandler(e, 'submit', 'nameChat')}
-                    value={(focus.nameChat ? transcript : room.userName)}
-                    type="text"
-                    placeholder="Name..."
-                    label="Name"
-                  />
-                  <Button id="submit" onFocus={() => startSpeach('Нажмите enter, чтобы войти в чат')} type="submit" variant="contained">Submit</Button>
-                </FormGroup>
-              </form>
-
-            )
-
+      // (user.status === null)
+      //   ? (
+      //     <form onSubmit={(e) => formAction2(e)}>
+      //       <FormGroup>
+      //         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+      //           Chat room:
+      //         </Typography>
+      //         <TextField
+      //           id="room"
+      //           name="roomId"
+      //           onChange={ChangeHandler}
+      //           type="text"
+      //           placeholder="Room number..."
+      //           label="Room"
+      //         />
+      //         <TextField
+      //           id="name"
+      //           name="userName"
+      //           onChange={ChangeHandler}
+      //           type="text"
+      //           placeholder="Name..."
+      //           label="Name"
+      //         />
+      //         <Button id="submit" type="submit" variant="contained">Submit</Button>
+      //       </FormGroup>
+      //     </form>
+      //   )
+      //   : (
+          <form onSubmit={(e) => formAction(e)}>
+            <FormGroup>
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                Chat room:
+              </Typography>
+              <TextField
+                id="room"
+                name="roomId"
+                value={(focus.roomName ? editInterim(transcript) : room.roomId)}
+                type="text"
+                placeholder="Room number..."
+                onFocus={() => focusHandler('chatRoom', 'roomName')}
+                onKeyDown={(e) => enterHandler(e, 'name', 'roomName')}
+                label="Room"
+              />
+              <TextField
+                id="name"
+                name="userName"
+                onFocus={() => focusHandler('nameNick', 'nameChat')}
+                onKeyDown={(e) => enterHandler(e, 'submit', 'nameChat')}
+                value={(focus.nameChat ? editInterim(transcript) : room.userName)}
+                type="text"
+                placeholder="Name..."
+                label="Name"
+              />
+              <Button id="submit" onFocus={() => SubFocus()} type="submit" variant="contained">Submit</Button>
+            </FormGroup>
+          </form>
+      // )
         )
         : (
-          <ChatWindow {...state} onAddMessage={addMessage} />
+          <ChatWindow {...state} onAddMessage={addMessage} startSpeach={startSpeach} />
         )}
     </Box>
   );

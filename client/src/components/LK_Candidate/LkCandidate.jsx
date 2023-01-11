@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import { useSelector } from 'react-redux';
@@ -9,19 +8,6 @@ import axios from 'axios';
 
 const synth = window.speechSynthesis;
 let voices = [synth];
-
-const resumeExample = {
-  name: 'Surname Name FatherName',
-  age: 23,
-  email: 'someemail@mail.ru',
-  phoneNumber: 89286326596,
-  location: 'Москва',
-  about: `
-  Создаю to do приложение на React, Необходимо создать карточку в списке. Не понимаю как добавить новую карточку, а не обновить текущу. 
-   Получается такая структура, но мне нужно чтобы в listItem создавались отдельные обьекты под каждый cardName`,
-  salary: 200000,
-  sphere: 'Нанотехнологии', // не отправляется в бд потому что не нашел сферу
-};
 
 const setAge = (age) => {
   if (age > 4 && age <= 20) return `${age} лет`;
@@ -59,22 +45,15 @@ export default function LkCandidate() {
   };
 
   useEffect(() => {
-    console.log(user.id, 'lllllllllllll');
     axios(`candidate/resume/get/${user.id}`)
-      .then((res) => setResume(res.data, ';;;;;;;;;;'));
+      .then((res) => setResume(res.data));
     startSpeach('Нажмите enter, чтобы составить резюме');
     const withResume = document.getElementById('editResume');
     const withoutResume = document.getElementById('createResume');
-    // if (resume) { withResume.focus(); } else { withoutResume.focus(); }
-    // (resume) ? withResume.focus() : withoutResume.focus();
     withoutResume.focus();
   }, []);
 
   return (
-  // если резюме создано, то поменять на кнопку изменить и отобразить его на странице
-  // но как проверить, что оно создано?
-  // можно сделать отдельный запрос на бек, который проверит, есть ли резюме у юзера с таким айдишником, если да
-  // то вот так вот
     <div className="container">
       {resume ? (
         <>
@@ -85,7 +64,7 @@ export default function LkCandidate() {
                 {resume.name?.toUpperCase()}
               </Typography>
               <Typography>
-                {`${setAge(resume.age)}, ${resume.location}`}
+                {resume.age !== 0 ? `${setAge(resume.age)}, ${resume.location}` : `Не указано, ${resume.location}`}
               </Typography>
               <Divider variant="inset" />
               <Typography>
@@ -99,15 +78,16 @@ export default function LkCandidate() {
                 {resume.about}
               </Paper>
               <br />
+              <Typography>
+                {`Ожидаемый уровень заработной платы: ${resume.salary} руб.`}
+              </Typography>
+              <br />
               <Divider textAlign="left">КОНТАКТЫ</Divider>
               <Typography>
-                {resume.email}
+                {resume.email ? resume.email : 'Не указан'}
               </Typography>
               <Typography>
-                {resume.phoneNumber}
-              </Typography>
-              <Typography>
-                {resume.salary}
+                {resume.phoneNumber !== 0 ? resume.phoneNumber : 'Не указан'}
               </Typography>
             </Paper>
           </Box>
@@ -115,9 +95,6 @@ export default function LkCandidate() {
             <Button id="createResume" variant="outlined">
               СОЗДАТЬ РЕЗЮМЕ
             </Button>
-            {/* <Button id="editResume" variant="outlined">
-              РЕДАКТИРОВАТЬ РЕЗЮМЕ
-            </Button> */}
           </Link>
         </>
       ) : (
