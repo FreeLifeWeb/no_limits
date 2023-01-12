@@ -15,7 +15,7 @@ regRouter.post('/reg', async (req, res) => {
     if (!name || !email || !password) return res.status(400).json({ message: 'Все поля должны быть заполнены' });
     // пароль был введен? тогда хэшируем его
     const hashPassword = await hash(password, 10);
-    console.log(categoryId || 0);
+    // console.log(categoryId || 0);
     const [user, isCreated] = await User.findOrCreate({ // метод ищет в базе и если не нахит зап-ет
     // возвращает при этом найденный обьект и false либо созданный объект и true
       where: { email },
@@ -42,7 +42,7 @@ regRouter.post('/login', async (req, res) => {
     // ищем user в БД по email
     const user = await User.findOne({ where: { name } });
     // если не находим сообщаем что введенные им данные неверны
-    if (!user) return res.status(400).json({ message: 'Неверно введена почта или пароль пользователя' });
+    if (!user) return res.status(400).json({ message: 'Неверно введена логин или пароль пользователя' });
     // сравниваем введеный пароль и хэшированый пароль из БД;
     const isPassValid = await compare(password, user.password);
     // если не сходится сообщаем что введенные им данные неверны
@@ -83,15 +83,15 @@ regRouter.get('/logout', (req, res) => {
 regRouter.post('/vacansy/:id', async (req, res) => {
   const { id } = req.params;
   // console.log(id, '<----');
-  // try {
-  const userVac = await Vacancy.findAll({
-    where: { userId: id },
-    include: [{ all: true }],
-  });
-  res.json(userVac);
-  // } catch {
-  //   console.log('error');
-  // }
+  try {
+    const userVac = await Vacancy.findAll({
+      where: { userId: id },
+      include: [{ all: true }],
+    });
+    res.json(userVac);
+  } catch {
+    console.log('error');
+  }
 });
 
 module.exports = regRouter;

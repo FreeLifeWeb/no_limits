@@ -47,7 +47,7 @@ function App() {
               <Route path="/lkEmployer" element={<Employer />} />
               <Route path="/vacancy/:id/edit" element={<RedactOrCreateVacancy />} />
               <Route path="/myResponses" element={<UserResponses />} />
-              <Route path="/vacancy/responses" element={<VacancyResponses />} />
+              <Route path="/vacancy/responses/:id" element={<VacancyResponses />} />
               <Route path="/resume" element={<ListAllResume />} />
               <Route path="/chat" element={<Chat />} />
               <Route path="/reg" element={<Registration />} />

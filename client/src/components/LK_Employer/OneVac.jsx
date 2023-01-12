@@ -69,7 +69,7 @@ export default function BasicCard({ vacansy }) {
               >
                 Удалить
               </Button>
-              <NavLink to="/vacancy/responses" style={{ textDecoration: 'none' }}>
+              <NavLink to={`/vacancy/responses/${vacansy.id}`} style={{ textDecoration: 'none' }}>
                 <Button
                   size="small"
                 >

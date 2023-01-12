@@ -28,7 +28,8 @@ const setAge = (age) => {
 
 export default function LkCandidate() {
   const user = useSelector((store) => store.user);
-  const [resume, setResume] = useState(null);
+  const resume = useSelector((store) => store.resume);
+  // const [resume, setResume] = useState(null);
   const navigate = useNavigate();
 
   const startSpeach = (sentence) => {
@@ -55,12 +56,12 @@ export default function LkCandidate() {
   };
 
   useEffect(() => {
-    axios(`candidate/resume/get/${user.id}`)
-      .then((res) => setResume(res.data));
+  //   axios(`candidate/resume/get/${user.id}`)
+  //     .then((res) => setResume(res.data));
     startSpeach('Вам доступны команды "Чат" и "Вакансии". Нажмите enter, чтобы составить или редактировать резюме');
     setTimeout(() => {
       startHandler();
-    }, 7000);
+    }, 6000);
     const withoutResume = document.getElementById('createResume');
     withoutResume.focus();
   }, [resume?.name]);
@@ -100,7 +101,7 @@ export default function LkCandidate() {
         {' '}
         {listening ? 'on' : 'off'}
       </p>
-      {resume ? (
+      {resume.name ? (
         <>
           <Box marginTop={5}>
             <Paper elevation={3}>

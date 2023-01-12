@@ -101,27 +101,28 @@ export default function Vacancies() {
     }
   };
   const responseHandler = (id) => {
-    user ? (axios.post(`/api/response/${id}`)
-      .then(dispatch(getResponses(id)))
-      .then(startSpeach('ваше резюме отправлено'))
+    user ? (
+      axios.post(`/api/response/${id}`)
+        .then(dispatch(getResponses(id)))
+        .then(startSpeach('ваше резюме отправлено'))
     // .catch(console.log('error'));
     ) : (navigate('/reg'));
   };
 
-  useKeypress([' ', 'ArrowUp', 'ArrowDown', 'ArrowRight'], (e) => {
+  useKeypress([' ', 'ArrowRight', 'ArrowLeft', 'ArrowUp'], (e) => {
     if (e.key === ' ') {
       if (user?.status !== 'employer') {
         speak();
       }
     }
-    if (e.key === 'ArrowUp') {
+    if (e.key === 'ArrowRight') {
       nextHandler();
     }
-    if (e.key === 'ArrowDown') {
+    if (e.key === 'ArrowLeft') {
       prevHandler();
     }
-    if (e.key === 'ArrowRight') {
-      responseHandler();
+    if (e.key === 'ArrowUp' && user?.status !== true) {
+      responseHandler(vacancy.id);
     }
   });
 
@@ -162,13 +163,16 @@ export default function Vacancies() {
               <>
                 <Button
                   size="small"
-                  onClick={() => responseHandler(vacancy?.id)}
+                  onClick={() => {
+                    console.log(vacancy);
+                    responseHandler(vacancy?.title);
+                  }}
                 >
                   Откликнуться
                 </Button>
                 <Button
                   type="button"
-                  onClick={(e) => clickHandler(e)}
+                  onClick={() => clickHandler()}
                   size="small"
                 >
                   прослушать

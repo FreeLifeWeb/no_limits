@@ -4,8 +4,9 @@ import {
   Button, FormControl, FormControlLabel, FormGroup, Radio, RadioGroup, TextField,
 } from '@mui/material';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { setResume } from '../../redux/slices/resumeSlice';
 
 const synth = window.speechSynthesis;
 let voices = [synth];
@@ -13,8 +14,9 @@ let voices = [synth];
 export default function Test() {
   const user = useSelector((store) => store.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   // ------------------states---------------
-  const [resume, setResume] = useState({
+  const [inputs, setInputs] = useState({
     age: '',
     phoneNumber: '',
     location: '',
@@ -176,7 +178,7 @@ export default function Test() {
       stopHandler();
       e.preventDefault();
       setFocus((prev) => ({ ...prev, [currId]: false }));
-      setResume({ ...resume, [e.target.name]: editInterim(transcript) });
+      setInputs({ ...inputs, [e.target.name]: editInterim(transcript) });
       const example = document.getElementById(nextId);
       example.focus();
     }
@@ -185,7 +187,8 @@ export default function Test() {
   const submitHandler = (e) => {
     e.preventDefault();
     stopHandler();
-    axios.post(`candidate/resume/${user.id}`, resume);
+    axios.post(`candidate/resume/${user.id}`, inputs)
+      .then((res) => dispatch(setResume(res.data)));
     navigate(`/lkCandidate/${user.id}`);
   };
 
@@ -207,7 +210,7 @@ export default function Test() {
   const sphereHandler = (e) => {
     e.preventDefault();
     setCurrSphere(e.target.value);
-    setResume({ ...resume, sphere: e.target.value });
+    setInputs({ ...inputs, sphere: e.target.value });
     const example = document.getElementById('about');
     example.focus();
   };
@@ -226,7 +229,7 @@ export default function Test() {
             name="age"
             label="Возраст"
             type="text"
-            value={(focus.age ? transcript : resume.age)}
+            value={(focus.age ? transcript : inputs.age)}
             onFocus={() => focusHandler('age', 2500)}
             onKeyDown={(event) => enterHandler(event, 'phoneNumber', 'age')}
           />
@@ -236,7 +239,7 @@ export default function Test() {
             name="phoneNumber"
             label="Номер телефона"
             type="text"
-            value={(focus.phoneNumber ? transcript : resume.phoneNumber)}
+            value={(focus.phoneNumber ? transcript : inputs.phoneNumber)}
             onFocus={() => focusHandler('phoneNumber', 2700)}
             onKeyDown={(event) => enterHandler(event, 'location', 'phoneNumber')}
           />
@@ -247,7 +250,7 @@ export default function Test() {
             label="Город"
             type="text"
             id="location"
-            value={(focus.location ? transcript : resume.location)}
+            value={(focus.location ? transcript : inputs.location)}
             onFocus={() => focusHandler('location', 3000)}
             onKeyDown={(event) => enterHandler(event, 'radio1', 'location')}
           />
@@ -284,7 +287,7 @@ export default function Test() {
             label="Образование и опыт"
             type="text"
             id="about"
-            value={(focus.about ? editInterim(transcript) : resume.about)}
+            value={(focus.about ? editInterim(transcript) : inputs.about)}
             onFocus={() => focusHandler('about', 4500)}
             onKeyDown={(event) => enterHandler(event, 'salary', 'about')}
           />
@@ -295,7 +298,7 @@ export default function Test() {
             label="Заработная плата"
             type="text"
             id="salary"
-            value={(focus.salary ? transcript : resume.salary)}
+            value={(focus.salary ? transcript : inputs.salary)}
             onFocus={() => focusHandler('salary', 3000)}
             onKeyDown={(event) => enterHandler(event, 'submit', 'salary')}
           />
