@@ -37,14 +37,14 @@ candRouter.post('/resume/:id', async (req, res) => {
       name: req.session.user.name,
       age: toCutNum(age),
       email: req.session.user.email,
-      phoneNumber,
+      phoneNumber: toCutNum(phoneNumber),
       location,
       about,
       photo: '',
       salary: toCutNum(salary),
       sphereId,
+      categoryId: req.session.categoryId,
       userId: Number(id),
-      categoryId: 1,
     });
   } catch (err) {
     res.sendStatus(500);

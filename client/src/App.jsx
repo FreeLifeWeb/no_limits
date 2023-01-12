@@ -41,9 +41,9 @@ function App() {
               <Route path="/" element={<MainPage />} />
               <Route path="/vacancies" element={<Vacancies />} />
               <Route path="/vacancy/:id" element={<DetailVacancy />} />
-              <Route path={`lkCandidate/candidate/resume/${user?.id}`} element={<DetailUserResume />} />
+              <Route path="/lkCandidate/candidate/resume/:id" element={<DetailUserResume />} />
               <Route path="/favoriteRespons" element={<FavoriteResponses />} />
-              <Route path={`/lkCandidate/${user?.id}`} element={<LkCandidate />} />
+              <Route path="/lkCandidate/:id" element={<LkCandidate />} />
               <Route path="/lkEmployer" element={<Employer />} />
               <Route path="/vacancy/:id/edit" element={<RedactOrCreateVacancy />} />
               <Route path="/myResponses" element={<UserResponses />} />

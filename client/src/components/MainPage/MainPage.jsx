@@ -3,17 +3,20 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { useSelector } from 'react-redux';
+import MainPageCard from '../UI/mainPagecards/mainPageCard';
 
 export default function MainPage() {
   const synth = window.speechSynthesis;
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const vacansies = useSelector((state) => state.vacancies);
+  const resumes = useSelector((state) => state.resumes);
   let voices = [];
 
   const comands = { // фразы для озвучивания и подсказок
     greeting: 'Добро пожаловать на сайт Без ограничений, Вам доступно голосовое управление. Чтобы включить микрофон нажмите пробел',
-    allComandsForAll: 'Вам доступны следующие команды: Вакансии и Личный кабинет',
-    allComands: 'Вам доступны следующие команды: Вакансии, Личный кабинет',
+    allComandsForAll: 'Вам доступны следующие команды: Открыть Вакансии и Зарегистрироваться',
+    allComands: 'Вам доступны следующие команды: Открыть Вакансии и Открыть Личный кабинет',
   };
 
   const startSpeach = (sentence) => {
@@ -64,7 +67,7 @@ export default function MainPage() {
       matchInterim: true,
     },
     {
-      command: 'Личный кабинет',
+      command: 'Открыть Личный кабинет',
       callback: () => navigate(`/lkCandidate/${user.id}`),
       matchInterim: true,
     },
@@ -78,11 +81,11 @@ export default function MainPage() {
       </Container>
       <Container sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'spaceBetween' }}>
         <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          Список вакансий
+          {vacansies.map((vac) => <MainPageCard key={vac.id} vac={vac} />)}
         </Container>
 
         <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          Список специалистов
+          {resumes.map((resume) => <MainPageCard key={resume.id} vac={resume} />)}
         </Container>
       </Container>
     </div>

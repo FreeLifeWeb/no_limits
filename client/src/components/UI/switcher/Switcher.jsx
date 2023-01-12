@@ -2,7 +2,6 @@ import * as React from 'react';
 import clsx from 'clsx';
 import { styled } from '@mui/system';
 import { useSwitch } from '@mui/base/SwitchUnstyled';
-import { useEffect } from 'react';
 
 const blue = {
   500: '#007FFF',
@@ -82,10 +81,6 @@ export default function BasicSwitch({
     'Switch-disabled': disabled,
     'Switch-focusVisible': focusVisible,
   };
-
-  useEffect(() => {
-    console.log(checked);
-  }, [checked]);
 
   return (
     <BasicSwitchRoot className={clsx(stateClasses)}>

@@ -7,13 +7,23 @@ const {
 const apiRouter = express.Router();
 
 apiRouter.post('/sphere', async (req, res) => {
-  const sphereList = await Sphere.findAll();
-  res.json(sphereList);
+  try {
+    const sphereList = await Sphere.findAll();
+    res.json(sphereList);
+  } catch {
+    res.sendStatus(500);
+  }
 });
 
 apiRouter.post('/category', async (req, res) => {
-  const categoryList = await Category.findAll();
-  res.json(categoryList);
+  try {
+    const categoryList = await Category.findAll();
+    console.log(categoryList);
+    res.json(categoryList);
+  } catch (e) {
+    res.sendStatus(500);
+    console.log(e);
+  }
 });
 
 apiRouter.post('/vacansy', async (req, res) => {
@@ -88,8 +98,16 @@ apiRouter.post('/vacancy/responses/:id', async (req, res) => {
     const newEl = await Resume.findOne({ where: { userId: responses[i].userId } });
     result.push(newEl);
   }
-  console.log(result);
   res.json(result);
+});
+
+apiRouter.post('/resumes', async (req, res) => {
+  const resumes = await Resume.findAll({ include: [{ model: Category }, { model: Sphere }] });
+  try {
+    res.json(resumes);
+  } catch {
+    res.sendStatus(500);
+  }
 });
 
 module.exports = apiRouter;

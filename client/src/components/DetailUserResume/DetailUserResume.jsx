@@ -13,6 +13,26 @@ let voices = [synth];
 export default function Test() {
   const user = useSelector((store) => store.user);
   const navigate = useNavigate();
+  // ------------------states---------------
+  const [resume, setResume] = useState({
+    age: '',
+    phoneNumber: '',
+    location: '',
+    sphere: '',
+    about: '',
+    salary: '',
+  });
+  const [focus, setFocus] = useState({
+    age: false,
+    email: false,
+    phoneNumber: false,
+    location: false,
+    sphere: false,
+    about: false,
+    salary: false,
+  });
+  const [sphereList, setSphereList] = useState([]);
+  const [currSphere, setCurrSphere] = useState('');
 
   // -----------------handlers-----------
   const startHandler = () => {
@@ -41,6 +61,13 @@ export default function Test() {
       },
       matchInterim: true,
     },
+    {
+      command: 'Отмена',
+      callback: () => {
+        clearInput();
+      },
+      matchInterim: true,
+    },
   ];
 
   const {
@@ -49,6 +76,10 @@ export default function Test() {
     resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition({ commands });
+
+  function clearInput() {
+    resetTranscript();
+  }
 
   const DICTIONARY = {
     точка: '.',
@@ -118,28 +149,7 @@ export default function Test() {
     synth.speak(utterThis);
   };
 
-  // ------------------states---------------
-  const [resume, setResume] = useState({
-    age: '',
-    phoneNumber: '',
-    location: '',
-    sphere: '',
-    about: '',
-    salary: '',
-  });
-  const [focus, setFocus] = useState({
-    age: false,
-    email: false,
-    phoneNumber: false,
-    location: false,
-    sphere: false,
-    about: false,
-    salary: false,
-  });
-  const [sphereList, setSphereList] = useState([]);
-  const [currSphere, setCurrSphere] = useState('');
-
-  const greeting = 'Для заполнения полей используйте клавишу enter, cкажите "начать", чтобы приступить к созданию резюме скажите "назад" если хотите вернуться в личный кабинет';
+  const greeting = 'Для заполнения полей используйте клавишу enter, cкажите "начать", чтобы приступить к созданию резюме, скажите "назад", если хотите вернуться в личный кабинет, скажите "отмена" чтобы отчистить поле ввода. ';
 
   useEffect(() => {
     startSpeach(greeting);
