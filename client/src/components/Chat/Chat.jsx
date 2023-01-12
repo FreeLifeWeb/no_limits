@@ -12,6 +12,7 @@ import { getMessage } from '../../redux/actions/messageAction';
 
 export default function MainPage() {
   const user = useSelector((store) => store.user);
+  // console.log('iiiiii', user);
   useEffect(() => {
     const focusInput = document.getElementById('room');// автофокус на первом импуте при монтировании компонента
     focusInput.focus();// автофокус на первом импуте при монтировании компонента
@@ -39,9 +40,9 @@ export default function MainPage() {
   }, []);
   const [room, setRoom] = useState({
     roomId: '',
-    userName: '',
+    userName: user?.name,
   });
-  console.log('RRRRR', room);
+  // console.log('RRRRR', room);
   const [focus, setFocus] = useState({ // state  для заполнения только одного инпута
     roomName: false,
     nameChat: false,
@@ -194,14 +195,14 @@ export default function MainPage() {
                     placeholder="Room number..."
                     label="Room"
                   />
-                  <TextField
+                  {/* <TextField
                     id="name"
                     name="userName"
                     onChange={ChangeHandler}
                     type="text"
                     placeholder="Name..."
                     label="Name"
-                  />
+                  /> */}
                   <Button id="submit" type="submit" variant="contained">Submit</Button>
                 </FormGroup>
               </form>
@@ -219,10 +220,10 @@ export default function MainPage() {
                     type="text"
                     placeholder="Room number..."
                     onFocus={() => focusHandler('chatRoom', 'roomName')}
-                    onKeyDown={(e) => enterHandler(e, 'name', 'roomName')}
+                    onKeyDown={(e) => enterHandler(e, 'submit', 'roomName')}
                     label="Room"
                   />
-                  <TextField
+                  {/* <TextField
                     id="name"
                     name="userName"
                     onFocus={() => focusHandler('nameNick', 'nameChat')}
@@ -231,7 +232,7 @@ export default function MainPage() {
                     type="text"
                     placeholder="Name..."
                     label="Name"
-                  />
+                  /> */}
                   <Button id="submit" onFocus={() => SubFocus()} type="submit" variant="contained">Submit</Button>
                 </FormGroup>
               </form>
