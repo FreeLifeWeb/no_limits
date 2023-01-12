@@ -14,7 +14,10 @@ export const { setResumes } = resumesSlice.actions;
 
 export const getResumes = () => (dispatch) => {
   axios.post('/api/resumes')
-    .then((res) => dispatch(setResumes(res.data)));
+    .then((res) => {
+      console.log(res.data);
+      dispatch(setResumes(res.data));
+    });
 };
 
 export default resumesSlice.reducer;

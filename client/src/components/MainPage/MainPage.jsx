@@ -2,8 +2,10 @@ import React, { useEffect } from 'react';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MainPageCard from '../UI/mainPagecards/mainPageCard';
+import { getResumes } from '../../redux/slices/resumesSlice';
+import { getVacancies } from '../../redux/slices/vacanciesSlice';
 
 export default function MainPage() {
   const synth = window.speechSynthesis;
@@ -11,6 +13,7 @@ export default function MainPage() {
   const navigate = useNavigate();
   const vacansies = useSelector((state) => state.vacancies);
   const resumes = useSelector((state) => state.resumes);
+  const dispatch = useDispatch();
   let voices = [];
 
   const comands = { // фразы для озвучивания и подсказок
@@ -42,9 +45,14 @@ export default function MainPage() {
       }
       setTimeout(() => {
         SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
-      }, 3000);
+      }, 6000);
     }
   };
+
+  useEffect(() => {
+    dispatch(getVacancies());
+    dispatch(getResumes());
+  }, []);
 
   useEffect(() => { // сообщение при отсутствии поддержки WEB SPEECH API
     if (user?.status !== 'employer') {
@@ -69,7 +77,7 @@ export default function MainPage() {
     },
     {
       command: 'Открыть Личный кабинет',
-      callback: () => navigate('/lkCandidate'),
+      callback: () => navigate(`/lkCandidate/${user.id}`),
       matchInterim: true,
     },
     {

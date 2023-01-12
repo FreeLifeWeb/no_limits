@@ -13,6 +13,7 @@ const responsesSlice = createSlice({
 export const { setResponses } = responsesSlice.actions;
 
 export const getResponses = (id) => (dispatch) => {
+  console.log(id, 'gettttttt');
   axios.post(`/api/vacancy/responses/${id}`)
     .then((res) => dispatch(setResponses(res.data)));
 };

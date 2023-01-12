@@ -119,7 +119,7 @@ export default function ChatWindow({
           <img src="" alt="" />
         </header>
         <ul ref={messageScroll} id="chat">
-          {messages.map((message, index) => (
+          {messages?.map((message, index) => (
             (message.userName === user.name)
               ? (
                 <li key={index} className="you">

@@ -27,78 +27,99 @@ apiRouter.post('/category', async (req, res) => {
 });
 
 apiRouter.post('/vacansy', async (req, res) => {
-  const {
-    title, company, city, sphere, category, salary, time, format,
-  } = req.body;
-  const sp = await Sphere.findOne({ where: { title: sphere } });
-  const cat = await Category.findOne({ where: { title: category } });
-  await Vacancy.create({
-    userId: req.session.user.id,
-    title,
-    company,
-    city,
-    sphereId: sp.id,
-    categoryId: cat.id,
-    salary,
-    time,
-    format,
-  });
-  const newVac = await Vacancy.findOne({ where: { title }, include: [{ all: true }] });
-  res.json(newVac);
+  try {
+    const {
+      title, company, city, sphere, category, salary, time, format,
+    } = req.body;
+    const sp = await Sphere.findOne({ where: { title: sphere } });
+    const cat = await Category.findOne({ where: { title: category } });
+    await Vacancy.create({
+      userId: req.session.user.id,
+      title,
+      company,
+      city,
+      sphereId: sp.id,
+      categoryId: cat.id,
+      salary,
+      time,
+      format,
+    });
+    const newVac = await Vacancy.findOne({ where: { title }, include: [{ all: true }] });
+    res.json(newVac);
+    console.log(req.body, '<-----');
+  } catch {
+    console.log('err');
+  }
 });
 
 apiRouter.delete('/vacansy/:id', async (req, res) => {
-  const { id } = req.params;
-  await Vacancy.destroy({ where: { id } });
-  res.sendStatus(200);
+  try {
+    const { id } = req.params;
+    await Vacancy.destroy({ where: { id } });
+    res.sendStatus(200);
+  } catch {
+    console.log('err');
+  }
 });
 
 apiRouter.put('/vacansy/:id', async (req, res) => {
-  const { id } = req.params;
-  const {
-    title, company, city, sphere, category, salary, time, format,
-  } = req.body;
-  const sper = await Sphere.findOne({ where: { title: sphere } });
-  const categ = await Category.findOne({ where: { title: category } });
-  const vac = await Vacancy.findOne({ where: { id } });
-  vac.title = title;
-  vac.company = company;
-  vac.city = city;
-  vac.sphereId = sper.id;
-  vac.categoryId = categ.id;
-  vac.salary = salary;
-  vac.time = time;
-  vac.format = format;
-  await vac.save();
-  const result = await Vacancy.findOne({ where: { id }, include: [{ all: true }] });
-  res.json(result);
+  try {
+    const { id } = req.params;
+    const {
+      title, company, city, sphere, category, salary, time, format,
+    } = req.body;
+    const sper = await Sphere.findOne({ where: { title: sphere } });
+    const categ = await Category.findOne({ where: { title: category } });
+    const vac = await Vacancy.findOne({ where: { id } });
+    vac.title = title;
+    vac.company = company;
+    vac.city = city;
+    vac.sphereId = sper.id;
+    vac.categoryId = categ.id;
+    vac.salary = salary;
+    vac.time = time;
+    vac.format = format;
+    await vac.save();
+    const result = await Vacancy.findOne({ where: { id }, include: [{ all: true }] });
+    res.json(result);
+  } catch {
+    console.log('err');
+  }
 });
 
 apiRouter.post('/vacancies', async (req, res) => {
-  const vacancies = await Vacancy.findAll();
-  res.json(vacancies);
+  try {
+    const vacancies = await Vacancy.findAll();
+    res.json(vacancies);
+  } catch {
+    console.log('err');
+  }
 });
 
 apiRouter.post('/response/:id', async (req, res) => {
+  const { id } = req.params;
+  const userId = req.session.user.id;
   try {
-    const { id } = req.params;
-    const userId = req.session.user.id;
     await Response.create({ userId, vacancyId: id });
     res.sendStatus(200);
   } catch {
-    console.log('error');
+    res.sendStatus(500);
   }
 });
 
 apiRouter.post('/vacancy/responses/:id', async (req, res) => {
-  const { id } = req.params;
-  const responses = await Response.findAll({ where: { vacancyId: id } });
-  const result = [];
-  for (let i = 0; i < responses.length; i += 1) {
-    const newEl = await Resume.findOne({ where: { userId: responses[i].userId } });
-    result.push(newEl);
+  try {
+    const { id } = req.params;
+    const responses = await Response.findAll({ where: { vacancyId: id } });
+    const result = [];
+    for (let i = 0; i < responses.length; i += 1) {
+      const newEl = await Resume.findOne({ where: { userId: responses[i].userId } });
+      result.push(newEl);
+    }
+    res.json(result);
+  } catch {
+    console.log('err');
   }
-  res.json(result);
 });
 
 apiRouter.post('/resumes', async (req, res) => {

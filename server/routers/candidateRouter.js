@@ -32,20 +32,25 @@ candRouter.post('/resume/:id', async (req, res) => {
       age, phoneNumber, location, sphere, about, salary,
     } = req.body;
     const { id } = req.params;
+    console.log(req.session.user.id, '<=============');
     const sphereId = (await Sphere.findOne({ where: { title: sphere } })).id;// id
-    await Resume.create({
-      name: req.session.user.name,
-      age: toCutNum(age),
-      email: req.session.user.email,
-      phoneNumber: toCutNum(phoneNumber),
-      location,
-      about,
-      photo: '',
-      salary: toCutNum(salary),
-      sphereId,
-      categoryId: req.session.categoryId,
-      userId: Number(id),
+    const [resume, isCreated] = await Resume.findOrCreate({
+      where: { userId: +id },
+      defaults: {
+        name: req.session.user.name,
+        age: toCutNum(age),
+        email: req.session.user.email,
+        phoneNumber: toCutNum(phoneNumber),
+        location,
+        about,
+        photo: '',
+        salary: toCutNum(salary),
+        sphereId,
+        categoryId: req.session.user.categoryId,
+        userId: Number(id),
+      },
     });
+    res.json(resume);
   } catch (err) {
     res.sendStatus(500);
   }

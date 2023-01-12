@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSphereList } from '../../redux/slices/sphereListSlice';
 import { getCategoryList } from '../../redux/slices/categoryListSlice';
 import { createUserVac } from '../../redux/slices/userVacSlice';
+import { getVacancies } from '../../redux/slices/vacanciesSlice';
 
 export default function CreateVac({ vacansy, setIsEdit }) {
   const sphereList = useSelector((store) => store.sphereList);

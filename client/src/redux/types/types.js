@@ -8,3 +8,4 @@ export const SET_ERROR = 'SET_ERROR';
 export const SET_ROOM = 'SET_ROOM';
 export const SET_USERSIO = 'SET_USERSIO';
 export const SET_MESSAGE = 'SET_MESSAGE';
+export const SET_DATA = 'SET_DATA';
