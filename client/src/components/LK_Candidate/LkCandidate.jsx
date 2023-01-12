@@ -28,7 +28,7 @@ const setAge = (age) => {
 
 export default function LkCandidate() {
   const user = useSelector((store) => store.user);
-  const [resume, setResume] = useState({});
+  const [resume, setResume] = useState(null);
 
   const startSpeach = (sentence) => {
     voices = synth.getVoices();

@@ -13,7 +13,7 @@ export default function MainPage() {
   const comands = { // фразы для озвучивания и подсказок
     greeting: 'Добро пожаловать на сайт Без ограничений, Вам доступно голосовое управление. Чтобы включить микрофон нажмите пробел',
     allComandsForAll: 'Вам доступны следующие команды: Открыть Вакансии и Зарегистрироваться',
-    allComands: 'Вам доступны следующие команды: Открыть Вакансии',
+    allComands: 'Вам доступны следующие команды: Открыть Вакансии и Открыть Личный кабинет',
   };
 
   const startSpeach = (sentence) => {
@@ -62,6 +62,11 @@ export default function MainPage() {
     {
       command: 'Открыть Вакансии',
       callback: () => navigate('/vacancies'),
+      matchInterim: true,
+    },
+    {
+      command: 'Открыть Личный кабинет',
+      callback: () => navigate('/lkCandidate'),
       matchInterim: true,
     },
     {
