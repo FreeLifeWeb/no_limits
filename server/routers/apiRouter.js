@@ -7,13 +7,23 @@ const {
 const apiRouter = express.Router();
 
 apiRouter.post('/sphere', async (req, res) => {
-  const sphereList = await Sphere.findAll();
-  res.json(sphereList);
+  try {
+    const sphereList = await Sphere.findAll();
+    res.json(sphereList);
+  } catch {
+    res.sendStatus(500);
+  }
 });
 
 apiRouter.post('/category', async (req, res) => {
-  const categoryList = await Category.findAll();
-  res.json(categoryList);
+  try {
+    const categoryList = await Category.findAll();
+    console.log(categoryList);
+    res.json(categoryList);
+  } catch (e) {
+    res.sendStatus(500);
+    console.log(e);
+  }
 });
 
 apiRouter.post('/vacansy', async (req, res) => {

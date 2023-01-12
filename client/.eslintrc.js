@@ -39,5 +39,6 @@ module.exports = {
     'no-useless-escape': 0,
     'react/jsx-curly-brace-presence': 0,
     'no-unused-expressions': 0,
+    'no-use-before-define': 0,
   },
 };
