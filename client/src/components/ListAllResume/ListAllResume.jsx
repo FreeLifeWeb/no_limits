@@ -13,47 +13,60 @@ export default function ListAllResume() {
     dispatch(getResumes());
   }, []);
   return (
-    <Box>
+    <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {resumes?.map((resume) => (
-        <Card key={resume.id}>
-          <CardContent sx={{ Width: '50%', height: '50%' }}>
-            <br />
-            <Typography variant="h3">
-              {resume?.name}
-              ,
-              {resume?.age}
-            </Typography>
-            <br />
-            <Typography variant="h5">
-              {resume?.Category?.title}
-            </Typography>
-            <br />
-            <Typography sx={{ mb: 1.5 }} variant="h5">
-              {resume?.Sphere?.title}
-            </Typography>
-            <br />
-            <Typography sx={{ mb: 1.5 }} variant="h5">
-              {resume?.about}
-            </Typography>
-            <br />
-            <Typography variant="h5">
-              {resume?.salary}
-              {' '}
-              рублей
-            </Typography>
-            <br />
-          </CardContent>
-          <CardActions>
-            {(user?.status === 'employer') ? (
-              <Button
-                size="small"
-                // onClick={() => responseHandler(resume?.id)}
-              >
-                Откликнуться
-              </Button>
-            ) : (<></>)}
-          </CardActions>
-        </Card>
+        <>
+          <br />
+          <Card
+            key={resume.id}
+            style={{
+              width: '70%',
+            }}
+          >
+            <CardContent
+              sx={{
+                Width: '50%',
+                height: '50%',
+                lineHeight: 'normal',
+              }}
+            >
+              <br />
+              <Typography variant="h3">
+                {resume?.name}
+                ,
+                {resume?.age}
+              </Typography>
+              <br />
+              <Typography variant="h5">
+                {resume?.Category?.title}
+              </Typography>
+              <br />
+              <Typography sx={{ mb: 1.5 }} variant="h5">
+                {resume?.Sphere?.title}
+              </Typography>
+              <br />
+              <Typography sx={{ mb: 1.5 }} variant="h5">
+                {resume?.about}
+              </Typography>
+              <br />
+              <Typography variant="h5">
+                {resume?.salary}
+                {' '}
+                рублей
+              </Typography>
+              <br />
+            </CardContent>
+            <CardActions>
+              {(user?.status === 'employer') ? (
+                <Button
+                  size="small"
+                >
+                  Пригласить в чат
+                </Button>
+              ) : (<></>)}
+            </CardActions>
+          </Card>
+        </>
       ))}
     </Box>
   );

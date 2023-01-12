@@ -63,7 +63,7 @@ export default function LkCandidate() {
     }, 7000);
     const withoutResume = document.getElementById('createResume');
     withoutResume.focus();
-  }, []);
+  }, [resume?.name]);
 
   const commands = [
     {
