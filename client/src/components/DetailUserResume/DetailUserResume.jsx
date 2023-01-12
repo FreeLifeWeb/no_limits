@@ -4,8 +4,9 @@ import {
   Button, FormControl, FormControlLabel, FormGroup, Radio, RadioGroup, TextField,
 } from '@mui/material';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { setResumes } from '../../redux/slices/resumesSlice';
 
 const synth = window.speechSynthesis;
 let voices = [synth];
@@ -13,6 +14,7 @@ let voices = [synth];
 export default function Test() {
   const user = useSelector((store) => store.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   // ------------------states---------------
   const [resume, setResume] = useState({
     age: '',
@@ -186,6 +188,7 @@ export default function Test() {
     e.preventDefault();
     stopHandler();
     axios.post(`candidate/resume/${user.id}`, resume);
+    dispatch(setResumes());
     navigate(`/lkCandidate/${user.id}`);
   };
 
