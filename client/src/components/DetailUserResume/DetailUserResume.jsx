@@ -40,7 +40,8 @@ export default function Test() {
         navigate(`/lkCandidate/${user.id}`);
       },
       matchInterim: true,
-    }, {
+    },
+    // {
     //   command: 'Отмена',
     //   callback: () => {
     //     console.log(document.activeElement);
