@@ -64,7 +64,7 @@ export default function LkCandidate() {
     }, 6000);
     const withoutResume = document.getElementById('createResume');
     withoutResume.focus();
-  }, [resume?.name]);
+  }, []);
 
   const commands = [
     {
@@ -102,7 +102,7 @@ export default function LkCandidate() {
         {' '}
         {listening ? '🟢' : '🔴'}
       </p>
-      {resume.name ? (
+      {resume?.name ? (
         <>
           <Box marginTop={5}>
             <Paper elevation={3}>
@@ -111,22 +111,22 @@ export default function LkCandidate() {
                 {user.name?.toUpperCase()}
               </Typography>
               <Typography>
-                {resume.age !== 0 ? `${setAge(resume.age)}, ${resume.location}` : `Не указано, ${resume.location}`}
+                {resume?.age !== 0 ? `${setAge(resume.age)}, ${resume?.location}` : `Не указано, ${resume?.location}`}
               </Typography>
               <Divider variant="inset" />
               <Typography>
-                {resume.sphere}
+                {resume?.sphere}
               </Typography>
               <br />
               <Typography>
                 О кандидате:
               </Typography>
               <Paper variant="outlined">
-                {resume.about}
+                {resume?.about}
               </Paper>
               <br />
               <Typography>
-                {`Ожидаемый уровень заработной платы: ${resume.salary} руб.`}
+                {`Ожидаемый уровень заработной платы: ${resume?.salary} руб.`}
               </Typography>
               <br />
               <Divider textAlign="left">КОНТАКТЫ</Divider>
@@ -134,7 +134,7 @@ export default function LkCandidate() {
                 {user.email}
               </Typography>
               <Typography>
-                {resume.phoneNumber !== 0 ? resume.phoneNumber : 'Не указан'}
+                {resume?.phoneNumber !== 0 ? resume?.phoneNumber : 'Не указан'}
               </Typography>
             </Paper>
           </Box>
