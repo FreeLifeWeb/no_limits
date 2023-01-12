@@ -3,14 +3,17 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import useKeypress from 'react-use-keypress';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { getVacancies } from '../../redux/slices/vacanciesSlice';
 import { getResponses } from '../../redux/slices/responsesSlice';
 
 export default function Vacancies() {
   const synth = window.speechSynthesis;
   const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const startSpeach = (sentence) => {
     const voices = synth.getVoices();
@@ -44,6 +47,37 @@ export default function Vacancies() {
     );
   };
 
+  const startHandler = () => {
+    SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
+  };
+
+  const stopHandler = () => {
+    SpeechRecognition.abortListening();
+  };
+
+  const commands = [
+    {
+      command: 'Личный кабинет',
+      callback: () => {
+        stopHandler();
+        navigate(`/lkCandidate/${user.id}`);
+      },
+      matchInterim: true,
+    },
+    {
+      command: 'Чат',
+      callback: () => {
+        stopHandler();
+        navigate('/chat');
+      },
+      matchInterim: true,
+    },
+  ];
+
+  const {
+    listening,
+  } = useSpeechRecognition({ commands });
+
   useEffect(() => {
     dispatch(getVacancies());
   }, []);
@@ -66,10 +100,13 @@ export default function Vacancies() {
         startSpeach(
           `Для прослушивания вакансии --- нажмите Пробел
          ----
-         Чтобы листать вакансии --- используйте клавиши вверх и вниз`,
+         Чтобы листать вакансии --- используйте клавиши вверх и вниз
+         ---
+         Вам доступны команды "Чат" и "Личный кабинет"`,
         );
       }
     }
+    startHandler();
   }, [index]);
 
   const clickHandler = () => {
@@ -117,6 +154,11 @@ export default function Vacancies() {
       display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh',
     }}
     >
+      <Typography marginTop={3}>
+        Microphone:
+        {' '}
+        {listening ? 'on' : 'off'}
+      </Typography>
       <Card>
         <CardContent sx={{ Width: '50%', height: '50%' }}>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>

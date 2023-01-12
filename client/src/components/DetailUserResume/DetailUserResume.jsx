@@ -5,12 +5,14 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const synth = window.speechSynthesis;
 let voices = [synth];
 
 export default function Test() {
   const user = useSelector((store) => store.user);
+  const navigate = useNavigate();
 
   // -----------------handlers-----------
   const startHandler = () => {
@@ -26,7 +28,7 @@ export default function Test() {
       command: 'Начать',
       callback: () => {
         stopHandler();
-        const example = document.getElementById('name');
+        const example = document.getElementById('age');
         example.focus();
       },
       matchInterim: true,
@@ -34,7 +36,8 @@ export default function Test() {
     {
       command: 'Назад',
       callback: () => {
-        window.location.href = '/lkCandidate';
+        stopHandler();
+        navigate(`/lkCandidate/${user.id}`);
       },
       matchInterim: true,
     },
@@ -81,7 +84,6 @@ export default function Test() {
   }
 
   const toSpeak = {
-    name: 'Пожалуйста, назовите Ваше полное имя',
     age: 'Назовите Ваш возраст',
     email: 'Продиктуйте адрес Вашей электронной почты',
     phoneNumber: 'Продиктуйте Ваш телефонный номер',
@@ -118,7 +120,6 @@ export default function Test() {
 
   // ------------------states---------------
   const [resume, setResume] = useState({
-    name: '',
     age: '',
     phoneNumber: '',
     location: '',
@@ -127,7 +128,6 @@ export default function Test() {
     salary: '',
   });
   const [focus, setFocus] = useState({
-    name: false,
     age: false,
     email: false,
     phoneNumber: false,
@@ -153,7 +153,6 @@ export default function Test() {
 
   const focusHandler = (id, time) => {
     resetHandler();
-    // stopHandler();
     const field = toSpeak[id];
     startSpeach(field);
     setTimeout(() => {
@@ -175,8 +174,9 @@ export default function Test() {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    stopHandler();
     axios.post(`candidate/resume/${user.id}`, resume);
-    window.location.href = ` /lkCandidate/${user.id}`;
+    navigate(`/lkCandidate/${user.id}`);
   };
 
   const optionFocusHandler = (id) => {
@@ -211,16 +211,6 @@ export default function Test() {
             {' '}
             {listening ? 'on' : 'off'}
           </p>
-          <TextField
-            id="name"
-            label="Ф.И.О"
-            name="name"
-            value={(focus.name ? transcript : resume.name)}
-            onFocus={() => focusHandler('name', 2500)}
-            onKeyDown={(event) => enterHandler(event, 'age', 'name')}
-          />
-          {' '}
-          <br />
           <TextField
             id="age"
             name="age"
@@ -310,7 +300,6 @@ export default function Test() {
             Сохранить
 
           </Button>
-
         </FormGroup>
       </form>
     </div>

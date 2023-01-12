@@ -11,13 +11,25 @@ export default function ButtonAppBar() {
   const dispatch = useDispatch();
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ flexGrow: 1, borderRadius: '11px', marginTop: '10px' }}>
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-around' }}>
+    <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+      <AppBar
+        position="static"
+        sx={{
+          width: '97%',
+          height: '80px',
+          borderRadius: '11px',
+          marginTop: '10px',
+          backgroundColor: '#4d603b',
+        }}
+      >
+        <Toolbar sx={{
+          display: 'flex', justifyContent: 'space-around', alignItems: 'stretch', backgroundColor: '#4d603b',
+        }}
+        >
           <div>
             <NavLink to="/" style={{ textDecoration: 'none' }}>
               <Button variant="text" sx={{ color: 'white' }}>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '36px' }}>
                   Без ограничений
                 </Typography>
               </Button>
@@ -26,14 +38,14 @@ export default function ButtonAppBar() {
           <div>
             <NavLink to="/vacancies" style={{ textDecoration: 'none' }}>
               <Button variant="text" sx={{ color: 'white' }}>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '1rem' }}>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '2rem' }}>
                   Вакансии
                 </Typography>
               </Button>
             </NavLink>
             <NavLink to="/resume" style={{ textDecoration: 'none' }}>
               <Button variant="text" sx={{ color: 'white' }}>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '1rem' }}>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '2rem' }}>
                   Специалисты
                 </Typography>
               </Button>
@@ -44,14 +56,14 @@ export default function ButtonAppBar() {
                 <>
                   <NavLink to="/chat" style={{ textDecoration: 'none' }}>
                     <Button variant="text" sx={{ color: 'white' }}>
-                      <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '1rem' }}>
+                      <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '2rem' }}>
                         Чат
                       </Typography>
                     </Button>
                   </NavLink>
                   <NavLink to="/" style={{ textDecoration: 'none' }}>
                     <Button variant="text" onClick={() => dispatch(logoutUser())} sx={{ color: 'white' }}>
-                      <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '1rem' }}>
+                      <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '2rem' }}>
                         Выйти
                       </Typography>
                     </Button>
@@ -62,14 +74,14 @@ export default function ButtonAppBar() {
                 <>
                   <NavLink to="reg" style={{ textDecoration: 'none' }}>
                     <Button variant="text" sx={{ color: 'white' }}>
-                      <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '1rem' }}>
+                      <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '2rem' }}>
                         Регистрация
                       </Typography>
                     </Button>
                   </NavLink>
                   <NavLink to="/log" style={{ textDecoration: 'none' }}>
                     <Button variant="text" sx={{ color: 'white' }}>
-                      <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '1rem' }}>
+                      <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '2rem' }}>
                         Войти
                       </Typography>
                     </Button>
@@ -81,7 +93,7 @@ export default function ButtonAppBar() {
               ? (
                 <NavLink to={user.status === 'employer' ? '/lkEmployer' : `/lkCandidate/${user.id}`} style={{ textDecoration: 'none' }}>
                   <Button variant="text" sx={{ color: 'white' }}>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '1rem' }}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '2rem' }}>
                       Личный кабинет
                     </Typography>
                   </Button>

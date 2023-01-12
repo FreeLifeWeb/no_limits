@@ -12,14 +12,13 @@ export default function MainPage() {
 
   const comands = { // фразы для озвучивания и подсказок
     greeting: 'Добро пожаловать на сайт Без ограничений, Вам доступно голосовое управление. Чтобы включить микрофон нажмите пробел',
-    allComandsForAll: 'Вам доступны следующие команды: Открыть Вакансии и Зарегистрироваться',
-    allComands: 'Вам доступны следующие команды: Открыть Вакансии',
+    allComandsForAll: 'Вам доступны следующие команды: Вакансии и Личный кабинет',
+    allComands: 'Вам доступны следующие команды: Вакансии, Личный кабинет',
   };
 
   const startSpeach = (sentence) => {
     voices = synth.getVoices();
     const utterThis = new SpeechSynthesisUtterance(sentence);
-
     const milena = voices.find((voice) => voice.name === 'Milena');
     utterThis.voice = milena;
     utterThis.pitch = 1;
@@ -60,13 +59,13 @@ export default function MainPage() {
 
   const commands = [
     {
-      command: 'Открыть Вакансии',
+      command: 'Вакансии',
       callback: () => navigate('/vacancies'),
       matchInterim: true,
     },
     {
-      command: 'Зарегистрироваться',
-      callback: () => navigate('/reg'),
+      command: 'Личный кабинет',
+      callback: () => navigate(`/lkCandidate/${user.id}`),
       matchInterim: true,
     },
   ];

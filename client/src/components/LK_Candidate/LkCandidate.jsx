@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { useSelector } from 'react-redux';
 import {
-  Paper, Typography, Box, Link, Divider,
+  Paper, Typography, Box, Divider, Button, IconButton,
 } from '@mui/material';
 import axios from 'axios';
-import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const synth = window.speechSynthesis;
 let voices = [synth];
@@ -29,6 +29,7 @@ const setAge = (age) => {
 export default function LkCandidate() {
   const user = useSelector((store) => store.user);
   const [resume, setResume] = useState({});
+  const navigate = useNavigate();
 
   const startSpeach = (sentence) => {
     voices = synth.getVoices();
@@ -45,67 +46,123 @@ export default function LkCandidate() {
     synth.speak(utterThis);
   };
 
+  const startHandler = () => {
+    SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
+  };
+
+  const stopHandler = () => {
+    SpeechRecognition.abortListening();
+  };
+
   useEffect(() => {
     axios(`candidate/resume/get/${user.id}`)
       .then((res) => setResume(res.data));
-    startSpeach('Нажмите enter, чтобы составить резюме');
-    const withResume = document.getElementById('editResume');
+    startSpeach('Вам доступны команды "Чат" и "Вакансии". Нажмите enter, чтобы составить или редактировать резюме');
+    setTimeout(() => {
+      startHandler();
+    }, 7000);
     const withoutResume = document.getElementById('createResume');
     withoutResume.focus();
   }, []);
 
-  return (
-    <div className="container">
-      {resume ? (
-        <>
-          <Box marginTop={5}>
-            <Paper elevation={3}>
-              <Divider>РЕЗЮМЕ КАНДИДАТА</Divider>
-              <Typography fontSize={25}>
-                {resume.name?.toUpperCase()}
-              </Typography>
-              <Typography>
-                {resume.age !== 0 ? `${setAge(resume.age)}, ${resume.location}` : `Не указано, ${resume.location}`}
-              </Typography>
-              <Divider variant="inset" />
-              <Typography>
-                {resume.sphere}
-              </Typography>
-              <br />
-              <Typography>
-                О кандидате:
-              </Typography>
-              <Paper variant="outlined">
-                {resume.about}
-              </Paper>
-              <br />
-              <Typography>
-                {`Ожидаемый уровень заработной платы: ${resume.salary} руб.`}
-              </Typography>
-              <br />
-              <Divider textAlign="left">КОНТАКТЫ</Divider>
-              <Typography>
-                {resume.email ? resume.email : 'Не указан'}
-              </Typography>
-              <Typography>
-                {resume.phoneNumber !== 0 ? resume.phoneNumber : 'Не указан'}
-              </Typography>
-            </Paper>
-          </Box>
-          <NavLink to={`/candidate/resume/${user.id}`}>
-            <Button id="createResume" type="click" variant="outlined">
-              СОЗДАТЬ РЕЗЮМЕ
-            </Button>
-          </NavLink>
-        </>
-      ) : (
-        <NavLink to={`/candidate/resume/${user.id}`}>
-          <Button id="createResume" type="click" variant="outlined">
-            СОЗДАТЬ РЕЗЮМЕ
-          </Button>
-        </NavLink>
-      )}
+  const commands = [
+    {
+      command: 'Вакансии',
+      callback: () => {
+        stopHandler();
+        navigate('/vacancies');
+      },
+      matchInterim: true,
+    },
+    {
+      command: 'Чат',
+      callback: () => {
+        stopHandler();
+        navigate('/chat');
+      },
+      matchInterim: true,
+    },
+  ];
 
-    </div>
+  const clickHandler = () => {
+    stopHandler();
+    navigate(`/lkCandidate/candidate/resume/${user.id}`);
+  };
+
+  const {
+    listening,
+  } = useSpeechRecognition({ commands });
+
+  return (
+    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+      <Box sx={{
+        width: '80%', flexDirection: 'column', display: 'flex', justifyContent: 'center',
+      }}
+      >
+        <Typography marginTop={3}>
+          Microphone:
+          {' '}
+          {listening ? 'on' : 'off'}
+        </Typography>
+        {resume ? (
+          <>
+            <Box marginTop={3}>
+              <Paper elevation={3}>
+                <Divider>
+                  <Typography fontSize={20}>
+                    РЕЗЮМЕ КАНДИДАТА
+                  </Typography>
+                </Divider>
+                <Box sx={{ marginLeft: '20px', marginRight: '10px' }}>
+                  <Box sx={{ backgroundColor: '#746F72', borderRadius: 4 }}>
+                    <Typography fontSize={30} sx={{ marginLeft: '20px' }}>
+                      {user.name?.toUpperCase()}
+                    </Typography>
+                    <Typography sx={{ marginLeft: '20px' }}>
+                      {resume.age !== 0 ? `${setAge(resume.age)}, ${resume.location}` : `Не указано, ${resume.location}`}
+                    </Typography>
+                  </Box>
+                  <Divider variant="inset" />
+                  <Typography>
+                    {resume.sphere}
+                  </Typography>
+                  <br />
+                  <Typography>
+                    О кандидате:
+                  </Typography>
+                  <Box sx={{ backgroundColor: 'aliceblue', borderRadius: 4 }}>
+                    <Paper variant="outlined">
+                      {resume.about}
+                    </Paper>
+                  </Box>
+                  <br />
+                  <Typography>
+                    {`Ожидаемый уровень заработной платы: ${resume.salary} руб.`}
+                  </Typography>
+                  <br />
+                  <Divider textAlign="left">КОНТАКТЫ</Divider>
+                  <Box sx={{ backgroundColor: 'aliceblue', borderRadius: 4 }}>
+                    <Typography>
+                      {resume.phoneNumber !== 0 ? resume.phoneNumber : 'Не указан'}
+                    </Typography>
+                    <Typography>
+                      {user.email}
+                    </Typography>
+                  </Box>
+                  <br />
+                </Box>
+              </Paper>
+            </Box>
+          </>
+        ) : (
+          <>
+          </>
+        )}
+        <br />
+        <Button id="createResume" type="click" variant="outlined" size="large" onClick={clickHandler}>
+          СОЗДАТЬ/РЕДАКТИРОВАТЬ РЕЗЮМЕ
+        </Button>
+      </Box>
+    </Box>
   );
 }
