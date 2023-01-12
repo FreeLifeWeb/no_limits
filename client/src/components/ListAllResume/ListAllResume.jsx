@@ -20,18 +20,16 @@ export default function ListAllResume() {
             <br />
             <Typography variant="h3">
               {resume?.name}
-            </Typography>
-            <br />
-            <Typography variant="h4">
+              ,
               {resume?.age}
             </Typography>
             <br />
             <Typography variant="h5">
-              {resume?.category}
+              {resume?.Category?.title}
             </Typography>
             <br />
             <Typography sx={{ mb: 1.5 }} variant="h5">
-              {resume?.sphere}
+              {resume?.Sphere?.title}
             </Typography>
             <br />
             <Typography sx={{ mb: 1.5 }} variant="h5">

@@ -12,7 +12,7 @@ import { getMessage } from '../../redux/actions/messageAction';
 
 export default function MainPage() {
   const user = useSelector((store) => store.user);
-  // console.log('iiiiii', user);
+  console.log('iiiiii', user);
   useEffect(() => {
     const focusInput = document.getElementById('room');// автофокус на первом импуте при монтировании компонента
     focusInput.focus();// автофокус на первом импуте при монтировании компонента
@@ -42,7 +42,7 @@ export default function MainPage() {
     roomId: '',
     userName: user?.name,
   });
-  // console.log('RRRRR', room);
+  console.log('RRRRR', room);
   const [focus, setFocus] = useState({ // state  для заполнения только одного инпута
     roomName: false,
     nameChat: false,
@@ -239,7 +239,7 @@ export default function MainPage() {
             )
         )
         : (
-          <ChatWindow {...state} onAddMessage={addMessage} startSpeach={startSpeach} />
+          <ChatWindow {...state} user={user} onAddMessage={addMessage} startSpeach={startSpeach} />
         )}
     </Box>
   );
