@@ -5,12 +5,19 @@ import React, { useEffect, useState } from 'react';
 import useKeypress from 'react-use-keypress';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { getVacancies } from '../../redux/slices/vacanciesSlice';
 import { getResponses } from '../../redux/slices/responsesSlice';
 
 export default function Vacancies() {
-  const synth = window.speechSynthesis;
   const user = useSelector((state) => state.user);
+  const vacancies = useSelector((store) => store.vacancies);
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const synth = window.speechSynthesis;
 
   const startSpeach = (sentence) => {
     const voices = synth.getVoices();
@@ -26,20 +33,20 @@ export default function Vacancies() {
     synth.speak(utterThis);
   };
 
-  const vacancies = useSelector((store) => store.vacancies);
-  const dispatch = useDispatch();
   const [index, setIndex] = useState(0);
   const [vacancy, setVacancy] = useState(null);
 
   const speak = () => {
     startSpeach(
       `Должность --- ${vacancy?.title}
-       ---
+       ----
        Компания --- ${vacancy?.company}
-       ---
+       ----
+       Город --- ${vacancy?.city}
+       ----
        Формат  --- ${vacancy?.format}
-       ---
-       Заработная плата -- ${vacancy?.salary} рублей
+       ----
+       Заработная плата --- ${vacancy?.salary} рублей
       `,
     );
   };
@@ -66,7 +73,9 @@ export default function Vacancies() {
         startSpeach(
           `Для прослушивания вакансии --- нажмите Пробел
          ----
-         Чтобы листать вакансии --- используйте клавиши вверх и вниз`,
+         Чтобы листать вакансии --- используйте клавиши вверх и вниз
+         ----
+         Чтобы отправить резюме --- нажмите на клавишу стрелки вправо`,
         );
       }
     }
@@ -92,13 +101,14 @@ export default function Vacancies() {
     }
   };
   const responseHandler = (id) => {
-    axios.post(`/api/response/${id}`)
+    user ? (axios.post(`/api/response/${id}`)
       .then(dispatch(getResponses(id)))
-      .then(startSpeach('ваше резюме отправлено'));
+      .then(startSpeach('ваше резюме отправлено'))
     // .catch(console.log('error'));
+    ) : (navigate('/reg'));
   };
 
-  useKeypress([' ', 'ArrowUp', 'ArrowDown'], (e) => {
+  useKeypress([' ', 'ArrowUp', 'ArrowDown', 'ArrowRight'], (e) => {
     if (e.key === ' ') {
       if (user?.status !== 'employer') {
         speak();
@@ -110,6 +120,9 @@ export default function Vacancies() {
     if (e.key === 'ArrowDown') {
       prevHandler();
     }
+    if (e.key === 'ArrowRight') {
+      responseHandler();
+    }
   });
 
   return (
@@ -117,69 +130,82 @@ export default function Vacancies() {
       display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh',
     }}
     >
-      <Card>
-        <CardContent sx={{ Width: '50%', height: '50%' }}>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Должность:
-            {' '}
-            {vacancy?.title}
-          </Typography>
-          <Typography variant="h5" component="div">
-            Компания:
-            {' '}
-            {vacancy?.company}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Формат:
-            {' '}
-            {vacancy?.format}
-          </Typography>
-          <Typography variant="body2">
-            Заработная плата:
-            {' '}
-            {vacancy?.salary}
-            {' '}
-            рублей
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button
-            size="small"
-            onClick={() => responseHandler(vacancy?.id)}
-          >
-            Откликнуться
-          </Button>
-          {(index < vacancies.length - 1) ? (
-            <Button
-              type="button"
-              onClick={() => {
-                nextHandler();
-              }}
-              size="small"
-            >
-              Далее
-            </Button>
-          ) : (<></>)}
-          {index ? (
-            <Button
-              type="button"
-              onClick={() => {
-                prevHandler();
-              }}
-              size="small"
-            >
-              Назад
-            </Button>
-          ) : (<></>)}
-          <Button
-            type="button"
-            onClick={(e) => clickHandler(e)}
-            size="small"
-          >
-            прослушать
-          </Button>
-        </CardActions>
-      </Card>
+      {vacancy?.title ? (
+        <Card>
+          <CardContent sx={{ Width: '50%', height: '50%' }}>
+            <br />
+            <Typography variant="h3">
+              {vacancy?.title}
+            </Typography>
+            <br />
+            <Typography variant="h4">
+              {vacancy?.company}
+            </Typography>
+            <br />
+            <Typography variant="h5">
+              {vacancy?.city}
+            </Typography>
+            <br />
+            <Typography sx={{ mb: 1.5 }} variant="h5">
+              {vacancy?.format}
+            </Typography>
+            <br />
+            <Typography variant="h5">
+              {vacancy?.salary}
+              {' '}
+              рублей
+            </Typography>
+            <br />
+          </CardContent>
+          <CardActions>
+            {(user?.status !== 'employer') ? (
+              <>
+                <Button
+                  size="small"
+                  onClick={() => responseHandler(vacancy?.id)}
+                >
+                  Откликнуться
+                </Button>
+                <Button
+                  type="button"
+                  onClick={(e) => clickHandler(e)}
+                  size="small"
+                >
+                  прослушать
+                </Button>
+              </>
+            ) : (<></>)}
+
+            {(index < vacancies.length - 1) ? (
+              <Button
+                type="button"
+                onClick={() => {
+                  nextHandler();
+                }}
+                size="small"
+              >
+                Далее
+              </Button>
+            ) : (<></>)}
+            {index ? (
+              <Button
+                type="button"
+                onClick={() => {
+                  prevHandler();
+                }}
+                size="small"
+              >
+                Назад
+              </Button>
+            ) : (<></>)}
+          </CardActions>
+        </Card>
+      ) : (
+        <Box>
+          Доступных вакансий нет
+        </Box>
+      )}
+
     </Box>
   );
 }
