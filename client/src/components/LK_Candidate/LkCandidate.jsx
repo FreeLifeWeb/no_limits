@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { useSelector } from 'react-redux';
 import {
-  Paper, Typography, Box, Link, Divider,
+  Paper, Typography, Box, Link, Divider, Button,
 } from '@mui/material';
 import axios from 'axios';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const synth = window.speechSynthesis;
 let voices = [synth];
@@ -29,6 +29,7 @@ const setAge = (age) => {
 export default function LkCandidate() {
   const user = useSelector((store) => store.user);
   const [resume, setResume] = useState(null);
+  const navigate = useNavigate();
 
   const startSpeach = (sentence) => {
     voices = synth.getVoices();
@@ -45,24 +46,66 @@ export default function LkCandidate() {
     synth.speak(utterThis);
   };
 
+  const startHandler = () => {
+    SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
+  };
+
+  const stopHandler = () => {
+    SpeechRecognition.abortListening();
+  };
+
   useEffect(() => {
     axios(`candidate/resume/get/${user.id}`)
       .then((res) => setResume(res.data));
-    startSpeach('Нажмите enter, чтобы составить резюме');
-    const withResume = document.getElementById('editResume');
+    startSpeach('Вам доступны команды "Чат" и "Вакансии". Нажмите enter, чтобы составить или редактировать резюме');
+    setTimeout(() => {
+      startHandler();
+    }, 7000);
     const withoutResume = document.getElementById('createResume');
     withoutResume.focus();
   }, []);
 
+  const commands = [
+    {
+      command: 'Вакансии',
+      callback: () => {
+        stopHandler();
+        navigate('/vacancies');
+      },
+      matchInterim: true,
+    },
+    {
+      command: 'Чат',
+      callback: () => {
+        stopHandler();
+        navigate('/chat');
+      },
+      matchInterim: true,
+    },
+  ];
+
+  const clickHandler = () => {
+    stopHandler();
+  };
+
+  const {
+    listening,
+  } = useSpeechRecognition({ commands });
+
   return (
     <div className="container">
+      <p>
+        Microphone:
+        {' '}
+        {listening ? 'on' : 'off'}
+      </p>
       {resume ? (
         <>
           <Box marginTop={5}>
             <Paper elevation={3}>
               <Divider>РЕЗЮМЕ КАНДИДАТА</Divider>
               <Typography fontSize={25}>
-                {resume.name?.toUpperCase()}
+                {user.name?.toUpperCase()}
               </Typography>
               <Typography>
                 {resume.age !== 0 ? `${setAge(resume.age)}, ${resume.location}` : `Не указано, ${resume.location}`}
@@ -85,27 +128,26 @@ export default function LkCandidate() {
               <br />
               <Divider textAlign="left">КОНТАКТЫ</Divider>
               <Typography>
-                {resume.email ? resume.email : 'Не указан'}
+                {user.email}
               </Typography>
               <Typography>
                 {resume.phoneNumber !== 0 ? resume.phoneNumber : 'Не указан'}
               </Typography>
             </Paper>
           </Box>
-          <NavLink to={`/candidate/resume/${user.id}`}>
+          <NavLink to={`candidate/resume/${user.id}`} onClick={clickHandler}>
             <Button id="createResume" type="click" variant="outlined">
-              СОЗДАТЬ РЕЗЮМЕ
+              РЕДАКТИРОВАТЬ РЕЗЮМЕ
             </Button>
           </NavLink>
         </>
       ) : (
-        <NavLink to={`/candidate/resume/${user.id}`}>
+        <NavLink to={`candidate/resume/${user.id}`} onClick={clickHandler}>
           <Button id="createResume" type="click" variant="outlined">
             СОЗДАТЬ РЕЗЮМЕ
           </Button>
         </NavLink>
       )}
-
     </div>
   );
 }

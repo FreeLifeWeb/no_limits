@@ -13,11 +13,35 @@ export default function Employer() {
     dispatch(getUserVac(user.id));
   }, []);
   return (
-    <Box>
-      {user?.name}
-      <NavLink to="/addVac">
-        <Button size="small">Разместить вакансию</Button>
-      </NavLink>
+    <Box style={{
+      marginLeft: '30%',
+      marginRight: '30%',
+      display: 'flex',
+      justifyContent: 'space-around',
+      flexDirection: 'column',
+    }}
+    >
+      <br />
+      <Box style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+      >
+        {user?.name}
+        <br />
+        {user?.email}
+        <br />
+        <NavLink
+          to="/addVac"
+          style={{
+            textDecoration: 'none',
+            display: 'contents',
+          }}
+        >
+          <Button size="small" style={{ marginLeft: 'auto' }}>Разместить вакансию</Button>
+        </NavLink>
+        <br />
+      </Box>
       {userVac?.map((vac) => <OneVac key={vac.id} vacansy={vac} />)}
     </Box>
   );

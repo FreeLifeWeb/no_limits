@@ -8,6 +8,7 @@ import categoryListSlice from './slices/categoryListSlice';
 import stateReducer from './reducer/stateReducer';
 import vacanciesSlice from './slices/vacanciesSlice';
 import responsesSlice from './slices/responsesSlice';
+import resumesSlice from './slices/resumesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -20,5 +21,6 @@ export const store = configureStore({
     state: stateReducer,
     vacancies: vacanciesSlice,
     responses: responsesSlice,
+    resumes: resumesSlice,
   },
 });

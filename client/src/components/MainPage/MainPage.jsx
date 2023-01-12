@@ -3,11 +3,14 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { useSelector } from 'react-redux';
+import MainPageCard from '../UI/mainPagecards/mainPageCard';
 
 export default function MainPage() {
   const synth = window.speechSynthesis;
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const vacansies = useSelector((state) => state.vacancies);
+  const resumes = useSelector((state) => state.resumes);
   let voices = [];
 
   const comands = { // фразы для озвучивания и подсказок
@@ -84,11 +87,11 @@ export default function MainPage() {
       </Container>
       <Container sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'spaceBetween' }}>
         <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          Список вакансий
+          {vacansies.map((vac) => <MainPageCard key={vac.id} vac={vac} />)}
         </Container>
 
         <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          Список специалистов
+          {resumes.map((resume) => <MainPageCard key={resume.id} vac={resume} />)}
         </Container>
       </Container>
     </div>

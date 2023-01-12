@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, FormGroup, MenuItem, Select, TextField, OutlinedInput, InputLabel, FormControl,
+  Box, Button, FormGroup, MenuItem, Select, TextField, OutlinedInput, InputLabel, FormControl,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -40,9 +40,17 @@ export default function AddVac() {
     dispatch(getSphereList());
   }, []);
   return (
-    <div className="container">
+    <Box
+      style={{
+        marginLeft: '30%',
+        marginRight: '30%',
+        display: 'flex',
+        justifyContent: 'space-around',
+        flexDirection: 'column',
+      }}
+    >
       <br />
-      <form onSubmit={(e) => submitHandler(e)}>
+      <form style={{ lineHeight: 'normal' }} onSubmit={(e) => submitHandler(e)}>
         <FormGroup>
           <TextField
             id="name"
@@ -137,6 +145,6 @@ export default function AddVac() {
           <br />
         </FormGroup>
       </form>
-    </div>
+    </Box>
   );
 }
