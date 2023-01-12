@@ -37,5 +37,7 @@ module.exports = {
     'no-console': 0,
     'no-param-reassign': 0,
     'no-useless-escape': 0,
+    'react/jsx-curly-brace-presence': 0,
+    'no-unused-expressions': 0,
   },
 };

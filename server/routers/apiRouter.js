@@ -88,8 +88,16 @@ apiRouter.post('/vacancy/responses/:id', async (req, res) => {
     const newEl = await Resume.findOne({ where: { userId: responses[i].userId } });
     result.push(newEl);
   }
-  console.log(result);
   res.json(result);
+});
+
+apiRouter.post('/resumes', async (req, res) => {
+  try {
+    const resumes = await Resume.findAll();
+    res.json(resumes);
+  } catch {
+    res.sendStatus(500);
+  }
 });
 
 module.exports = apiRouter;
