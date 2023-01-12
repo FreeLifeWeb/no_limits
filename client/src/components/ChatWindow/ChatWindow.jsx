@@ -136,7 +136,7 @@ export default function ChatWindow({
                 </li>
               )
               : (
-                <li className="me">
+                <li key={index} className="me">
                   {' '}
                   <div className="entete">
                     <span className="status blue" />
