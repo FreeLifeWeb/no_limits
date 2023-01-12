@@ -40,7 +40,13 @@ export default function Test() {
         navigate(`/lkCandidate/${user.id}`);
       },
       matchInterim: true,
-    },
+    }, {
+    //   command: 'Отмена',
+    //   callback: () => {
+    //     console.log(document.activeElement);
+    //   },
+    //   matchInterim: true,
+    // },
   ];
 
   const {
@@ -139,7 +145,7 @@ export default function Test() {
   const [sphereList, setSphereList] = useState([]);
   const [currSphere, setCurrSphere] = useState('');
 
-  const greeting = 'Для заполнения полей используйте клавишу enter, cкажите "начать", чтобы приступить к созданию резюме скажите "назад" если хотите вернуться в личный кабинет';
+  const greeting = 'Для заполнения полей используйте клавишу enter, cкажите "начать", чтобы приступить к созданию резюме, скажите "назад", если хотите вернуться в личный кабинет, скажите "отмена" чтобы отчистить поле ввода. ';
 
   useEffect(() => {
     startSpeach(greeting);
