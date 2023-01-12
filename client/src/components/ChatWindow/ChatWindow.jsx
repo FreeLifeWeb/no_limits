@@ -3,7 +3,7 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import socket from '../../socket/socketIo';
 
 export default function ChatWindow({
-  roomId, userName, users, messages, onAddMessage, startSpeach,
+  roomId, userName, users, messages, onAddMessage, startSpeach, user,
 }) {
   // useEffect(() => {
   //   const focusInput = document.getElementById('textArea');
@@ -11,9 +11,14 @@ export default function ChatWindow({
   // }, []);
   // console.log('users:', users, messages);
   useEffect(() => {
-    setTimeout(() => {
-      startSpeach(`сообщение от:${messages[messages.length - 1].userName} время получения:${messages[messages.length - 1].time} содержание:${messages[messages.length - 1].text}`);
-    }, 2500);
+    // console.log('USER_STATUS', user.status);
+    if (user.status !== 'employer') {
+      const timerFunc = setTimeout(() => {
+        startSpeach(`сообщение от:${messages[messages.length - 1].userName} время получения:${messages[messages.length - 1].time} содержание:${messages[messages.length - 1].text}`);
+      }, 2500);
+      return () => clearTimeout(timerFunc);
+    }
+    return console.log('err');
   }, [messages]);
 
   const messageScroll = useRef(null);
@@ -115,31 +120,40 @@ export default function ChatWindow({
         </header>
         <ul ref={messageScroll} id="chat">
           {messages.map((message, index) => (
-            <li key={index} className="you">
-              <div className="entete">
-                <span className="status green" />
-                <h2>{message.userName}</h2>
-                {' '}
-                <h3>{message.time}</h3>
-              </div>
-              <div className="triangle" />
-              <div className="message">
-                {message.text}
-              </div>
-            </li>
+            (message.userName === user.name)
+              ? (
+                <li key={index} className="you">
+                  <div className="entete">
+                    <span className="status green" />
+                    <h2>{message.userName}</h2>
+                    {' '}
+                    <h3>{message.time}</h3>
+                  </div>
+                  <div className="triangle" />
+                  <div className="message">
+                    {message.text}
+                  </div>
+                </li>
+              )
+              : (
+                <li className="me">
+                  {' '}
+                  <div className="entete">
+                    <span className="status blue" />
+                    {' '}
+                    <h2>{message.userName}</h2>
+                    {' '}
+                    <h3>{message.time}</h3>
+                  </div>
+                  <div className="triangle" />
+                  <div className="message">
+                    {message.text}
+                    {' '}
+                  </div>
+                </li>
+              )
           ))}
-          {/* <li className="me"> // для ответчика, другие стили
-            <div className="entete">
-              <h3>10:12AM, Today</h3>
-              <h2>Vincent</h2>
-              <span className="status blue" />
-            </div>
-            <div className="triangle" />
-            <div className="message">
-              Lorem ipsum dolor sit amet.
-            </div>
-          </li>
-           */}
+
         </ul>
         <footer>
           <form onSubmit={(e) => formMessages(e)}>

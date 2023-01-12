@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { useSelector } from 'react-redux';
 import {
-  Paper, Typography, Box, Link, Divider, Button,
+  Paper, Typography, Box, Divider, Button,
 } from '@mui/material';
 import axios from 'axios';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const synth = window.speechSynthesis;
 let voices = [synth];
@@ -86,6 +86,7 @@ export default function LkCandidate() {
 
   const clickHandler = () => {
     stopHandler();
+    navigate(`/lkCandidate/candidate/resume/${user.id}`);
   };
 
   const {
@@ -135,19 +136,15 @@ export default function LkCandidate() {
               </Typography>
             </Paper>
           </Box>
-          <NavLink to={`candidate/resume/${user.id}`} onClick={clickHandler}>
-            <Button id="createResume" type="click" variant="outlined">
-              РЕДАКТИРОВАТЬ РЕЗЮМЕ
-            </Button>
-          </NavLink>
+          {/* <Button id="createResume" type="click" variant="outlined" onClick={clickHandler}>
+            РЕДАКТИРОВАТЬ РЕЗЮМЕ
+          </Button> */}
         </>
-      ) : (
-        <NavLink to={`candidate/resume/${user.id}`} onClick={clickHandler}>
-          <Button id="createResume" type="click" variant="outlined">
-            СОЗДАТЬ РЕЗЮМЕ
-          </Button>
-        </NavLink>
+      ) : (<></>
       )}
+      <Button id="createResume" type="click" variant="outlined" onClick={clickHandler}>
+        СОЗДАТЬ/РЕДАКТИРОВАТЬ РЕЗЮМЕ
+      </Button>
     </div>
   );
 }
