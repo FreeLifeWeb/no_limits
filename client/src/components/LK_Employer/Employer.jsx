@@ -14,8 +14,8 @@ export default function Employer() {
   }, []);
   return (
     <Box style={{
-      marginLeft: '30%',
-      marginRight: '30%',
+      marginLeft: '15%',
+      marginRight: '15%',
       display: 'flex',
       justifyContent: 'space-around',
       flexDirection: 'column',

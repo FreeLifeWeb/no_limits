@@ -97,13 +97,13 @@ apiRouter.post('/vacancies', async (req, res) => {
 });
 
 apiRouter.post('/response/:id', async (req, res) => {
-  const id = req.params;
+  const { id } = req.params;
   const userId = req.session.user.id;
   try {
     await Response.create({ userId, vacancyId: id });
     res.sendStatus(200);
   } catch {
-    console.log('error');
+    res.sendStatus(500);
   }
 });
 

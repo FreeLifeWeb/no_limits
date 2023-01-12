@@ -58,7 +58,7 @@ export default function LkCandidate() {
   useEffect(() => {
   //   axios(`candidate/resume/get/${user.id}`)
   //     .then((res) => setResume(res.data));
-    startSpeach('Вам доступны команды "Чат" и "Вакансии". Нажмите enter, чтобы составить или редактировать резюме');
+    startSpeach('Вам доступны команды "Чат", и "Вакансии". Нажмите enter, чтобы составить или редактировать резюме');
     setTimeout(() => {
       startHandler();
     }, 6000);
@@ -96,10 +96,11 @@ export default function LkCandidate() {
 
   return (
     <div className="container">
+      <br />
       <p>
-        Microphone:
+        Микрофон:
         {' '}
-        {listening ? 'on' : 'off'}
+        {listening ? '🟢' : '🔴'}
       </p>
       {resume.name ? (
         <>

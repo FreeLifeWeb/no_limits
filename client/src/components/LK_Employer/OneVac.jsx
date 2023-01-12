@@ -21,7 +21,11 @@ export default function BasicCard({ vacansy }) {
     setIsEdit(!isEdit);
   };
   return (
-    <Card sx={{ minWidth: 275, marginTop: 3 }}>
+    <Card style={{
+      width: '100%',
+      marginTop: 13,
+    }}
+    >
       {isEdit ? (
         <CreateVac vacansy={vacansy} setIsEdit={setIsEdit} />
       ) : (
