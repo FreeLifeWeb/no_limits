@@ -92,8 +92,8 @@ apiRouter.post('/vacancy/responses/:id', async (req, res) => {
 });
 
 apiRouter.post('/resumes', async (req, res) => {
+  const resumes = await Resume.findAll({ include: [{ model: Category }, { model: Sphere }] });
   try {
-    const resumes = await Resume.findAll();
     res.json(resumes);
   } catch {
     res.sendStatus(500);

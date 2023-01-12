@@ -29,22 +29,22 @@ candRouter.get('/resume/get/:id', async (req, res) => {
 candRouter.post('/resume/:id', async (req, res) => {
   try {
     const {
-      name, age, phoneNumber, location, sphere, about, salary,
+      age, phoneNumber, location, sphere, about, salary,
     } = req.body;
     const { id } = req.params;
     const sphereId = (await Sphere.findOne({ where: { title: sphere } })).id;// id
     await Resume.create({
-      name,
+      name: req.session.user.name,
       age: toCutNum(age),
-      email: 'someemail@mail.ru',
+      email: req.session.user.email,
       phoneNumber,
       location,
       about,
       photo: '',
       salary: toCutNum(salary),
       sphereId,
+      categoryId: req.session.categoryId,
       userId: Number(id),
-      categoryId: 1,
     });
   } catch (err) {
     res.sendStatus(500);
