@@ -8,10 +8,12 @@ import OneVac from './OneVac';
 export default function Employer() {
   const user = useSelector((store) => store.user);
   const userVac = useSelector((store) => store.userVac);
+
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getUserVac(user.id));
+    if (!userVac.length) { dispatch(getUserVac(user.id)); }
   }, []);
+
   return (
     <Box style={{
       marginTop: '5%',

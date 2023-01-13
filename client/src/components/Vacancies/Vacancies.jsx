@@ -152,7 +152,7 @@ export default function Vacancies() {
       prevHandler();
     }
     if (e.key === 'ArrowUp' && user?.status !== true) {
-      responseHandler(vacancy.id);
+      if (user?.status !== 'employer') responseHandler(vacancy.id);
     }
   });
 
@@ -216,7 +216,7 @@ export default function Vacancies() {
                   onClick={() => clickHandler()}
                   size="small"
                   variant="outlined"
-                  sx={{ marginRight: '45%' }}
+                  sx={{ marginRight: '40%' }}
                 >
                   прослушать
                 </Button>

@@ -19,10 +19,13 @@ export default function VacancyResponses() {
   }, []);
 
   return (
-    <Box>
-      {responses?.map((el) => (
+    <Box style={{
+      display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh',
+    }}
+    >
+      {responses?.length ? (responses?.map((el) => (
         <ResponseVacancy key={el.id} el={el} />
-      ))}
+      ))) : ('Откликов пока нет') }
     </Box>
   );
 }

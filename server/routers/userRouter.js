@@ -87,6 +87,7 @@ regRouter.post('/vacansy/:id', async (req, res) => {
     const userVac = await Vacancy.findAll({
       where: { userId: id },
       include: [{ all: true }],
+      order: [['id', 'DESC']],
     });
     res.json(userVac);
   } catch {

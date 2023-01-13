@@ -7,8 +7,8 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSphereList } from '../../redux/slices/sphereListSlice';
 import { getCategoryList } from '../../redux/slices/categoryListSlice';
-import { addVac } from '../../redux/slices/userVacSlice';
-import { getVacancies } from '../../redux/slices/vacanciesSlice';
+import { addUserVac } from '../../redux/slices/userVacSlice';
+// import { getVacancies } from '../../redux/slices/vacanciesSlice';
 
 export default function AddVac() {
   const navigate = useNavigate();
@@ -31,8 +31,9 @@ export default function AddVac() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    axios.post('/api/vacansy', Object.fromEntries(new FormData(e.target)))
-      .then((res) => dispatch(addVac(res.data)));
+    dispatch(addUserVac(Object.fromEntries(new FormData(e.target))));
+    // axios.post('/api/vacansy', Object.fromEntries(new FormData(e.target)))
+    // .then((res) => dispatch(addVac(res.data)))
     navigate('/LKemployer');
   };
 
