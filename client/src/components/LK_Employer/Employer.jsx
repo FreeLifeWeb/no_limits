@@ -14,18 +14,26 @@ export default function Employer() {
   }, []);
   return (
     <Box style={{
-      marginLeft: '15%',
-      marginRight: '15%',
+      marginTop: '5%',
+      marginLeft: '30%',
+      marginRight: '30%',
       display: 'flex',
       justifyContent: 'space-around',
       flexDirection: 'column',
+      border: '3px solid #78866b',
+      padding: '10px',
+      flexGrow: 1,
+      borderRadius: '11px',
+      backgroundColor: 'white',
     }}
     >
-      <br />
-      <Box style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}
+      <Box
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+        className="vacName"
+
       >
         {user?.name}
         <br />
@@ -38,7 +46,7 @@ export default function Employer() {
             display: 'contents',
           }}
         >
-          <Button size="small" style={{ marginLeft: 'auto' }}>Разместить вакансию</Button>
+          <Button variant="contained" size="small" style={{ marginLeft: 'auto' }}>Разместить вакансию</Button>
         </NavLink>
         <br />
       </Box>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import {
-  Button, FormControl, FormControlLabel, FormGroup, Radio, RadioGroup, TextField,
+  Button, FormControl, FormControlLabel, FormGroup, Radio, RadioGroup, TextField, Typography, Box,
 } from '@mui/material';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
@@ -218,7 +218,14 @@ export default function Test() {
   return (
     <div className="container">
       <form onSubmit={submitHandler}>
-        <FormGroup sx={{ flexGrow: 1, borderRadius: '11px', marginTop: '10px' }}>
+        <FormGroup sx={{
+          flexGrow: 1,
+          borderRadius: '11px',
+          marginTop: '12px',
+          backgroundColor: 'white',
+          padding: '14px',
+        }}
+        >
           <p>
             Микрофон:
             {' '}
@@ -309,11 +316,11 @@ export default function Test() {
             id="submit"
             variant="contained"
             onFocus={() => focusHandler('submit')}
-
           >
             Сохранить
 
           </Button>
+          {/* </Box> */}
         </FormGroup>
       </form>
     </div>

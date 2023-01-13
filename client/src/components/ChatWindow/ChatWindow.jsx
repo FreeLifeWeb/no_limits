@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import socket from '../../socket/socketIo';
+import styles from './style.css';
 
 export default function ChatWindow({
   roomId, userName, users, messages, onAddMessage, startSpeach, user,
