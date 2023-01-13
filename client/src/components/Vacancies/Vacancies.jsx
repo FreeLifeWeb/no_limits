@@ -119,7 +119,7 @@ export default function Vacancies() {
       prevHandler();
     }
     if (e.key === 'ArrowUp' && user?.status !== true) {
-      responseHandler(vacancy.id);
+      if (user?.status !== 'employer') responseHandler(vacancy.id);
     }
   });
 

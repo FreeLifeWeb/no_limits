@@ -90,10 +90,19 @@ export default function MainPage() {
       matchInterim: true,
     },
   ];
-  const { transcript } = useSpeechRecognition({ commands });
+  const { transcript, listening } = useSpeechRecognition({ commands });
 
   return (
-    <>
+    <div style={{
+      backgroundColor: 'rgb(254, 171, 6)',
+    }}
+    >
+      <br />
+      <p style={{ marginLeft: '3%', color: 'white' }}>
+        Микрофон:
+        {' '}
+        {listening ? ' 🟢' : ' 🔴'}
+      </p>
       <div style={{
         textAlign: 'center',
         height: '400px',
@@ -136,6 +145,6 @@ export default function MainPage() {
           </Container>
         </Container>
       </div>
-    </>
+    </div>
   );
 }

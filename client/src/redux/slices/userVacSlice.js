@@ -7,7 +7,7 @@ const userVacSlice = createSlice({
 
   reducers: {
     setUserVac: (state, action) => action.payload,
-    addVac: (state, action) => [...state, action.payload],
+    addVac: (state, action) => [action.payload, ...state],
     deleteVac: (state, action) => state.filter((el) => el.id !== action.payload),
     createVac: (state, action) => {
       const vac = state.find((el) => el.id === action.payload.id);
@@ -38,6 +38,11 @@ export const createUserVac = (id, data) => (dispatch) => {
   axios.put(`/api/vacansy/${id}`, data)
     // .then((res) => console.log(res.data));
     .then((res) => dispatch(createVac(res.data)));
+};
+
+export const addUserVac = (event) => (dispatch) => {
+  axios.post('/api/vacansy', event)
+    .then((res) => dispatch(addVac(res.data)));
 };
 
 export default userVacSlice.reducer;
