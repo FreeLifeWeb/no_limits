@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Box, Button, Card, CardActions, CardContent, Typography,
+  Box, Button, Card, CardActions, CardContent, Container, Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getResumes } from '../../redux/slices/resumesSlice';
@@ -15,10 +15,12 @@ export default function ListAllResume() {
   return (
     <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {resumes?.map((resume) => (
-        <>
+        <Container
+          key={resume.id}
+          style={{ marginRight: 0 }}
+        >
           <br />
           <Card
-            key={resume.id}
             style={{
               width: '70%',
             }}
@@ -66,7 +68,7 @@ export default function ListAllResume() {
               ) : (<></>)}
             </CardActions>
           </Card>
-        </>
+        </Container>
       ))}
     </Box>
   );
