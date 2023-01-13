@@ -152,7 +152,10 @@ export default function Vacancies() {
       prevHandler();
     }
     if (e.key === 'ArrowUp' && user?.status !== true) {
-      if (user?.status !== 'employer') responseHandler(vacancy.id);
+      if (user?.status !== 'employer') {
+        responseHandler(vacancy.id);
+        // SpeechRecognition.stopListening();
+      }
     }
   });
 
@@ -216,7 +219,7 @@ export default function Vacancies() {
                   onClick={() => clickHandler()}
                   size="small"
                   variant="outlined"
-                  sx={{ marginRight: '40%' }}
+                  sx={{ marginRight: '20%' }}
                 >
                   прослушать
                 </Button>
@@ -242,6 +245,7 @@ export default function Vacancies() {
               <>
                 <br />
                 <Button
+                  variant="outlined"
                   type="button"
                   onClick={() => {
                     prevHandler();
