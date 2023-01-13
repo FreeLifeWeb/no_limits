@@ -93,7 +93,7 @@ export default function MainPage() {
 
   return (
     <div style={{
-      backgroundColor: 'rgb(254, 171, 6)',
+      // backgroundColor: 'rgb(254, 171, 6)',
     }}
     >
       <br />
@@ -105,7 +105,7 @@ export default function MainPage() {
       <div style={{
         textAlign: 'center',
         height: '400px',
-        backgroundColor: 'rgb(254, 171, 6)',
+        // backgroundColor: 'rgb(254, 171, 6)',
         width: '100%',
         display: 'flex',
         justifyContent: 'center',
@@ -128,7 +128,7 @@ export default function MainPage() {
           Войти/Зарегистрироваться
         </Button>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#f44336' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#cbd6c1' }}>
         <Container sx={{
           display: 'flex', flexDirection: 'row', justifyContent: 'spaceBetween', paddingTop: '35px',
         }}
