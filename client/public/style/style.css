@@ -5,11 +5,35 @@ body{
 	/* background-color:#868D92; */
 	font-family:Arial;
 	height: 100vh ;
-
 }
 
-.bodybody{
-	background-color: #26272a
+
+.navButtons{
+	background-color: #78866b;
+    border-radius:3px;
+	padding: 4px;
+}
+
+.vacName{
+	background-color: #cbd6c1;
+    border-radius:3px;
+	padding: 4px;
+}
+.vacAbout{
+	background-color: #dfe7d7;
+    border-radius:3px;
+	padding: 4px;
+}
+.resume{
+	color: 'secondary';
+	border-color: #ff0000;
+	background-color: #cbd6c1;
+}
+
+.buttons{
+	background-color: #dfe7d7;
+    border-radius:3px;
+	padding: 4px;
 }
 
 #container{

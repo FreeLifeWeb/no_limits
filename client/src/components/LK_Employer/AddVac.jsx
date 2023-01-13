@@ -51,7 +51,14 @@ export default function AddVac() {
     >
       <br />
       <form style={{ lineHeight: 'normal' }} onSubmit={(e) => submitHandler(e)}>
-        <FormGroup>
+        <FormGroup sx={{
+          flexGrow: 1,
+          borderRadius: '11px',
+          marginTop: '12px',
+          backgroundColor: 'white',
+          padding: '14px',
+        }}
+        >
           <TextField
             id="name"
             label="Должность"

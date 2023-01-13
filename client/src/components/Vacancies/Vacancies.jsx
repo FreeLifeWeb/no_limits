@@ -164,10 +164,21 @@ export default function Vacancies() {
     }}
     >
       {vacancy?.title ? (
-        <Card>
-          <CardContent sx={{ Width: '50%', height: '50%' }}>
+        <Card
+          sx={{
+            marginTop: '1%',
+            marginLeft: '30%',
+            marginRight: '30%',
+            border: '3px solid #78866b',
+            padding: '10px',
+            flexGrow: 1,
+            borderRadius: '11px',
+            backgroundColor: 'white',
+          }}
+        >
+          <CardContent sx={{ Width: '60%', height: '50%' }}>
             <br />
-            <Typography variant="h3">
+            <Typography className="vacName" variant="h3">
               {vacancy?.title}
             </Typography>
             <br />
@@ -188,13 +199,14 @@ export default function Vacancies() {
               {' '}
               рублей
             </Typography>
-            <br />
           </CardContent>
           <CardActions>
             {(user?.status !== 'employer') ? (
               <>
+                <br />
                 <Button
                   size="small"
+                  variant="outlined"
                   onClick={() => responseHandler(vacancy?.id)}
                 >
                   Откликнуться
@@ -203,6 +215,8 @@ export default function Vacancies() {
                   type="button"
                   onClick={(e) => clickHandler(e)}
                   size="small"
+                  variant="outlined"
+                  sx={{ marginRight: '45%' }}
                 >
                   прослушать
                 </Button>
@@ -210,26 +224,33 @@ export default function Vacancies() {
             ) : (<></>)}
 
             {(index < vacancies.length - 1) ? (
-              <Button
-                type="button"
-                onClick={() => {
-                  nextHandler();
-                }}
-                size="small"
-              >
-                Далее
-              </Button>
+              <>
+                <br />
+                <Button
+                  variant="outlined"
+                  type="button"
+                  onClick={() => {
+                    nextHandler();
+                  }}
+                  size="small"
+                >
+                  Далее
+                </Button>
+              </>
             ) : (<></>)}
             {index ? (
-              <Button
-                type="button"
-                onClick={() => {
-                  prevHandler();
-                }}
-                size="small"
-              >
-                Назад
-              </Button>
+              <>
+                <br />
+                <Button
+                  type="button"
+                  onClick={() => {
+                    prevHandler();
+                  }}
+                  size="small"
+                >
+                  Назад
+                </Button>
+              </>
             ) : (<></>)}
           </CardActions>
         </Card>

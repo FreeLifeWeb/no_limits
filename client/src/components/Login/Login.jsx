@@ -39,7 +39,10 @@ export default function Login() {
         dispatch(loginUser(e));
       }}
       >
-        <FormGroup>
+        <FormGroup sx={{
+          flexGrow: 1, borderRadius: '11px', marginTop: '12px', backgroundColor: 'white', padding: '14px',
+        }}
+        >
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Login
           </Typography>

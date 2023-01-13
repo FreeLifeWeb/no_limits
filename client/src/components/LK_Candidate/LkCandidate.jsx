@@ -94,57 +94,87 @@ export default function LkCandidate() {
   } = useSpeechRecognition({ commands });
 
   return (
-    <div className="container">
-      <p>
-        Microphone:
-        {' '}
-        {listening ? 'on' : 'off'}
-      </p>
-      {resume ? (
-        <>
-          <Box marginTop={5}>
-            <Paper elevation={3}>
-              <Divider>РЕЗЮМЕ КАНДИДАТА</Divider>
-              <Typography fontSize={25}>
-                {user.name?.toUpperCase()}
-              </Typography>
-              <Typography>
-                {resume.age !== 0 ? `${setAge(resume.age)}, ${resume.location}` : `Не указано, ${resume.location}`}
-              </Typography>
-              <Divider variant="inset" />
-              <Typography>
-                {resume.sphere}
-              </Typography>
-              <br />
-              <Typography>
-                О кандидате:
-              </Typography>
-              <Paper variant="outlined">
-                {resume.about}
+    <Box style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+    >
+      <div
+        className="container"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <br />
+        <Typography color="secondary">
+          Microphone:
+          {' '}
+          {listening ? 'on' : 'off'}
+        </Typography>
+        {resume ? (
+          <div style={{ width: '100%' }}>
+            <Box marginTop={2}>
+              <Paper
+                elevation={3}
+                style={{
+                  border: '3px solid #78866b',
+                  padding: '10px',
+                }}
+              >
+                <Divider>РЕЗЮМЕ КАНДИДАТА</Divider>
+                <Box className="vacName">
+                  <Typography fontSize={25}>
+                    {user.name?.toUpperCase()}
+                  </Typography>
+                </Box>
+                <Typography>
+                  {resume.age !== 0 ? `${setAge(resume.age)}, ${resume.location}` : `Не указано, ${resume.location}`}
+                </Typography>
+                <Divider variant="inset" />
+                <Typography>
+                  {resume.sphere}
+                </Typography>
+                <br />
+                <Typography>
+                  О кандидате:
+                </Typography>
+                <Box className="vacAbout">
+                  <Paper variant="outlined">
+                    {resume.about}
+                  </Paper>
+                </Box>
+                <br />
+                <Typography>
+                  {`Ожидаемый уровень заработной платы: ${resume.salary} руб.`}
+                </Typography>
+                <br />
+                <Divider textAlign="left">КОНТАКТЫ</Divider>
+                <Typography>
+                  {user.email}
+                </Typography>
+                <Typography>
+                  {resume.phoneNumber !== 0 ? resume.phoneNumber : 'Не указан'}
+                </Typography>
               </Paper>
-              <br />
-              <Typography>
-                {`Ожидаемый уровень заработной платы: ${resume.salary} руб.`}
-              </Typography>
-              <br />
-              <Divider textAlign="left">КОНТАКТЫ</Divider>
-              <Typography>
-                {user.email}
-              </Typography>
-              <Typography>
-                {resume.phoneNumber !== 0 ? resume.phoneNumber : 'Не указан'}
-              </Typography>
-            </Paper>
-          </Box>
-          {/* <Button id="createResume" type="click" variant="outlined" onClick={clickHandler}>
-            РЕДАКТИРОВАТЬ РЕЗЮМЕ
-          </Button> */}
-        </>
-      ) : (<></>
-      )}
-      <Button id="createResume" type="click" variant="outlined" onClick={clickHandler}>
-        СОЗДАТЬ/РЕДАКТИРОВАТЬ РЕЗЮМЕ
-      </Button>
-    </div>
+            </Box>
+          </div>
+        ) : (<></>
+        )}
+        <br />
+        <Button
+          id="createResume"
+          type="click"
+          variant="contained"
+          onClick={clickHandler}
+        >
+          СОЗДАТЬ/РЕДАКТИРОВАТЬ РЕЗЮМЕ
+        </Button>
+      </div>
+    </Box>
   );
 }

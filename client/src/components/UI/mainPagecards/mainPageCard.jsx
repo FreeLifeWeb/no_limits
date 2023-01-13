@@ -17,28 +17,33 @@ const bull = (
 
 export default function mainPageCard({ vac }) {
   return (
-    <Card sx={{
-      width: '100%',
-      height: '100px',
-      display: 'flex',
-      justifyContent: 'space-between',
-    }}
-    >
-      <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {vac.company}
-        </Typography>
-        <Typography variant="h5" component="div">
-          {vac.title}
-        </Typography>
-        <Typography variant="body2">
-          {vac.salary}
-          <br />
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Подробнее</Button>
-      </CardActions>
-    </Card>
+    <>
+      <Card sx={{
+        width: '100%',
+        height: '120px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        border: '3px solid #78866b',
+        padding: '5px',
+      }}
+      >
+        <CardContent>
+          <Typography variant="h4" className="vacName" sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            {vac.company}
+          </Typography>
+          <Typography variant="h6" component="div">
+            {vac.title}
+          </Typography>
+          <Typography variant="body2">
+            {`${vac.salary} руб.`}
+            <br />
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button variant="outlined" size="small">Подробнее</Button>
+        </CardActions>
+      </Card>
+      <br />
+    </>
   );
 }

@@ -26,10 +26,10 @@ export default function BasicCard({ vacansy }) {
         <CreateVac vacansy={vacansy} setIsEdit={setIsEdit} />
       ) : (
         <CardContent>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          <Typography className="vacName" variant="h4" color="text.secondary" gutterBottom>
             {vacansy.title}
           </Typography>
-          <Typography variant="h5" component="div">
+          <Typography variant="h6" component="div">
             {vacansy.company}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
@@ -57,6 +57,7 @@ export default function BasicCard({ vacansy }) {
         <Button
           onClick={() => editHandler(vacansy.id)}
           size="small"
+          variant="outlined"
         >
           {isEdit ? 'Отмена' : 'Редактировать'}
         </Button>
@@ -64,6 +65,8 @@ export default function BasicCard({ vacansy }) {
           : (
             <>
               <Button
+                variant="outlined"
+                sx={{ marginRight: '45%' }}
                 onClick={() => deleteHandler(vacansy.id)}
                 size="small"
               >
@@ -71,6 +74,8 @@ export default function BasicCard({ vacansy }) {
               </Button>
               <NavLink to="/vacancy/responses" style={{ textDecoration: 'none' }}>
                 <Button
+                  marginRight="5px"
+                  variant="outlined"
                   size="small"
                 >
                   Oтклики

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Box, Button, Card, CardActions, CardContent, Typography,
+  Box, Button, Card, CardActions, CardContent, Divider, Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getResumes } from '../../redux/slices/resumesSlice';
@@ -21,6 +21,7 @@ export default function ListAllResume() {
             key={resume.id}
             style={{
               width: '70%',
+              border: '3px solid #78866b',
             }}
           >
             <CardContent
@@ -31,38 +32,45 @@ export default function ListAllResume() {
               }}
             >
               <br />
-              <Typography variant="h3">
-                {resume?.name}
-                ,
-                {resume?.age}
-              </Typography>
+              <Box className="vacName">
+                <Typography variant="h4">
+                  {resume?.name}
+                  ,
+                  {resume?.age}
+                </Typography>
+              </Box>
+              <Box sx={{ marginTop: '4px' }}>
+                <Typography variant="h7">
+                  {resume?.Category?.title}
+                </Typography>
+              </Box>
               <br />
-              <Typography variant="h5">
-                {resume?.Category?.title}
-              </Typography>
-              <br />
-              <Typography sx={{ mb: 1.5 }} variant="h5">
+              <Typography sx={{ mb: 1 }} variant="h5">
                 {resume?.Sphere?.title}
               </Typography>
               <br />
-              <Typography sx={{ mb: 1.5 }} variant="h5">
+              <Divider />
+              <Typography sx={{ mb: 1 }} variant="h6" className="vacAbout">
                 {resume?.about}
               </Typography>
               <br />
-              <Typography variant="h5">
+              <Typography variant="h6">
                 {resume?.salary}
                 {' '}
                 рублей
               </Typography>
-              <br />
             </CardContent>
             <CardActions>
               {(user?.status === 'employer') ? (
-                <Button
-                  size="small"
-                >
-                  Пригласить в чат
-                </Button>
+                <>
+                  <br />
+                  <Button
+                    variant="contained"
+                    size="small"
+                  >
+                    Пригласить в чат
+                  </Button>
+                </>
               ) : (<></>)}
             </CardActions>
           </Card>
