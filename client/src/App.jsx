@@ -20,6 +20,7 @@ import RedactOrCreateVacancy from './components/RedactOrCreateVacancy/RedactOrCr
 import UserResponses from './components/UserResponses/UserResponses';
 import VacancyResponses from './components/VacancyResponses/VacancyResponses';
 import AddVac from './components/LK_Employer/AddVac';
+import NotFound from './components/notFound/NotFound';
 
 function App() {
   const user = useSelector((store) => store.user);
@@ -53,6 +54,7 @@ function App() {
               <Route path="/reg" element={<Registration />} />
               <Route path="/log" element={<Login />} />
               <Route path="/addVac" element={<AddVac />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </>
         )

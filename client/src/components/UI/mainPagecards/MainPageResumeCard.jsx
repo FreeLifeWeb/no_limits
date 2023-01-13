@@ -5,34 +5,31 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { useSelector } from 'react-redux';
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-  >
-    •
-  </Box>
-);
+export default function MainPageResumeCard({ vac }) {
+  const sphereList = useSelector((state) => state.sphereList);
 
-export default function mainPageCard({ vac }) {
   return (
     <Card sx={{
       width: '100%',
-      height: '100px',
+      height: '150px',
       display: 'flex',
       justifyContent: 'space-between',
+      margin: '15px 0',
     }}
     >
-      <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {vac.company}
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
+        <Typography sx={{ fontSize: 14, color: '#039be5', fontWeight: '500' }} gutterBottom>
+          {vac.name}
         </Typography>
         <Typography variant="h5" component="div">
-          {vac.title}
+          {sphereList?.find((el) => el.id === vac.sphereId)?.title}
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="body2" sx={{ color: '#039be5', fontWeight: '500', margin: '-3px 0' }}>
           {vac.salary}
+          {' '}
+          руб.
           <br />
         </Typography>
       </CardContent>
