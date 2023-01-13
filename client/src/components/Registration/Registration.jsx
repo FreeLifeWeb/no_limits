@@ -127,7 +127,7 @@ export default function Registration(props) {
               </FormControl>
 
             )}
-          <Button type="submit" variant="contained">Sign up</Button>
+          <Button type="submit" variant="contained">Зарегистрироваться</Button>
         </FormGroup>
       </form>
 

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSphereList } from '../../redux/slices/sphereListSlice';
 import { getCategoryList } from '../../redux/slices/categoryListSlice';
 import { addVac } from '../../redux/slices/userVacSlice';
+import { getVacancies } from '../../redux/slices/vacanciesSlice';
 
 export default function AddVac() {
   const navigate = useNavigate();

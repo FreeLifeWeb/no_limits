@@ -4,8 +4,12 @@ const { Resume } = require('../db/models');
 const resumeRouter = express.Router();
 
 resumeRouter.post('/', async (req, res) => {
-  const resume = Resume.findAll();
-  res.json(resume);
+  try {
+    const resume = Resume.findAll();
+    res.json(resume);
+  } catch {
+    console.log('err');
+  }
 });
 
 module.exports = resumeRouter;

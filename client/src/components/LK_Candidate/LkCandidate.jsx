@@ -28,7 +28,8 @@ const setAge = (age) => {
 
 export default function LkCandidate() {
   const user = useSelector((store) => store.user);
-  const [resume, setResume] = useState(null);
+  const resume = useSelector((store) => store.resume);
+  // const [resume, setResume] = useState(null);
   const navigate = useNavigate();
 
   const startSpeach = (sentence) => {
@@ -55,15 +56,15 @@ export default function LkCandidate() {
   };
 
   useEffect(() => {
-    axios(`candidate/resume/get/${user.id}`)
-      .then((res) => setResume(res.data));
-    startSpeach('Вам доступны команды "Чат" и "Вакансии". Нажмите enter, чтобы составить или редактировать резюме');
+  //   axios(`candidate/resume/get/${user.id}`)
+  //     .then((res) => setResume(res.data));
+    startSpeach('Вам доступны команды "Чат", и "Вакансии". Нажмите enter, чтобы составить или редактировать резюме');
     setTimeout(() => {
       startHandler();
-    }, 7000);
+    }, 6000);
     const withoutResume = document.getElementById('createResume');
     withoutResume.focus();
-  }, [resume?.name]);
+  }, []);
 
   const commands = [
     {
@@ -111,14 +112,14 @@ export default function LkCandidate() {
         }}
       >
         <br />
-        <Typography color="secondary">
-          Microphone:
+        <p>
+          Микрофон:
           {' '}
-          {listening ? 'on' : 'off'}
-        </Typography>
-        {resume ? (
+          {listening ? '🟢' : '🔴'}
+        </p>
+        {resume?.name ? (
           <div style={{ width: '100%' }}>
-            <Box marginTop={2}>
+            <Box marginTop={5}>
               <Paper
                 elevation={3}
                 style={{
@@ -162,6 +163,9 @@ export default function LkCandidate() {
                 </Typography>
               </Paper>
             </Box>
+            {/* <Button id="createResume" type="click" variant="outlined" onClick={clickHandler}>
+            РЕДАКТИРОВАТЬ РЕЗЮМЕ
+          </Button> */}
           </div>
         ) : (<></>
         )}

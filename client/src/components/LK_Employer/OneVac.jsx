@@ -21,7 +21,11 @@ export default function BasicCard({ vacansy }) {
     setIsEdit(!isEdit);
   };
   return (
-    <Card sx={{ minWidth: 275, marginTop: 3 }}>
+    <Card style={{
+      width: '100%',
+      marginTop: 13,
+    }}
+    >
       {isEdit ? (
         <CreateVac vacansy={vacansy} setIsEdit={setIsEdit} />
       ) : (
@@ -72,7 +76,7 @@ export default function BasicCard({ vacansy }) {
               >
                 Удалить
               </Button>
-              <NavLink to="/vacancy/responses" style={{ textDecoration: 'none' }}>
+              <NavLink to={`/vacancy/responses/${vacansy.id}`} style={{ textDecoration: 'none' }}>
                 <Button
                   marginRight="5px"
                   variant="outlined"

@@ -43,23 +43,23 @@ export default function Login() {
           flexGrow: 1, borderRadius: '11px', marginTop: '12px', backgroundColor: 'white', padding: '14px',
         }}
         >
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Login
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: 'center' }}>
+            Войти
           </Typography>
           <TextField
             name="name"
             required
             id="outlined-required"
-            label="Name"
+            label="Логин"
             type="text"
           />
           <TextField
             name="password"
             id="outlined-password-input"
-            label="Password"
+            label="Пароль"
             type="password"
           />
-          <Button type="submit" variant="contained">Sign in</Button>
+          <Button type="submit" variant="contained">Войти</Button>
           <div className="g-signin2" data-onsuccess="onSignIn" />
         </FormGroup>
       </form>

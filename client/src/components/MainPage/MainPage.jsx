@@ -2,8 +2,13 @@ import React, { useEffect } from 'react';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import { useSelector } from 'react-redux';
-import MainPageCard from '../UI/mainPagecards/mainPageCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '@mui/material';
+import { getResumes } from '../../redux/slices/resumesSlice';
+import { getVacancies } from '../../redux/slices/vacanciesSlice';
+import MainPageVacansyCard from '../UI/mainPagecards/MainPageVacansyCard';
+import MainPageResumeCard from '../UI/mainPagecards/MainPageResumeCard';
+import { getSphereList } from '../../redux/slices/sphereListSlice';
 
 export default function MainPage() {
   const synth = window.speechSynthesis;
@@ -11,6 +16,7 @@ export default function MainPage() {
   const navigate = useNavigate();
   const vacansies = useSelector((state) => state.vacancies);
   const resumes = useSelector((state) => state.resumes);
+  const dispatch = useDispatch();
   let voices = [];
 
   const comands = { // фразы для озвучивания и подсказок
@@ -41,9 +47,15 @@ export default function MainPage() {
       }
       setTimeout(() => {
         SpeechRecognition.startListening({ continuous: true, language: 'ru-RU' });
-      }, 3000);
+      }, 6000);
     }
   };
+
+  useEffect(() => {
+    dispatch(getVacancies());
+    dispatch(getResumes());
+    dispatch(getSphereList());
+  }, []);
 
   useEffect(() => { // сообщение при отсутствии поддержки WEB SPEECH API
     if (user?.status !== 'employer') {
@@ -71,23 +83,58 @@ export default function MainPage() {
       callback: () => navigate(`/lkCandidate/${user.id}`),
       matchInterim: true,
     },
+    {
+      command: 'Зарегистрироваться',
+      callback: () => navigate('/reg'),
+      matchInterim: true,
+    },
   ];
   const { transcript } = useSpeechRecognition({ commands });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <Container sx={{ textAlign: 'center' }}>
-        Сервис поиска работы Без ограничений
-      </Container>
-      <Container sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'spaceBetween' }}>
-        <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          {vacansies.map((vac) => <MainPageCard key={vac.id} vac={vac} />)}
-        </Container>
+    <>
+      <div style={{
+        textAlign: 'center',
+        height: '400px',
+        backgroundColor: 'rgb(254, 171, 6)',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+      }}
+      >
+        <span style={{ color: 'white', fontSize: '32px', marginBottom: '50px' }}>
+          Сервис поиска работы
+          {' '}
+          <strong>Без ограничений</strong>
+        </span>
+        <Button
+          type="submit"
+          variant="contained"
+          onClick={() => {
+            navigate('/reg');
+          }}
+        >
+          Войти/Зарегистрироваться
+        </Button>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#f44336' }}>
+        <Container sx={{
+          display: 'flex', flexDirection: 'row', justifyContent: 'spaceBetween', paddingTop: '35px',
+        }}
+        >
+          <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <span style={{ fontSize: '30px' }}>Вакансии</span>
+            {vacansies.map((vac) => <MainPageVacansyCard key={vac.id} vac={vac} />)}
+          </Container>
 
-        <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          {resumes.map((resume) => <MainPageCard key={resume.id} vac={resume} />)}
+          <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <span style={{ fontSize: '30px' }}>Специалисты</span>
+            {resumes.map((resume) => <MainPageResumeCard key={resume.id} vac={resume} />)}
+          </Container>
         </Container>
-      </Container>
-    </div>
+      </div>
+    </>
   );
 }

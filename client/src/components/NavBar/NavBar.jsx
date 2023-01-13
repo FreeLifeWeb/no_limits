@@ -5,6 +5,7 @@ import {
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../redux/actions/userAction';
+import { setResume } from '../../redux/slices/resumeSlice';
 
 export default function ButtonAppBar() {
   const user = useSelector((store) => store.user);
@@ -66,8 +67,15 @@ export default function ButtonAppBar() {
                     </Button>
                   </NavLink>
                   <NavLink to="/" style={{ textDecoration: 'none' }}>
-                    <Button variant="text" onClick={() => dispatch(logoutUser())} sx={{ color: 'white' }}>
-                      <Typography className="navButtons" variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '1rem' }}>
+                    <Button
+                      variant="text"
+                      onClick={() => {
+                        dispatch(setResume(null));
+                        dispatch(logoutUser());
+                      }}
+                      sx={{ color: 'white' }}
+                    >
+                      <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '1rem' }}>
                         Выйти
                       </Typography>
                     </Button>
