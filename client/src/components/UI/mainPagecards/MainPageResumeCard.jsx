@@ -34,7 +34,7 @@ export default function MainPageResumeCard({ vac }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Подробнее</Button>
+        <Button variant="outlined" size="small">Подробнее</Button>
       </CardActions>
     </Card>
   );

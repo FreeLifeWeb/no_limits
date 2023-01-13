@@ -53,7 +53,6 @@ export default function MainPage() {
     nameNick: 'Скажите Ваше имя',
     submit: 'Нажмите enter, чтобы войти в чат',
   };
-
   const synth = window.speechSynthesis;
   // let voices = [synth];
 
@@ -169,6 +168,11 @@ export default function MainPage() {
     <Box
       sx={{
         '& .MuiTextField-root': { m: 1, width: '25ch' },
+        // flexGrow: 1,
+        // borderRadius: '11px',
+        // marginTop: '12px',
+        // backgroundColor: '#FFFFFF',
+        // padding: '14px',
       }}
       noValidate
       autoComplete="off"
@@ -182,8 +186,13 @@ export default function MainPage() {
         ? (
           (user.status === 'employer')
             ? (
-              <form onSubmit={(e) => formAction2(e)}>
-                <FormGroup>
+              <form
+                onSubmit={(e) => formAction2(e)}
+              >
+                <FormGroup sx={{
+                  flexGrow: 1, borderRadius: '11px', marginTop: '12px', backgroundColor: '#FFFFFF', padding: '14px',
+                }}
+                >
                   <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     Chat room:
                   </Typography>
@@ -210,10 +219,16 @@ export default function MainPage() {
             : (
               <form onSubmit={(e) => formAction(e)}>
                 <FormGroup>
-                  <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                  <Typography
+                    variant="h6"
+                    color="secondary"
+                    component="div"
+                    sx={{ flexGrow: 1 }}
+                  >
                     Chat room:
                   </Typography>
                   <TextField
+                    color="secondary"
                     id="room"
                     name="roomId"
                     value={(focus.roomName ? editInterim(transcript) : room.roomId)}
@@ -233,7 +248,15 @@ export default function MainPage() {
                     placeholder="Name..."
                     label="Name"
                   /> */}
-                  <Button id="submit" onFocus={() => SubFocus()} type="submit" variant="contained">Submit</Button>
+                  <Button
+                    id="submit"
+                    onFocus={() => SubFocus()}
+                    type="submit"
+                    variant="contained"
+                  >
+                    Submit
+
+                  </Button>
                 </FormGroup>
               </form>
             )

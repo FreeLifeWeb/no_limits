@@ -6,7 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-export default function MainPageVacansyCard({ vac }) {
+export default function mainPageCard({ vac }) {
   return (
     <Card sx={{
       width: '100%',
@@ -31,7 +31,7 @@ export default function MainPageVacansyCard({ vac }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Подробнее</Button>
+        <Button variant="outlined" size="small">Подробнее</Button>
       </CardActions>
     </Card>
   );
