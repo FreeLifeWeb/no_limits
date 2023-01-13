@@ -4,6 +4,8 @@ const {
   Sphere, Category, Response, Vacancy, Resume,
 } = require('../db/models');
 
+const sendResponse = require('../mailer/mailer');
+
 const apiRouter = express.Router();
 
 apiRouter.post('/sphere', async (req, res) => {
@@ -126,6 +128,17 @@ apiRouter.post('/resumes', async (req, res) => {
   const resumes = await Resume.findAll({ include: [{ model: Category }, { model: Sphere }] });
   try {
     res.json(resumes);
+  } catch {
+    res.sendStatus(500);
+  }
+});
+
+apiRouter.post('/send', async (req, res) => {
+  // const { message, email } = req.body;
+  // console.log(message.message);
+  try {
+    await sendResponse(req.body);
+    res.sendStatus(200);
   } catch {
     res.sendStatus(500);
   }
