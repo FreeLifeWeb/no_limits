@@ -39,6 +39,7 @@ export default function MainPage() {
   };
 
   const pressListener = (event) => {
+    // event.preventDefault();
     if (event.code === 'Space') {
       if (user) {
         startSpeach(comands.allComands);
