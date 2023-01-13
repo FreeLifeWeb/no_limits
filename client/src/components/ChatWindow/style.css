@@ -9,6 +9,12 @@ body{
 
 
 .navButtons{
+    border-radius:3px;
+	padding: 4px;
+}
+
+.navButtons:hover{
+	
 	background-color: #78866b;
     border-radius:3px;
 	padding: 4px;

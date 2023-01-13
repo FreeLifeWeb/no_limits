@@ -168,6 +168,11 @@ export default function MainPage() {
     <Box
       sx={{
         '& .MuiTextField-root': { m: 1, width: '25ch' },
+        // flexGrow: 1,
+        // borderRadius: '11px',
+        // marginTop: '12px',
+        // backgroundColor: '#FFFFFF',
+        // padding: '14px',
       }}
       noValidate
       autoComplete="off"
@@ -181,9 +186,11 @@ export default function MainPage() {
         ? (
           (user.status === 'employer')
             ? (
-              <form onSubmit={(e) => formAction2(e)}>
+              <form
+                onSubmit={(e) => formAction2(e)}
+              >
                 <FormGroup sx={{
-                  flexGrow: 1, borderRadius: '11px', marginTop: '12px', backgroundColor: 'white', padding: '14px',
+                  flexGrow: 1, borderRadius: '11px', marginTop: '12px', backgroundColor: '#FFFFFF', padding: '14px',
                 }}
                 >
                   <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>

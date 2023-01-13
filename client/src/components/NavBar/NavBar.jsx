@@ -75,7 +75,7 @@ export default function ButtonAppBar() {
                       }}
                       sx={{ color: 'white' }}
                     >
-                      <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '1rem' }}>
+                      <Typography className="navButtons" variant="h6" component="div" sx={{ flexGrow: 1, fontSize: '1rem' }}>
                         Выйти
                       </Typography>
                     </Button>

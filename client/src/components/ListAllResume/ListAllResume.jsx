@@ -13,11 +13,16 @@ export default function ListAllResume() {
     dispatch(getResumes());
   }, []);
   return (
-    <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Box style={{
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+    }}
+    >
       {resumes?.map((resume) => (
         <Container
           key={resume.id}
-          style={{ marginRight: 0 }}
+          style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          }}
         >
           <br />
           <Card

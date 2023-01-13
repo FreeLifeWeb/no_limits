@@ -112,7 +112,7 @@ export default function LkCandidate() {
         }}
       >
         <br />
-        <p>
+        <p style={{ color: '#FFFFFF' }}>
           Микрофон:
           {' '}
           {listening ? '🟢' : '🔴'}

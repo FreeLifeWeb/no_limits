@@ -60,8 +60,7 @@ export default function Vacancies() {
   const commands = [
     {
       command: 'Личный кабинет',
->>>>>>> DEV
-callback: () => {
+      callback: () => {
         stopHandler();
         navigate(`/lkCandidate/${user.id}`);
       },
