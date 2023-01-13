@@ -27,6 +27,7 @@
     "express-session": "^1.17.3",
     "morgan": "^1.10.0",
     "mui-treasury": "^0.1.5-alpha.3",
+    "nodemailer": "^6.9.0",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
     "react-google-font-loader": "^1.1.0",
