@@ -39,7 +39,7 @@ export default function MainPage() {
   };
 
   const pressListener = (event) => {
-    // event.preventDefault();
+    event.preventDefault();
     if (event.code === 'Space') {
       if (user) {
         startSpeach(comands.allComands);
@@ -97,16 +97,12 @@ export default function MainPage() {
       // backgroundColor: 'rgb(254, 171, 6)',
     }}
     >
-      <br />
-      <p style={{ marginLeft: '3%', color: 'white' }}>
-        Микрофон:
-        {' '}
-        {listening ? ' 🟢' : ' 🔴'}
-      </p>
+      {/* <br /> */}
       <div style={{
         textAlign: 'center',
         height: '400px',
-        // backgroundColor: 'rgb(254, 171, 6)',
+        backgroundImage: 'url("https://pic.rutubelist.ru/userappearance/b5/3c/b53cf9f241d64a2821e1b1c576bb4fd0.jpeg")',
+        backgroundSize: 'cover',
         width: '100%',
         display: 'flex',
         justifyContent: 'center',
@@ -114,10 +110,15 @@ export default function MainPage() {
         flexDirection: 'column',
       }}
       >
-        <span style={{ color: 'white', fontSize: '32px', marginBottom: '50px' }}>
+        <p style={{ marginLeft: '3%', color: 'dark' }}>
+          Микрофон:
+          {' '}
+          {listening ? ' 🟢' : ' 🔴'}
+        </p>
+        <span style={{ color: 'dark', fontSize: '32px', marginBottom: '50px' }}>
           Сервис поиска работы
           {' '}
-          <strong>Без ограничений</strong>
+          <strong>БЕЗ ОГРАНИЧЕНИЙ</strong>
         </span>
         <Button
           type="submit"
@@ -125,6 +126,7 @@ export default function MainPage() {
           onClick={() => {
             navigate('/reg');
           }}
+          style={{ marginBottom: '10%' }}
         >
           Войти/Зарегистрироваться
         </Button>

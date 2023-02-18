@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 
 export default function ResponseVacancy({ el }) {
   const [flag, setFlag] = useState(false);
-  console.log(el);
+
   const clickHandler = () => {
     setFlag(!flag);
   };

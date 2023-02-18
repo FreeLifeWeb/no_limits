@@ -33,7 +33,7 @@ export default function MainPageResumeCard({ vac }) {
           <br />
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions style={{ alignItems: 'end' }}>
         <Button variant="outlined" size="small">Подробнее</Button>
       </CardActions>
     </Card>
